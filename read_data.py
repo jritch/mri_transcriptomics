@@ -11,29 +11,51 @@ from scipy.stats import spearmanr
 
 R_VALUE_FUNCTION = spearmanr
 
-def load_ontology():
-  '''
-  Reads the ontology file and returns an (ID,name) dictionary 
-  and a (parentID,[childID]) dictionary that defines the ontology / hierarchy.
-  '''
-  names = dict()
-  hierarchy = dict()
-  with open('C:/Users/Jacob/large_thesis_files/Ontology.csv') as f:
-    rdr = csv.reader(f)
-    header = next(rdr)
-    for row in rdr:
-      ID = int(row[0])
-      names[ID] = row[2]
-      if row[3]:
-        parentID = int(row[3])
-        if hierarchy.get(parentID):
-            hierarchy[parentID].append(ID)
-        else:
-          hierarchy[parentID] = [ID]
+class ClassName(object):
+  """docstring for ClassName"""
+  def __init__(self, arg):
+    super(ClassName, self).__init__()
+    self.arg = arg
+    
+class Ontology(object):
+  """An Ontology has two member variables:
 
-#  print names
-  print hierarchy
-  return names, hierarchy
+  Attributes:
+    names (dict): 
+      An (ID,name) dictionary 
+    hierarchy (dict):
+      a (parentID,[childID]) dictionary 
+  """
+  def __init__(self,ontology_file_name):
+      names = dict()
+      hierarchy = dict()
+      with open(ontology_file_name) as f:
+        rdr = csv.reader(f)
+        header = next(rdr)
+        for row in rdr:
+          ID = int(row[0])
+          names[ID] = row[2]
+          if row[3]:
+            parentID = int(row[3])
+            if hierarchy.get(parentID):
+                hierarchy[parentID].append(ID)
+            else:
+              hierarchy[parentID] = [ID]
+
+      self.names = names
+      self.hierarchy = hierarchy
+
+  def get_all_regionIDs(self,regionID):
+    IDs = [regionID]
+    all_IDs = []
+    while IDs:
+      # print 'IDs is',IDs
+      ID = IDs.pop()
+      all_IDs.append(ID)
+      child_IDs = self.hierarchy.get(ID)
+      if child_IDs:
+        IDs += child_IDs
+    return all_IDs
 
 def load_nifti_data(directory):
   '''
@@ -74,6 +96,9 @@ def flatten_mri_data(mri_data,coords):
   return flat_mri_data
 
 def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
+  '''
+  Returns a list of coordinates (x,y,z tuples) and a dictionary mapping regionIDs to coords
+  '''
   header_line = gene_exp_fh.readline().strip() 
   coord_strings = header_line.split('\t')
   evaluate_strings = lambda x : eval(x.strip('"').split('|')[1].split(':')[1])
@@ -85,6 +110,54 @@ def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
   coords = map(evaluate_strings,coord_strings)
 
   return coords,coord_to_region_map
+
+def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology):
+  '''
+  Returns the list of all coordinates corresponding to a regionID (including all its child regions)
+  '''
+  regionIDs = ontology.get_all_regionIDs(regionID)
+  coords_list = []
+  for k,v in coord_to_region_map.iteritems():
+    if v == regionID:
+      coords_list.append(k)
+  return coords_list
+
+
+def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data):
+  '''
+  Returns a list of all brain regions from the ontology, ranked by the average T2/T1 MRI intensity at each
+  point 
+  '''
+  rank = []
+  total = 0
+  #total = len(ontology.names)
+  nonzero = 0
+
+  for ID,name in ontology.names.iteritems():
+    flag = 0
+    if ID == 9222:
+      flag = 1
+    intensity = 0
+    coords_list = get_coords_from_region_id(ID,coords,coord_to_region_map,ontology)
+    if coords_list != []:
+      if flag:
+        print coords_list
+      
+      print name,ID,coords_list
+      for coord in coords_list:
+        index = coords_list.index(coord)
+        intensity += flat_mri_data[index]
+        total +=1
+        if not flat_mri_data[index] in [3,4,5,6] :
+          nonzero += 1
+      intensity = intensity / float(len(coords_list))
+    rank.append((name, intensity))
+
+  print nonzero * 1. / total * 100.
+  return sorted(rank,key=lambda x: x[1],reverse=True)
+
+def convert_coords_to_flat_indices(coords_list):
+  pass  
 
 def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh):
   '''
@@ -138,26 +211,31 @@ def visualize():
 
 if __name__ == '__main__':
   
-  #load_ontology()
-
-  gene_exp_fh = open("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionWithBrainID/9861.matrix.regionID.MRI(xyz).29131 x 946.txt")
-  coords,dictionary = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
-  print coords
-  print dictionary
-  exit()
 
   t1 = time.clock()
 
-  MRI_data = load_nifti_data("C:/Users/Jacob/Downloads/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861")
-  
+  MRI_data = load_nifti_data("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861")
+
+  o = Ontology("C:/Users/Jacob/large_thesis_files/Ontology.csv")
+
   print 'Getting coordinates from gene expression file.'
   
-  gene_exp_fh = open("C:/Users/Jacob/Downloads/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861/9861.matrix.MRI(xyz).29131 x 946.txt")
-  coords.dictionary = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
+  gene_exp_fh = open("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionWithBrainID/9861.matrix.regionID.MRI(xyz).29131 x 946.txt")
+  coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
   gene_exp_fh.close()
 
+  flat_t1t2_ratio_data = flatten_mri_data(MRI_data[2],coords)
+
+  import pprint
+
+  os.unlink('C:/Users/Jacob/Google Drive/4th Year/Thesis/regions_ranked_by_t1overt2_ratio.txt')
+  with open('C:/Users/Jacob/Google Drive/4th Year/Thesis/regions_ranked_by_t1overt2_ratio.txt','w') as f:
+    f.write(pprint.pformat(rank_regions_by_intensity(coords,coord_to_region_map,o,flat_t1t2_ratio_data)))
+
+  exit()
+
   for measure in MRI_data:
-    gene_exp_fh = open("C:/Users/Jacob/Downloads/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861/9861.matrix.MRI(xyz).29131 x 946.txt")
+    gene_exp_fh = open("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861/9861.matrix.MRI(xyz).29131 x 946.txt")
 
     print 'Flattening MRI data.'
     flat_mri_data = flatten_mri_data(measure,coords)
