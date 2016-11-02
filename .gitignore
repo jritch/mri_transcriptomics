@@ -1,2 +1,6 @@
 *.tmp
+*.pyc
 ~*
+.Rproj.user
+/AllenHBAProcessedExpressionWithBrainID/
+/mri_transcriptomics.Rproj

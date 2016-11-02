@@ -5,9 +5,20 @@ import csv
 #from subprocess import call
 
 import time
+import config
+import inspect, os
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
+
+
+print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
+baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
+
+
+print "Base Allen folder:" + config.baseAllenFolder
+print "Base script folder:" + baseProjectFolder
+
 
 R_VALUE_FUNCTION = spearmanr
 
@@ -214,28 +225,29 @@ if __name__ == '__main__':
 
   t1 = time.clock()
 
-  MRI_data = load_nifti_data("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861")
+  MRI_data = load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor9861")
 
-  o = Ontology("C:/Users/Jacob/large_thesis_files/Ontology.csv")
+  o = Ontology(baseProjectFolder + "/data/Ontology.csv")
 
   print 'Getting coordinates from gene expression file.'
   
-  gene_exp_fh = open("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionWithBrainID/9861.matrix.regionID.MRI(xyz).29131 x 946.txt")
+  gene_exp_fh = open(config.baseAllenFolder +  "normalized_microarray_donor9861/9861.matrix.regionID.MRI(xyz).29131 x 946.txt")
   coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
   gene_exp_fh.close()
 
   flat_t1t2_ratio_data = flatten_mri_data(MRI_data[2],coords)
 
   import pprint
-
-  os.unlink('C:/Users/Jacob/Google Drive/4th Year/Thesis/regions_ranked_by_t1overt2_ratio.txt')
-  with open('C:/Users/Jacob/Google Drive/4th Year/Thesis/regions_ranked_by_t1overt2_ratio.txt','w') as f:
+  ratioListFilename = baseProjectFolder + 'results/regions_ranked_by_t1overt2_ratio.txt'
+  if (os.path.isfile(ratioListFilename)): os.unlink(ratioListFilename)
+    
+  with open(ratioListFilename,'w') as f:
     f.write(pprint.pformat(rank_regions_by_intensity(coords,coord_to_region_map,o,flat_t1t2_ratio_data)))
 
-  exit()
+
 
   for measure in MRI_data:
-    gene_exp_fh = open("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor9861/9861.matrix.MRI(xyz).29131 x 946.txt")
+    gene_exp_fh = open(config.baseAllenFolder + "normalized_microarray_donor9861/9861.matrix.MRI(xyz).29131 x 946.txt")
 
     print 'Flattening MRI data.'
     flat_mri_data = flatten_mri_data(measure,coords)
