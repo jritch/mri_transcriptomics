@@ -122,20 +122,28 @@ write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
 tmodNames <- data.frame()
 modules2genes <- list()
 
+#need to set folder here
 for(geneListFilename in list.files("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/", pattern = ".*txt", full.names = T)) {
-  #print(geneListFilename)
+  print(geneListFilename)
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
   genesOfInterest$term <- shortName
   
-  modules2genes[shortName] <- list(mouse2human( genesOfInterest$V1)$humanGene)
-  
+  #already a human gene list
+  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "House keeping", geneListFilename  )) {
+    modules2genes[shortName] <- list(genesOfInterest$V1)
+  } else { #needs conversion from mouse
+    modules2genes[shortName] <- list(mouse2human(genesOfInterest$V1)$humanGene)
+  }
+
   tmodNames <- rbind(tmodNames, data.frame(ID=shortName, Title = shortName))
 }
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = T)
-head(result, n=20)
+result
+subset(result, AUC > 0.5)
+subset(result, AUC < 0.5)
 
 evidencePlot(sortedGenes, mset=geneSets, m="Zeisel.Microglia")
 
