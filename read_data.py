@@ -9,12 +9,23 @@ import scipy
 
 import time
 import pickle
+import config
+import inspect, os
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 import numpy as np
 
 import debug
+
+
+print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
+baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
+
+
+print "Base Allen folder:" + config.baseAllenFolder
+print "Base script folder:" + baseProjectFolder
+
 
 R_VALUE_FUNCTION = spearmanr
 
@@ -241,12 +252,9 @@ def visualize():
 if __name__ == '__main__':
   correlated_data = None
   t1 = time.clock()
-
-  o = Ontology("C:/Users/Jacob/large_thesis_files/Ontology.csv")
+  o = Ontology(config.ontologyFolder + "Ontology.csv")
 
   print 'Getting coordinates from gene expression file.'
-  
-  MRI_directory = "C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionWithBrainID"
 
   files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
            "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
@@ -269,7 +277,9 @@ if __name__ == '__main__':
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor" + brain_ids[i])
+    MRI_data = load_nifti_data( config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])
+
+    print 'Getting coordinates from gene expression file.'
     #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(MRI_directory,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
@@ -323,7 +333,7 @@ if __name__ == '__main__':
   for j in range(3):
     for k in range(3):
       label = MRI_data_labels[j] + "." + regions_of_interest[k][0]
-      with open("C:/Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/" + label + ".gene_list.csv",'w') as f:
+      with open( config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
         data = data_array[j][k]
         f.write(",raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
         f.write("ID," + (",").join(brain_ids) + "," + ",".join(brain_ids)+ "\n")

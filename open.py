@@ -3,7 +3,9 @@ import numpy
 import os
 from subprocess import call
 
-os.chdir("C:/Users/Jacob/Downloads/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor10021")
+#os.chdir("C:/Users/Jacob/Downloads/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor10021")
+
+os.chdir("/Users/lfrench/Desktop/data/Allen/HBA/normalized_microarray_donor9861")
 
 call(["ls", "-l"])
 
