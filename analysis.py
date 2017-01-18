@@ -9,23 +9,12 @@ import scipy
 
 import time
 import pickle
-import config
-import inspect, os
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 import numpy as np
 
-import debug
-
-
-print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
-baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
-
-
-print "Base Allen folder:" + config.baseAllenFolder
-print "Base script folder:" + baseProjectFolder
-
+#import debug
 
 R_VALUE_FUNCTION = spearmanr
 
@@ -252,6 +241,7 @@ def visualize():
 if __name__ == '__main__':
   correlated_data = None
   t1 = time.clock()
+
   o = Ontology(config.ontologyFolder + "Ontology.csv")
 
   print 'Getting coordinates from gene expression file.'
@@ -265,7 +255,8 @@ if __name__ == '__main__':
   
   brain_ids = [f.split(".")[0] for f in files]
   
-  regions_of_interest = [('cortex',4008),('subcortex',4275),('cerebellum',4696)]
+  #regions_of_interest = [('cortex',4008),('full_brain',4005)]
+  regions_of_interest = [('subcortex',4275),('cerebellum',4696)]
   #regions_of_interest = [('cortex',4008)]
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
 
@@ -273,15 +264,13 @@ if __name__ == '__main__':
   #brain_ids = [f.split(".")[0] for f in files]
 
   #data_array =  np.array([ [ [ [ [0] * 2 * len(brain_ids)] * 29131] * 1] * 3])
-  data_array =  np.zeros((3,3,29131,2*6+1))
+  data_array =  np.zeros((3,4,29131,3*6+1))
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data( config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])
-
-    print 'Getting coordinates from gene expression file.'
+    MRI_data = load_nifti_data("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor" + brain_ids[i])
     #MRI_data = MRI_data[0]
-    gene_exp_fh = open(os.path.join(MRI_directory,files[i]))
+    gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
     gene_exp_fh.close()
     #print len(sorted(get_flat_coords_from_region_id(4696,coords,coord_to_region_map,o)))
@@ -298,7 +287,7 @@ if __name__ == '__main__':
         print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o)
-        gene_exp_fh = open(os.path.join(MRI_directory,files[i]))
+        gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
         #if not correlated_data:
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=indices) 
         gene_exp_fh.close()
@@ -317,29 +306,31 @@ if __name__ == '__main__':
         
         gene_names_in_order = map(lambda y: y[0], data_in_order)
         p_values_in_order = map(lambda y: y[1].pvalue, data_in_order)
+        correlations_in_order = map(lambda y: y[1].correlation, data_in_order)
 
         for ind in range(len(gene_names_in_order)):
           #gene_names_in_order[ind]
           #print ind
           #data_array[j][k][ind][0]
           data_array[j][k][ind][0] = ind #gene_names_in_order[ind]
-          data_array[j][k][ind][i+1] = str(p_values_in_order[ind])
+          data_array[j][k][ind][i+1+len(files)] = str(p_values_in_order[ind])
           #FDR-adjusted p-value
           #print p_values_in_order
           #print ranked_list_of_gene_names.index(gene_names_in_order[ind])
-          data_array[j][k][ind][i+1+len(files)] = str( p_values_in_order[ind] * len(gene_names_in_order) / (ranked_list_of_gene_names.index(gene_names_in_order[ind]) + 1))        
+          data_array[j][k][ind][i+1] = str(correlations_in_order[ind])
+          data_array[j][k][ind][i+1+2*len(files)] = str( p_values_in_order[ind] * len(gene_names_in_order) / (ranked_list_of_gene_names.index(gene_names_in_order[ind]) + 1))        
 
   print("Writing Files")
   for j in range(3):
-    for k in range(3):
+    for k in range(len(regions_of_interest)):
       label = MRI_data_labels[j] + "." + regions_of_interest[k][0]
-      with open( config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
+      with open(config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
         data = data_array[j][k]
-        f.write(",raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
+        f.write(",correlation,,,,,,raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
         f.write("ID," + (",").join(brain_ids) + "," + ",".join(brain_ids)+ "\n")
         for gene_entry in data:
           gene_name = gene_names_in_order[int(gene_entry[0])]
-          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[1:6])) + "," + str(fisher_p(gene_entry[7:12])) + "\n")
+          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[7:12])) + "," + str(fisher_p(gene_entry[13:18])) + "\n")
 
   t2 = time.clock()
 
