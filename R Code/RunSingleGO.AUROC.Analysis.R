@@ -16,7 +16,7 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
   filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/temp data for abstract/MedianCorrelations.WholeBrain.tsv"
-  filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
+  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
   
 } else if (!is.null(opt$filename)) {
   filename <- opt$filename
@@ -41,7 +41,7 @@ geneStatistics <- read_csv(filename)
 geneStatistics <- geneStatistics %>% filter(X1 != "ID")
 
 geneStatistics <- rowwise(geneStatistics) %>% mutate(medianCorrelation = median(c(correlation,X3,X4,X5,X6,X7)))
-geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
+geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="BH")
 #####################################
 cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
 plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
@@ -69,12 +69,11 @@ sortedGenes <- geneStatistics$geneSymbol
 # AUC via tmod
 ######################################################
 
-if (length(geneSetsGO$MODULES2GENES) > 1000) { #assume it's already loaded
+if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000) { #assume it's already loaded
 } else {
   go_object <- as.list(org.Hs.egGO2ALLEGS)
   
   symbolsInGO <- getSYMBOL(unique(unlist(go_object)), data='org.Hs.eg')
-  
   
   #build GO sets for tmod -slow
   tmodNames <- data.frame()
@@ -102,6 +101,42 @@ if (length(geneSetsGO$MODULES2GENES) > 1000) { #assume it's already loaded
   geneSetsGO <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 }
 
+if (exists("myelinGeneSetsGO")) { #assume it's already loaded
+} else {
+  go_object <- as.list(org.Hs.egGO2ALLEGS)
+  
+  symbolsInGO <- getSYMBOL(unique(unlist(go_object)), data='org.Hs.eg')
+  
+  #build GO sets for tmod -slow
+  tmodNames <- data.frame()
+  modules2genes <- list()
+  goGroupName <- names(go_object)[1]
+  showMethods(Term)
+  
+  goCount <- length(go_object)
+  count <- 1
+  for(goGroupName in names(go_object)) {
+    if (!grepl("myelin",Term(goGroupName))) next();
+    if (count %% 1000 == 0) print(paste(count, "of", goCount))
+    count <- count + 1
+    
+    goGroup <- go_object[goGroupName]
+    geneIDs <- unique(unlist(goGroup, use.names=F))  #discard evidence codes
+    genesymbols <- unique(getSYMBOL(geneIDs, data='org.Hs.eg'))
+    
+    genesymbols <- intersect(genesymbols, sortedGenes)
+    if (!(length(genesymbols) > 10 & length(genesymbols) < 200)) next();
+    
+    modules2genes[goGroupName] <- list(genesymbols)
+    
+    tmodNames <- rbind(tmodNames, data.frame(ID=goGroupName, Title = Term(goGroupName)))
+  }
+  myelinGeneSetsGO <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
+}
+
+result <- tmodUtest(c(sortedGenes), mset=myelinGeneSetsGO, qval = 1, filter = T)
+evidencePlot(sortedGenes, mset=myelinGeneSetsGO, m=c(head(result$ID, n=4)), col=c(2,3,4,5))
+
 result <- tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 #add aspect
@@ -112,10 +147,10 @@ head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 
 head(filter(result, grepl("myelin", Title)) %>% dplyr::select(-ID), n=20)
 
-write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
+#write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
 #make AUC plots to visualize - needs a name of the gene list
-#evidencePlot(sortedGenes, mset=geneSetsGO, m="GO:0005840")
+evidencePlot(sortedGenes, mset=geneSetsGO, c("GO:0005840","GO:0045211"))
 
 #TODO - filter out duplicate sets?
 #################################################################
@@ -123,7 +158,7 @@ write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
 loadPhenocarta <- function(taxon, geneBackground) {
   #guess column types from the whole dataset, basically
-  phenocarta <- read_tsv("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  phenocarta <- read_tsv("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
   phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
   phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
   geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
@@ -141,7 +176,7 @@ result <- tmodUtest(c(sortedGenes), mset=geneSets, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 head(result, n=20)
 
-write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
+#write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
 
 #looking at one result - epilepsy
 #filter(geneStatistics, geneSymbol %in% geneSets["DOID_1932"]$GENES$ID)
@@ -153,7 +188,7 @@ tmodNames <- data.frame()
 modules2genes <- list()
 
 #need to set folder here
-for(geneListFilename in list.files("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/", pattern = ".*txt", full.names = T)) {
+for(geneListFilename in list.files("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/", pattern = ".*txt", full.names = T)) {
   print(geneListFilename)
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
@@ -178,6 +213,6 @@ subset(result, AUC < 0.5)
 evidencePlot(sortedGenes, mset=geneSets, m="Darmanis.Oligo")
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 
-write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
+#write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
 
 
