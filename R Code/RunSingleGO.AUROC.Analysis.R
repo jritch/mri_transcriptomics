@@ -69,11 +69,7 @@ sortedGenes <- geneStatistics$geneSymbol
 # AUC via tmod
 ######################################################
 
-<<<<<<< HEAD
 if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume it's already loaded - needs a fix to see if the variable is declared
-=======
-if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000) { #assume it's already loaded
->>>>>>> a4949ea1d9c95778bfcacff5d77d12643714573f
 } else {
   go_object <- as.list(org.Hs.egGO2ALLEGS)
   
@@ -105,42 +101,6 @@ if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000) { #assume i
   geneSetsGO <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 }
 
-if (exists("myelinGeneSetsGO")) { #assume it's already loaded
-} else {
-  go_object <- as.list(org.Hs.egGO2ALLEGS)
-  
-  symbolsInGO <- getSYMBOL(unique(unlist(go_object)), data='org.Hs.eg')
-  
-  #build GO sets for tmod -slow
-  tmodNames <- data.frame()
-  modules2genes <- list()
-  goGroupName <- names(go_object)[1]
-  showMethods(Term)
-  
-  goCount <- length(go_object)
-  count <- 1
-  for(goGroupName in names(go_object)) {
-    if (!grepl("myelin",Term(goGroupName))) next();
-    if (count %% 1000 == 0) print(paste(count, "of", goCount))
-    count <- count + 1
-    
-    goGroup <- go_object[goGroupName]
-    geneIDs <- unique(unlist(goGroup, use.names=F))  #discard evidence codes
-    genesymbols <- unique(getSYMBOL(geneIDs, data='org.Hs.eg'))
-    
-    genesymbols <- intersect(genesymbols, sortedGenes)
-    if (!(length(genesymbols) > 10 & length(genesymbols) < 200)) next();
-    
-    modules2genes[goGroupName] <- list(genesymbols)
-    
-    tmodNames <- rbind(tmodNames, data.frame(ID=goGroupName, Title = Term(goGroupName)))
-  }
-  myelinGeneSetsGO <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
-}
-
-result <- tmodUtest(c(sortedGenes), mset=myelinGeneSetsGO, qval = 1, filter = T)
-evidencePlot(sortedGenes, mset=myelinGeneSetsGO, m=c(head(result$ID, n=4)), col=c(2,3,4,5))
-
 result <- tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 #add aspect
@@ -152,16 +112,14 @@ head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
-head(filter(result, grepl("myelin", Title)) %>% dplyr::select(-ID), n=20)
+#myelin plot moved to here
+myelinResults <- filter(result, grepl("myelin", Title)) 
+evidencePlot(sortedGenes, mset=geneSetsGO, m=c(head(myelinResults$ID, n=4)), col=c(2,3,4,5))
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
 #make AUC plots to visualize - needs a name of the gene list
-<<<<<<< HEAD
-evidencePlot(sortedGenes, mset=geneSetsGO, m="GO:0043218")
-=======
 evidencePlot(sortedGenes, mset=geneSetsGO, c("GO:0005840","GO:0045211"))
->>>>>>> a4949ea1d9c95778bfcacff5d77d12643714573f
 
 #TODO - filter out duplicate sets?
 #################################################################
