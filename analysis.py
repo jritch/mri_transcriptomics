@@ -9,12 +9,21 @@ import scipy
 
 import time
 import pickle
+import config
+import inspect, os
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 import numpy as np
 
 #import debug
+
+print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
+baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
+
+
+print "Base Allen folder:" + config.baseAllenFolder
+print "Base script folder:" + baseProjectFolder
 
 R_VALUE_FUNCTION = spearmanr
 
