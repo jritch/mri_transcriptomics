@@ -15,10 +15,13 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
-  filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/temp data for abstract/MedianCorrelations.WholeBrain.tsv"
-  
-  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
+  if(Sys.info()['sysname'] == "Darwin") {
+    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/temp data for abstract/MedianCorrelations.WholeBrain.tsv"
+  } else {
+    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
+    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
+    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
+  }
   
 } else if (!is.null(opt$filename)) {
   filename <- opt$filename
@@ -154,9 +157,10 @@ resutl2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
-#myelin plot moved to here
+#myelin plot moved to here - reusing previously loaded GO
 myelinResults <- filter(result, grepl("myelin", Title)) 
 evidencePlot(sortedGenes, mset=geneSetsGO, m=c(head(myelinResults$ID, n=4)), col=c(2,3,4,5))
+#call p.adjust again
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
@@ -169,7 +173,8 @@ evidencePlot(sortedGenes, mset=geneSetsGO, c("GO:0005840","GO:0045211"))
 
 loadPhenocarta <- function(taxon, geneBackground) {
   #guess column types from the whole dataset, basically
-  phenocarta <- read_tsv("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  phenocarta <- read_tsv("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  #phenocarta <- read_tsv("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
   phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
   phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
   geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
@@ -199,15 +204,22 @@ tmodNames <- data.frame()
 modules2genes <- list()
 
 #need to set folder here
-for(geneListFilename in list.files("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/", pattern = ".*txt", full.names = T)) {
-  
-  bool <- 0
-  for (keyword in c("Cajigas","Axon")) {
-    if (grepl(keyword,geneListFilename)) bool <- 1
-  }
-  if (bool) next()
-    
+if(Sys.info()['sysname'] == "Darwin") {
+  otherGeneListsFolder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/"
+} else {
+  otherGeneListsFolder <- "C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/"
+}
+
+for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full.names = T)) {
   print(geneListFilename)
+  
+  for (keyword in c("Cajigas","Axon")) {
+    if (grepl(keyword,geneListFilename)) {
+      print("Skipping")
+      next()
+    }
+  }
+
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
   genesOfInterest$term <- shortName
@@ -216,6 +228,7 @@ for(geneListFilename in list.files("C://Users/Jacob/Google Drive/4th Year/Thesis
   if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "House keeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
+    print(" converting to mouse")
     modules2genes[shortName] <- list(mouse2human(genesOfInterest$V1)$humanGene)
   }
 
@@ -226,8 +239,15 @@ geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
-result1 <- subset(result, AUC > 0.5)
-result2 <- subset(result, AUC < 0.5)
+
+(result1 <- subset(result, AUC > 0.5))
+(result2 <- subset(result, AUC < 0.5))
+darm <- filter(result, grepl("Darmanis", Title))
+darm$adj.P.Val <- p.adjust(darm$P.Value)
+
+darm <- filter(result, grepl("Zeisel", Title))
+darm$adj.P.Val <- p.adjust(darm$P.Value)
+darm
 
 #print out the genes for the oligo list
 filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)

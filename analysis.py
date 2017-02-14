@@ -270,8 +270,8 @@ if __name__ == '__main__':
   brain_ids = [f.split(".")[0] for f in files]
   
   #regions_of_interest = [('cortex',4008),('full_brain',4005)]
-  regions_of_interest = [('subcortex',4275),('cerebellum',4696)]
-  #regions_of_interest = [('cortex',4008)]
+  #regions_of_interest = [('subcortex',4275),('cerebellum',4696)]
+  regions_of_interest = [('cerebellum',4008)]
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
 
   #files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt"]
@@ -281,10 +281,10 @@ if __name__ == '__main__':
   data_array =  np.zeros((3,4,29131,3*6+1))
   print data_array.shape
   # i is the brain
-  for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])
+
+    MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i])
     #MRI_data = MRI_data[0]
-    gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
+    gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
     gene_exp_fh.close()
     #print len(sorted(get_flat_coords_from_region_id(4696,coords,coord_to_region_map,o)))
@@ -301,7 +301,7 @@ if __name__ == '__main__':
         print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o)
-        gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
+        gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
         #if not correlated_data:
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=indices) 
         gene_exp_fh.close()
@@ -313,6 +313,8 @@ if __name__ == '__main__':
         #correlated_data = pickle.load('correlated_data.pickle')
 
         #ranked_list_of_gene_names = map(lambda y: (y[0]), sorted(correlated_data, key=lambda x: np.sign(x[1].correlation) * x[1].pvalue))
+
+        print "Top gene:" + str(correlated_data[1])
 
         ranked_list_of_gene_names = map(lambda y: (y[0]), sorted(correlated_data, key=lambda x: x[1].pvalue))
         #sort gene_list_based on name

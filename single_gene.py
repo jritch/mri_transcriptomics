@@ -5,7 +5,7 @@ import numpy as np
 
 def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   '''
-  Takes a file hangle and an optional list of indices.
+  Takes a file handle and an optional list of indices.
 
   '''
 
@@ -56,6 +56,8 @@ def main():
 
   header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
   baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" 
+  if not os.path.exists(baseProjectFolder + "single_gene_data/"):
+      os.mkdir(baseProjectFolder + "single_gene_data/")
   filenames = [baseProjectFolder + "single_gene_data/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
   
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
@@ -63,7 +65,7 @@ def main():
   num_brains = len(brain_ids)
   for i in range(num_brains):
 
-        gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
+        gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         indices = analysis.get_flat_coords_from_region_id(regionID,coords,coord_to_region_map,o)
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
@@ -82,7 +84,7 @@ def main():
         coord_subset = [coords[j] for j in indices]
 
         with open(filenames[i], "w") as f:
-          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + "\"")
+          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + "\n")
           for j in range(len(indices)):
 
             str_coords = [str(coord) for coord in coord_subset[j]]
