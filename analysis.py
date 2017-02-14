@@ -153,7 +153,7 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
   for ID,name in ontology.names.iteritems():
     
     flag = 0
-    if ID == 4005:
+    if ID == 9299:
       flag = 1
 
     intensity = 0
@@ -167,16 +167,21 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
       for coord in coords_list:
         
         index = coords.index(eval(coord))
-        intensity += flat_mri_data[index]
+        intensity += float(flat_mri_data[index])
 
         if flag:
           all_intensities.append(flat_mri_data[index])
+          print "i:", intensity
 
       intensity = intensity / float(len(coords_list))
+      if flag:
+          all_intensities.append(intensity)
+          print "i:", intensity
+          print name
     rank.append((name, intensity))
 
   #print len(all_intensities)
-  #print all_intensities
+  print all_intensities
   #print sum(all_intensities)
   return sorted(rank,key=lambda x: x[1],reverse=True)
 
@@ -277,7 +282,7 @@ if __name__ == '__main__':
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data("C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor" + brain_ids[i])
+    MRI_data = load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])
     #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
