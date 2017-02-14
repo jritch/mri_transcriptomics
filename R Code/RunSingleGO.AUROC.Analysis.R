@@ -61,7 +61,7 @@ geneStatistics <- geneStatistics %>% dplyr::select(geneSymbol = X1, raw_meta_p, 
 geneStatistics <- geneStatistics %>% filter(!grepl("A_", geneSymbol)) %>% filter(!grepl("CUST_", geneSymbol)) 
 
 #sort by median correlation
-geneStatistics <- arrange(geneStatistics, medianCorrelation)
+geneStatistics <- arrange(geneStatistics, desc(medianCorrelation))
 #geneStatistics <- arrange(geneStatistics, raw_meta_p)
 
 #todo - check if this is in the right order
@@ -71,7 +71,7 @@ sortedGenes <- geneStatistics$geneSymbol
 # AUC via tmod
 ######################################################
 
-if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000) { #assume it's already loaded
+if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume it's already loaded - needs a fix to see if the variable is declared
 } else {
   go_object <- as.list(org.Hs.egGO2ALLEGS)
   
@@ -151,7 +151,12 @@ result <- mutate(rowwise(result), aspect = Ontology(ID))
 result1 <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=20)
 resutl2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 
-head(filter(result, grepl("myelin", Title)) %>% dplyr::select(-ID), n=20)
+head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
+head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
+
+#myelin plot moved to here
+myelinResults <- filter(result, grepl("myelin", Title)) 
+evidencePlot(sortedGenes, mset=geneSetsGO, m=c(head(myelinResults$ID, n=4)), col=c(2,3,4,5))
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
@@ -218,10 +223,14 @@ for(geneListFilename in list.files("C://Users/Jacob/Google Drive/4th Year/Thesis
 }
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
+
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 result1 <- subset(result, AUC > 0.5)
 result2 <- subset(result, AUC < 0.5)
+
+#print out the genes for the oligo list
+filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)
 
 evidencePlot(sortedGenes, mset=geneSets, m="Darmanis.Oligo")
 
