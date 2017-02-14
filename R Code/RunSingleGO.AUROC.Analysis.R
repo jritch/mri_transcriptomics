@@ -16,7 +16,9 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
   filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/temp data for abstract/MedianCorrelations.WholeBrain.tsv"
-  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
+  
+  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
   
 } else if (!is.null(opt$filename)) {
   filename <- opt$filename
@@ -135,15 +137,19 @@ if (exists("myelinGeneSetsGO")) { #assume it's already loaded
 }
 
 result <- tmodUtest(c(sortedGenes), mset=myelinGeneSetsGO, qval = 1, filter = T)
-evidencePlot(sortedGenes, mset=myelinGeneSetsGO, m=c(head(result$ID, n=4)), col=c(2,3,4,5))
+evidencePlot(sortedGenes, mset=myelinGeneSetsGO, m=c(head(result$ID, n=3)), col=c(2,3,4))
+
+legend( x=0, y=1,
+        legend=c("compact myelin","myelination","myelination in PNS"),
+       col=c("2","3","4","5"), lwd=1)
 
 result <- tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 #add aspect
 result <- mutate(rowwise(result), aspect = Ontology(ID))
 
-head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=20)
-head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
+result1 <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=20)
+resutl2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 
 head(filter(result, grepl("myelin", Title)) %>% dplyr::select(-ID), n=20)
 
@@ -189,6 +195,13 @@ modules2genes <- list()
 
 #need to set folder here
 for(geneListFilename in list.files("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/", pattern = ".*txt", full.names = T)) {
+  
+  bool <- 0
+  for (keyword in c("Cajigas","Axon")) {
+    if (grepl(keyword,geneListFilename)) bool <- 1
+  }
+  if (bool) next()
+    
   print(geneListFilename)
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
@@ -207,10 +220,16 @@ geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = T)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
-subset(result, AUC > 0.5)
-subset(result, AUC < 0.5)
+result1 <- subset(result, AUC > 0.5)
+result2 <- subset(result, AUC < 0.5)
 
 evidencePlot(sortedGenes, mset=geneSets, m="Darmanis.Oligo")
+
+evidencePlot(sortedGenes, mset=geneSets, m=head(result$Title, n=10), col=c("1","1","1","4","1","4","5","6","6","4"))
+
+legend( x=10000, y=0.5,
+        legend=c("Oligodendrocytes","Neurons","Endothelial Cells","Astrocytes"),
+        col=c("1","4","5","6"), lwd=1)
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 
 #write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
