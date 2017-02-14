@@ -20,7 +20,6 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     entries = line.strip().split('\t') 
     numerical_entries = map(float,entries[1:])
     ID = entries[0]
-    #print ID
 
     if ID == gene_name:
        flag = 1
@@ -40,7 +39,6 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   return result
 
 
-
 def main():
   gene_name =  "ZNF362"
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
@@ -56,13 +54,10 @@ def main():
   
   brain_ids = [f.split(".")[0] for f in files]
 
-  #header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
   header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
   baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" 
   filenames = [baseProjectFolder + "single_gene_data/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
-  print filenames
   
-
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
 
   num_brains = len(brain_ids)
@@ -83,8 +78,6 @@ def main():
 
         results[1,:] = region_specific_flat_mri_data
         results[2,:] = single_gene_data
-
-        print os.getcwd()
 
         coord_subset = [coords[j] for j in indices]
 
