@@ -188,7 +188,7 @@ loadPhenocarta <- function(taxon, geneBackground) {
 
 geneSets <- loadPhenocarta("human", sortedGenes)
 
-result <- tmodUtest(c(sortedGenes), mset=geneSets, qval = 1, filter = T)
+result <- tmodUtest(c(sortedGenes), mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 head(result, n=20)
 
@@ -237,7 +237,7 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
 
-result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = T)
+result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 
 (result1 <- subset(result, AUC > 0.5))
