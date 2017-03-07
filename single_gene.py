@@ -36,12 +36,11 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   else:
     return [numerical_entries[i] for i in indices]
 
-  return result
 
 
 def main():
-  gene_name =  "ZNF362"
-  MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
+  gene_name =  "EPCAM"
+  MRI_dimension = 0 # 0: T1, 1: T2, 2: ratio
   regionID = 4008 #cortex
   region_name = "cortex"
 
