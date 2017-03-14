@@ -274,14 +274,14 @@ if __name__ == '__main__':
   regions_of_interest = [('cerebellum',4008)]
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
 
-  #files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt"]
-  #brain_ids = [f.split(".")[0] for f in files]
+  files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt"]
+  brain_ids = [f.split(".")[0] for f in files]
 
   #data_array =  np.array([ [ [ [ [0] * 2 * len(brain_ids)] * 29131] * 1] * 3])
   data_array =  np.zeros((3,4,29131,3*6+1))
   print data_array.shape
   # i is the brain
-
+  for i in range(len(brain_ids)):
     MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i])
     #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
