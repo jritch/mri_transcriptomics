@@ -28,12 +28,12 @@ def voxel_average(arr,voxel_size=1):
 def write_avg_image(dirname="C:\Users\Jacob\large_thesis_files\AllenHBAProcessedExpressionAndMRIs\\normalized_microarray_donor9861"):
     imgs = analysis.load_nifti_data(dirname)
     #header = nibabel.nifti2.load(dirname+"\\"+"T1.nii")
+    ratio = nibabel.Nifti1Image(imgs[0], np.eye(4,4))
+    ratio.to_filename(dirname+"\\"+"our_T1.nii")
     ratio = nibabel.Nifti1Image(imgs[2], np.eye(4,4))
     ratio.to_filename(dirname+"\\"+"ratio.nii")
     avg_ratio = nibabel.Nifti1Image(voxel_average(imgs[2]), np.eye(4,4)) 
     avg_ratio.to_filename(dirname+"\\"+"ratio_averaged.nii")
-
-
 
 def main():
  
