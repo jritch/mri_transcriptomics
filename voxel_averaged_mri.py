@@ -1,5 +1,6 @@
 import config
 import analysis
+import nibabel
 import os, csv, sys
 import numpy as np
 import scipy.spatial
@@ -25,13 +26,25 @@ def voxel_average(arr,voxel_size=1):
     print scipy.ndimage.filters.convolve(arr,kernel,mode='constant')
     return None
 
-def main():
-  
-  test_array = np.array([[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]],[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]],[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]]])
-  print test_array
-  voxel_average(test_array)
+def write_avg_image(dirname="C:\Users\Jacob\large_thesis_files\AllenHBAProcessedExpressionAndMRIs\\normalized_microarray_donor9861"):
+    imgs = analysis.load_nifti_data(dirname)
+    #header = nibabel.nifti2.load(dirname+"\\"+"T1.nii")
+    ratio = imgs[2]
+    ratio.to_filename(dirname+"\\"+"ratio.nii")
+    avg_ratio = voxel_average(ratio)
+    ratio.to_filename(dirname+"\\"+"ratio_averaged.nii")
 
-  sys.exit()
+
+
+def main():
+ 
+    write_avg_image()
+    return 
+
+'''
+
+  test_array = np.array([[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]],[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]],[[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.],[1.,2.,3.,4.,5.]]])
+  voxel_average(test_array)
 
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
 
@@ -48,6 +61,7 @@ def main():
   for i in range(num_brains):
     mri_data = analysis.load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])[MRI_dimension]
     print voxel_average(mri_data)
+'''
 
 if __name__ == '__main__':
     main()
