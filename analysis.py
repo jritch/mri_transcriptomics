@@ -89,9 +89,10 @@ def load_nifti_data(directory):
   for f in NIFTI_FILES:
     img = nibabel.load(f)
     imgs.append(img)
+    #print img.header
     data.append(img.get_data())
 
-  data.append(numpy.divide(data[0],data[1]))
+  data.append(numpy.divide(data[0]*1.0,data[1]*1.0))
 
   return data
 
