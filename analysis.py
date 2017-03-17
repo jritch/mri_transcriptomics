@@ -73,7 +73,16 @@ class Ontology(object):
         IDs += child_IDs
     return all_IDs
 
-def load_nifti_data(directory):
+def transform_image(data):
+  '''
+  Takes a mis-aligned 3D image and returns the aligned 3D image.
+
+  Fixes problems with NIFTI header.
+
+  '''
+  return np.fliplr(np.transpose(data,(2, 0, 1)))
+
+def load_nifti_data(directory, transform=True):
   '''
 
   Takes the name of a directory containing two NIFTI files, 'T1.nii' and 'T2.nii'.
@@ -93,6 +102,10 @@ def load_nifti_data(directory):
     data.append(img.get_data())
 
   data.append(numpy.divide(data[0]*1.0,data[1]*1.0))
+
+  if transform:
+    for i in range(len(data)):
+      data[i] = transform_image(data[i])
 
   return data
 
@@ -270,20 +283,22 @@ if __name__ == '__main__':
   
   brain_ids = [f.split(".")[0] for f in files]
   
+  regions_of_interest = [('cortex',4008)]
   #regions_of_interest = [('cortex',4008),('full_brain',4005)]
   #regions_of_interest = [('subcortex',4275),('cerebellum',4696)]
-  regions_of_interest = [('cerebellum',4008)]
+  #regions_of_interest = [('cerebellum',4008)]
+ # MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
 
-  files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt"]
-  brain_ids = [f.split(".")[0] for f in files]
+  #files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt"]
+  #brain_ids = [f.split(".")[0] for f in files]
 
   #data_array =  np.array([ [ [ [ [0] * 2 * len(brain_ids)] * 29131] * 1] * 3])
   data_array =  np.zeros((3,4,29131,3*6+1))
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i])
+    MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i],transform=False)
     #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)

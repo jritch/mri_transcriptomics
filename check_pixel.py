@@ -10,7 +10,8 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 def check_slices(data,coord):
-	print data.shape
+	
+	data = np.fliplr(np.transpose(data,(2, 0, 1)))
 
 	# take a z-slice
 	my_slice = data[:,:,coord]
@@ -23,7 +24,6 @@ def check_slices(data,coord):
 	plt.ylabel('y')
 	plt.title('Subject 9861, z='+str(coord))
 	plt.show()
-	raw_input('Press any key to continue')
 
 	my_slice = data[:,coord,:]
 
@@ -35,7 +35,6 @@ def check_slices(data,coord):
 	plt.ylabel('z')
 	plt.title('Subject 9861, y='+str(coord))
 	plt.show()
-	raw_input('Press any key to continue')
 
 	my_slice = data[coord,:,:]
 
@@ -51,19 +50,31 @@ def check_slices(data,coord):
 
 
 def check_slice(data,z):
-	print data.shape
-	
-	# transpose array axes to compensate for header misinterpretation
-	my_slice = data[:,:,:]
-	my_slice = np.transpose(my_slice,(0, 2, 1))
 
-	# take a z-slice
 	my_slice = data[:,:,z]
 
 	# open a plot
 	plt.imshow(np.invert(my_slice), cmap='Greys')
 	
 	# Title the plot & axes
+	plt.xlabel('x')
+	plt.ylabel('y')
+	plt.title('Subject 9861, Z=96 slice')
+	
+	plt.show()
+
+	raw_input("Now try to fix misalignment.\nPress any key to continue.")
+	
+	# Now try to fix misalignment 
+
+	# transpose array axes to compensate for header misinterpretation
+	transformed = np.fliplr(np.transpose(data,(2, 0, 1)))
+
+	# take a z-slice
+	my_slice = transformed[:,:,z]
+
+	# open a plot
+	plt.imshow(np.invert(my_slice), cmap='Greys')
 	plt.xlabel('x')
 	plt.ylabel('y')
 	plt.title('Subject 9861, Z=96 slice')
@@ -113,6 +124,6 @@ def main():
 if __name__ == '__main__':
 	dirname = "C:\Users\Jacob\large_thesis_files\AllenHBAProcessedExpressionAndMRIs\\normalized_microarray_donor9861"
 	imgs = analysis.load_nifti_data(dirname)
-	check_slices(imgs[0],96)
-	#check_slice(imgs[0],96)
+	#check_slices(imgs[0],96)
+	check_slice(imgs[0],96)
 	#check_brain_3d(imgs[0])
