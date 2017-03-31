@@ -72,7 +72,6 @@ def main():
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
-
         mri_data = analysis.load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])[MRI_dimension]
         
         use_voxel_avg = True
@@ -84,20 +83,26 @@ def main():
         flat_mri_data = np.array(analysis.flatten_mri_data(mri_data,coords))
         region_specific_flat_mri_data = [flat_mri_data[j] for j in indices]
 
-        results = np.zeros((3,len(indices)))
+        results = np.zeros((5,len(indices)))
 
         results[1,:] = region_specific_flat_mri_data
         results[2,:] = single_gene_data
 
+        #for i in range(len(indices)):
+            #index = results[1,i]
+            #results[3,i] = coord_to_region_map[index]
+            #results[4,i] = o.names[results[3,i]]
+
         coord_subset = [coords[j] for j in indices]
 
         with open(filenames[i], "w") as f:
-          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + "\n")
+          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name\n")
           for j in range(len(indices)):
 
             str_coords = [str(coord) for coord in coord_subset[j]]
             coord_string = "(" + ",".join(str_coords) + ")" 
-            f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "\n")
+            results[3,j] = coord_to_region_map[coord_string]
+            f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(int(results[3,j])) + ",\""+ o.names[results[3,j]] + "\"\n")
 
 
 if __name__ == '__main__':
