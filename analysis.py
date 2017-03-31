@@ -82,7 +82,7 @@ def transform_image(data):
   '''
   return np.fliplr(np.transpose(data,(2, 0, 1)))
 
-def load_nifti_data(directory, transform=True):
+def load_nifti_data(directory, transform=False):
   '''
 
   Takes the name of a directory containing two NIFTI files, 'T1.nii' and 'T2.nii'.
