@@ -3,7 +3,7 @@ if 'Windows-10' in platform.platform():
     baseAllenFolder = "C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/"
     ontologyFolder = baseAllenFolder + "../"
     expressionFolder = "C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionWithBrainID/"
-    outputCSVFolder = "C:/Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/"
+    outputCSVFolder = "C:/Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs_(transformed)/"
     basePathMRI = "C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor"
 else:
     baseAllenFolder = "/Users/lfrench/Desktop/data/Allen/HBA/"

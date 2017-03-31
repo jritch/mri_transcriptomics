@@ -3,6 +3,8 @@ import analysis
 import os, csv, sys, inspect
 import numpy as np
 
+import voxel_averaged_mri
+
 def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   '''
   Takes a file handle and an optional list of indices.
@@ -39,8 +41,8 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
 
 
 def main():
-  gene_name =  "EPCAM"
-  MRI_dimension = 0 # 0: T1, 1: T2, 2: ratio
+  gene_name =  "CAPN6"
+  MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
   regionID = 4008 #cortex
   region_name = "cortex"
 
@@ -55,9 +57,9 @@ def main():
 
   header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
   baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" 
-  if not os.path.exists(baseProjectFolder + "single_gene_data/"):
-      os.mkdir(baseProjectFolder + "single_gene_data/")
-  filenames = [baseProjectFolder + "single_gene_data/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
+  if not os.path.exists(baseProjectFolder + "single_gene_data_avg/"):
+      os.mkdir(baseProjectFolder + "single_gene_data_avg/")
+  filenames = [baseProjectFolder + "single_gene_data_avg/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
   
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
 
@@ -72,6 +74,13 @@ def main():
 
 
         mri_data = analysis.load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])[MRI_dimension]
+        
+        use_voxel_avg = True
+
+        if use_voxel_avg:
+            mri_data = voxel_averaged_mri.voxel_average(mri_data)
+
+
         flat_mri_data = np.array(analysis.flatten_mri_data(mri_data,coords))
         region_specific_flat_mri_data = [flat_mri_data[j] for j in indices]
 
