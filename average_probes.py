@@ -46,19 +46,10 @@ def average_probes(probes,exp_data):
   print "DONE"
 
 
-def get_header2(x):
+def get_header(x):
+  """ This processes the SampleAnnot.csv file to get the header with RegionID and Location"""
   LOC_tuple = lambda x : "(" + str(x.mri_voxel_x)+ "," + str(x.mri_voxel_y)+ "," + str(x.mri_voxel_z) + ")"
   return pandas.Series("regionID="+ str(x.structure_id) + "|LOC=" +str(LOC_tuple(x)))
-
-
-def get_header(annotations):
-  """ This processes the SampleAnnot.csv file to get the header with RegionID and Location"""
-  #pdb.set_trace()
-  a = annotations.apply(get_header2,axis=1)
-  print a 
-  print a[0:2]
-  
-  return
   
 def main():
  # probes = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/Probes.csv")
@@ -66,7 +57,8 @@ def main():
  # pdb.set_trace()
   #exp_data = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/MicroarrayExpression.csv", header=None)
   #data  = average_probes(probes,exp_data)
-  header = get_header(annotations)
+  header = annotations.apply(get_header,axis=1)
+  print header
   # CONCATENATE HEADER AND DATA
 
 if __name__ == '__main__':
