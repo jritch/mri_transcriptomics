@@ -57,29 +57,25 @@ def check_probes():
 
 def main():
 
-  try:
-    data = pickle.load(open( "/Users/jritchie/data.pkl", "r"))
-  except:
-    probes = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/Probes.csv")
-    annotations = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/SampleAnnot.csv")
-    exp_data = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/MicroarrayExpression.csv", header=None)
-    data  = average_probes(probes,exp_data)
-    header = annotations.apply(get_header,axis=1) 
+  probes = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/Probes.csv")
+  annotations = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/SampleAnnot.csv")
+  exp_data = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/MicroarrayExpression.csv", header=None)
+  data  = average_probes(probes,exp_data)
+  header = annotations.apply(get_header,axis=1) 
 
-    col_map = {}
-    
-    for i in range (0,893):
-      col_map[i+1] = header.loc[i][0]
-    col_map["gene_symbol"] = ""
+  col_map = {}
+  
+  for i in range (0,893):
+    col_map[i+1] = header.loc[i][0]
+  col_map["gene_symbol"] = ""
 
-    data.rename(columns=col_map, inplace=True)
-    data = data.reset_index() 
-    pickle.dump(data, open( "/Users/jritchie/data.pkl", "w"))
+  data.rename(columns=col_map, inplace=True)
+  data = data.reset_index() 
 
+  # Now test this against Leon's earlier solution
 
   validation_data = pandas.read_csv("~/Downloads/AllenHBAProcessedExpressionWithBrainID/10021.matrix.regionID.MRI(xyz).29131 x 893.txt",sep="\t")
 
-  data = data.reset_index()
   data.sort_values(by="gene_symbol",inplace=True)
   
   validation_data.sort_values(by="Unnamed: 0",inplace=True)
