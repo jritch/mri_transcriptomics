@@ -21,13 +21,10 @@ def main():
   
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
 
-  print len(o.get_all_regionIDs(4005))
-  sys.exit()
-
   num_brains = len(brain_ids)
   for i in range(num_brains):
 
-        gene_exp_fh = open(os.path.join(config.MRIFolder,files[i]))
+        gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         gene_exp_fh.close()
 

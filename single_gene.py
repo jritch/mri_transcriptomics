@@ -1,6 +1,4 @@
-import config
-import analysis
-import os, csv, sys, inspect
+import config, analysis, os, csv, sys, inspect
 import numpy as np
 
 import voxel_averaged_mri
@@ -10,35 +8,25 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   Takes a file handle and an optional list of indices.
 
   '''
-
   gene_name = "\"" + gene_name + "\""
-
   gene_exp_fh.readline()
-
   line = gene_exp_fh.readline()
-  
   flag = 0
   while line:
     entries = line.strip().split('\t') 
     numerical_entries = map(float,entries[1:])
     ID = entries[0]
-
     if ID == gene_name:
        flag = 1
        break
-
     line = gene_exp_fh.readline()
-
   # if flag is still 0, then that gene symbol was not in the list
   if flag == 0:
     return None
-
   if not indices:
     return numerical_entries 
   else:
     return [numerical_entries[i] for i in indices]
-
-
 
 def main():
   gene_name =  "CAPN6"
@@ -73,32 +61,21 @@ def main():
         gene_exp_fh.close()
 
         mri_data = analysis.load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])[MRI_dimension]
-        
-        use_voxel_avg = True
 
+        use_voxel_avg = True
         if use_voxel_avg:
             mri_data = voxel_averaged_mri.voxel_average(mri_data)
 
-
         flat_mri_data = np.array(analysis.flatten_mri_data(mri_data,coords))
         region_specific_flat_mri_data = [flat_mri_data[j] for j in indices]
-
         results = np.zeros((5,len(indices)))
-
         results[1,:] = region_specific_flat_mri_data
         results[2,:] = single_gene_data
-
-        #for i in range(len(indices)):
-            #index = results[1,i]
-            #results[3,i] = coord_to_region_map[index]
-            #results[4,i] = o.names[results[3,i]]
-
         coord_subset = [coords[j] for j in indices]
 
         with open(filenames[i], "w") as f:
           f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name\n")
           for j in range(len(indices)):
-
             str_coords = [str(coord) for coord in coord_subset[j]]
             coord_string = "(" + ",".join(str_coords) + ")" 
             results[3,j] = coord_to_region_map[coord_string]

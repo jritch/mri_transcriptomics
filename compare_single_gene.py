@@ -24,14 +24,47 @@ if __name__ == '__main__':
 	for key in dict1:
 		coord_tup = eval(key)
 		#dist = math.sqrt((coord_tup[0] - 90) ** 2 + (coord_tup[1] - 90) ** 2 + (coord_tup[2] - 90) ** 2)
-		dist = (coord_tup[1] - 90) ** 2
+		dist = math.fabs(coord_tup[2] - 90)
 
 		dists.append(dist)
-		diffs.append( float(dict1[key]) - float(dict2[key]) )
+		diffs.append( float(dict1[key]) - float(dict3[key]) )
 
 
 	import matplotlib.pyplot as plt
 
 	plt.plot(dists,diffs, 'ro')
-	plt.show()
+	plt.xlabel('Distance from center in z-direction (pixels)')
+	plt.ylabel('Change in T1-w/T2-w intensity')
+	plt.savefig("C:\\Users\\Jacob\\Google Drive\\4th year\\Thesis\\results\\images\\z_difference.jpg",format="jpg")
 
+	dists = []
+	diffs =[]
+	for key in dict1:
+		coord_tup = eval(key)
+		#dist = math.sqrt((coord_tup[0] - 90) ** 2 + (coord_tup[1] - 90) ** 2 + (coord_tup[2] - 90) ** 2)
+		dist = math.fabs(coord_tup[0] - 90)
+
+		dists.append(dist)
+		diffs.append( float(dict1[key]) - float(dict3[key]) )
+
+
+	plt.plot(dists,diffs, 'ro')
+	plt.xlabel('Distance from center in x-direction (pixels)')
+	plt.ylabel('Change in T1-w/T2-w intensity')
+	plt.savefig("C:\\Users\\Jacob\\Google Drive\\4th year\\Thesis\\results\\images\\x_difference.jpg",format="jpg")
+
+	dists = []
+	diffs =[]
+	for key in dict1:
+		coord_tup = eval(key)
+		#dist = math.sqrt((coord_tup[0] - 90) ** 2 + (coord_tup[1] - 90) ** 2 + (coord_tup[2] - 90) ** 2)
+		dist = math.fabs(coord_tup[1] - 90)
+
+		dists.append(dist)
+		diffs.append( float(dict1[key]) - float(dict3[key]) )
+
+
+	plt.plot(dists,diffs, 'ro')
+	plt.xlabel('Distance from center in y-direction (pixels)')
+	plt.ylabel('Change in T1-w/T2-w intensity')
+	plt.savefig("C:\\Users\\Jacob\\Google Drive\\4th year\\Thesis\\results\\images\\y_difference.jpg",format="jpg")
