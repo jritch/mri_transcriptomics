@@ -2,7 +2,7 @@ import nibabel
 import numpy
 import os
 import sys
-import csv
+import csv 
 import pprint
 import scipy
 
@@ -16,7 +16,6 @@ from scipy.stats import spearmanr
 import numpy as np
 
 from ontology import *
-
 
 print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
 baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
@@ -214,7 +213,8 @@ def fisher_p(p_vector):
 def visualize():
   pass
 
-if __name__ == '__main__':
+
+def main():
   correlated_data = None
   t1 = time.clock()
 
@@ -222,24 +222,17 @@ if __name__ == '__main__':
 
   print 'Getting coordinates from gene expression file.'
 
-  files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
-           "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
-           "14380.matrix.regionID.MRI(xyz).29131 x 529.txt",
-           "15496.matrix.regionID.MRI(xyz).29131 x 470.txt",
-           "15697.matrix.regionID.MRI(xyz).29131 x 501.txt",
-           "9861.matrix.regionID.MRI(xyz).29131 x 946.txt"]
+  files = config.expression_filenames
   
   brain_ids = [f.split(".")[0] for f in files]
   
   regions_of_interest = [('cortex',4008)]
-
-  #regions_of_interest = [('cortex',4008),('full_brain',4005)]
-  #regions_of_interest = [('subcortex',4275),('cerebellum',4696)]
-  #regions_of_interest = [('cerebellum',4008)]
-
+  
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
+  MRI_of_interest = ["T1T2Ratio"]
 
   data_array =  np.zeros((3,4,29131,3*6+1))
+
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
@@ -249,13 +242,20 @@ if __name__ == '__main__':
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
     gene_exp_fh.close()
     flat_t1t2_ratio_data = flatten_mri_data(MRI_data[2],coords)  
+
     for j in range(len(MRI_data)):
       measure = MRI_data[j]
+ 
+      if MRI_data_labels[j] not in MRI_of_interest:
+          # SKIP THIS LABEL
+          print "SKIPPING {} FOR BRAIN {}".format(MRI_data_labels[j],brain_ids[i])
+          continue
 
       print 'Flattening MRI data.'
       flat_mri_data = flatten_mri_data(measure,coords)
 
       for k in range(len(regions_of_interest)):
+
         label = brain_ids[i] + "." + MRI_data_labels[j] + "." + regions_of_interest[k][0]
         print 'Correlating MRI and gene expression data for ' + label
 
@@ -264,7 +264,6 @@ if __name__ == '__main__':
 
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=indices) 
         gene_exp_fh.close()
-
       
         print "Top gene:" + str(correlated_data[1])
 
@@ -296,3 +295,7 @@ if __name__ == '__main__':
   t2 = time.clock()
 
   print "Total execution time was",t2-t1
+
+
+if __name__ == '__main__':
+  main()
