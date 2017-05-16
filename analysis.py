@@ -26,17 +26,7 @@ print "Base script folder:" + baseProjectFolder
 
 R_VALUE_FUNCTION = spearmanr
 
-
-def transform_image(data):
-  '''
-  Takes a mis-aligned 3D image and returns the aligned 3D image.
-
-  Fixes problems with NIFTI header.
-
-  '''
-  return np.fliplr(np.transpose(data,(2, 0, 1)))
-
-def load_nifti_data(directory, transform=False):
+def load_nifti_data(directory):
   '''
 
   Takes the name of a directory containing two NIFTI files, 'T1.nii' and 'T2.nii'.
@@ -56,11 +46,6 @@ def load_nifti_data(directory, transform=False):
     data.append(img.get_data())
 
   data.append(numpy.divide(data[0]*1.0,data[1]*1.0))
-
-  if transform:
-    for i in range(len(data)):
-      data[i] = transform_image(data[i])
-
   return data
 
 def get_gene_exp_data_file(directory):
@@ -236,7 +221,7 @@ def main():
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
-    MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i],transform=False)
+    MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i])
     #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
