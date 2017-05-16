@@ -1,3 +1,4 @@
+import csv
 class Ontology(object):
   """An Ontology has two member variables:
 
