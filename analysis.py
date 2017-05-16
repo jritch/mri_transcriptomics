@@ -14,6 +14,7 @@ import inspect, os
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 import numpy as np
+import pandas
 
 from ontology import *
 
@@ -142,7 +143,7 @@ def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology):
     flat_coords_list.append(coords.index(eval(coord)))
   return flat_coords_list
 
-def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=None):
+def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None):
   '''
   Takes the name of a directory containing a txt file with the gene_expression data and two NIFTI files.
 
@@ -158,34 +159,19 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=None):
   This allows gene_lists to be generated for specific regions.
 
   '''
+
   t1 = time.clock()
-
-  f = gene_exp_fh
-
-  # Throw away header line
-  gene_exp_fh.readline()
-
-  line = gene_exp_fh.readline()
-  IDs = list()
-  correlations = list()
-
-  while line:
-    entries = line.strip().split('\t') 
-    numerical_entries = map(float,entries[1:])
-    ID = entries[0]
-    IDs.append(ID)
-    if not indices:
-      correlation = R_VALUE_FUNCTION(numerical_entries,flat_mri_data)
-    else:
-      correlation = R_VALUE_FUNCTION([numerical_entries[i] for i in indices],
-                                      [flat_mri_data[i] for i in indices])
-
-    correlations.append([ID,correlation])
-
-    line = gene_exp_fh.readline()
-
-  #sort the significantly correlated genes based on correlation and return
-  result = sorted(correlations, key=lambda entry: abs(entry[1][0]),reverse=True)#[0:9]
+  
+  expression_values = pandas.read_csv(gene_exp_filename,delimiter="\t")
+  IDs = expression_values.iloc[:,0].apply(lambda x: '"' + x + '"')
+  adjusted_indices = [x+1 for x in indices]
+  expression_values = expression_values.iloc[:,adjusted_indices]
+  flat_mri_data_of_interest = [flat_mri_data[i] for i in indices]
+  correlate = lambda x: R_VALUE_FUNCTION(x,flat_mri_data_of_interest)
+  correlations = expression_values.apply(correlate,axis=1)
+  correlations = pandas.concat([IDs,correlations],axis=1).sort_values(0,ascending=False)
+  result=zip(list(correlations.iloc[:,0].values),list(correlations.iloc[:,1].values))
+  
   t2 = time.clock()
 
   print "Correlation execution time was", t2-t1
@@ -245,10 +231,9 @@ def main():
         print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o)
-        gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
+        gene_exp_filename = os.path.join(config.expressionFolder,files[i])       
+        correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices) 
 
-        correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_fh,indices=indices) 
-        gene_exp_fh.close()
       
         print "Top gene:" + str(correlated_data[1])
 
