@@ -9,10 +9,12 @@ import scipy
 import time
 import pickle
 import config
-import inspect, os
+import inspect
+import pdb
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
+import statsmodels.sandbox.stats.multicomp
 import numpy as np
 import pandas
 
@@ -181,9 +183,15 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
 def fisher_p(p_vector):
   return scipy.stats.combine_pvalues(p_vector)[1]
 
-def visualize():
-  pass
+def one_sided(correlations):
+  """
+  Modifies a list of correlation / p-value pairs IN-PLACE.
 
+  Takes p-values from two-sided to one-sided
+  """
+  for i in irange(len(correlations)):
+    if correlations[i][0] < 0:
+      correlations[i][1] = 1 - correlations[i][1] 
 
 def main():
   correlated_data = None
@@ -207,22 +215,19 @@ def main():
   print data_array.shape
   # i is the brain
   for i in range(len(brain_ids)):
+
     MRI_data = load_nifti_data(config.basePathMRI + brain_ids[i])
-    #MRI_data = MRI_data[0]
     gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
     gene_exp_fh.close()
-    flat_t1t2_ratio_data = flatten_mri_data(MRI_data[2],coords)  
 
     for j in range(len(MRI_data)):
-      measure = MRI_data[j]
- 
+     
       if MRI_data_labels[j] not in MRI_of_interest:
-          # SKIP THIS LABEL
           print "SKIPPING {} FOR BRAIN {}".format(MRI_data_labels[j],brain_ids[i])
           continue
 
-      print 'Flattening MRI data.'
+      measure = MRI_data[j]
       flat_mri_data = flatten_mri_data(measure,coords)
 
       for k in range(len(regions_of_interest)):
@@ -231,36 +236,40 @@ def main():
         print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o)
-        gene_exp_filename = os.path.join(config.expressionFolder,files[i])       
+        gene_exp_filename = os.path.join(config.expressionFolder,files[i])
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices) 
 
+        pdb.set_trace()
       
         print "Top gene:" + str(correlated_data[1])
 
-        ranked_list_of_gene_names = map(lambda y: (y[0]), sorted(correlated_data, key=lambda x: x[1].pvalue))
+        # Get all columns in order (sorted alphabetically by gene)
+
         data_in_order = map(lambda y: (y[0],y[1]), sorted(correlated_data, key=lambda x: x[0] ))
-        
         gene_names_in_order = map(lambda y: y[0], data_in_order)
         p_values_in_order = map(lambda y: y[1].pvalue, data_in_order)
         correlations_in_order = map(lambda y: y[1].correlation, data_in_order)
+        adj_p_values_in_order = statsmodels.sandbox.stats.multicomp.multipletests(p_values_in_order,method="fdr_bh")[1]
 
         for ind in range(len(gene_names_in_order)):
           data_array[j][k][ind][0] = ind 
           data_array[j][k][ind][i+1+len(files)] = str(p_values_in_order[ind])
           data_array[j][k][ind][i+1] = str(correlations_in_order[ind])
-          data_array[j][k][ind][i+1+2*len(files)] = str( p_values_in_order[ind] * len(gene_names_in_order) / (ranked_list_of_gene_names.index(gene_names_in_order[ind]) + 1))        
+          data_array[j][k][ind][i+1+2*len(files)] = str(adj_p_values_in_order[ind]) 
 
   print("Writing Files")
   for j in range(3):
-    for k in range(len(regions_of_interest)):
+    for k in range(len(regions_of_interest)):     
       label = MRI_data_labels[j] + "." + regions_of_interest[k][0]
+      
       with open(config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
         data = data_array[j][k]
         f.write(",correlation,,,,,,raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
         f.write("ID," + (",").join(brain_ids) + "," + ",".join(brain_ids)+ "\n")
+
         for gene_entry in data:
           gene_name = gene_names_in_order[int(gene_entry[0])]
-          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[7:12])) + "," + str(fisher_p(gene_entry[13:18])) + "\n")
+          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[7:13])) + "," + str(fisher_p(gene_entry[13:19])) + "\n")
 
   t2 = time.clock()
 
