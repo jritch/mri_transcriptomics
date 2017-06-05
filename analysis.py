@@ -183,33 +183,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
 def fisher_p(p_vector):
   return scipy.stats.combine_pvalues(p_vector)[1]
 
-def one_sided(correlations):
-  """
-  Modifies a list of correlation / p-value pairs IN-PLACE.
-
-  Takes p-values from two-sided to one-sided
-  """
-  for i in irange(len(correlations)):
-    if correlations[i][0] < 0:
-      correlations[i][1] = 1 - correlations[i][1] 
-
-def main():
-  correlated_data = None
-  t1 = time.clock()
-
-  o = Ontology(config.ontologyFolder + "Ontology.csv")
-
-  print 'Getting coordinates from gene expression file.'
-
-  files = config.expression_filenames
-  
-  brain_ids = [f.split(".")[0] for f in files]
-  
-  regions_of_interest = [('cortex',4008)]
-  
-  MRI_data_labels = ["T1","T2","T1T2Ratio"]
-  MRI_of_interest = ["T1T2Ratio"]
-
+def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_interest):
   data_array =  np.zeros((3,4,29131,3*6+1))
 
   print data_array.shape
@@ -271,10 +245,29 @@ def main():
           gene_name = gene_names_in_order[int(gene_entry[0])]
           f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[7:13])) + "," + str(fisher_p(gene_entry[13:19])) + "\n")
 
+
+def main():
+  correlated_data = None
+  t1 = time.clock()
+
+  o = Ontology(config.ontologyFolder + "Ontology.csv")
+
+  print 'Getting coordinates from gene expression file.'
+
+  files = config.expression_filenames
+  
+  brain_ids = [f.split(".")[0] for f in files]
+  
+  regions_of_interest = [('cortex',4008)]
+  
+  MRI_data_labels = ["T1","T2","T1T2Ratio"]
+  MRI_of_interest = ["T1T2Ratio"]
+
+  analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_interest)
+
   t2 = time.clock()
 
   print "Total execution time was",t2-t1
-
 
 if __name__ == '__main__':
   main()
