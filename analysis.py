@@ -153,7 +153,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
 
   Correlates(using the pearson correlation coefficient) the expression data for each gene with the one measure of MRI intensity.
 
-  Returns a list of the top ten genes by (genes with p value > 0.05 are not considered)
+  Returns a list of genes
 
   Using the file handle and processing one line at a time allows us to avoid loading the entire gene expression text file into memory.
 
@@ -213,7 +213,7 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
         gene_exp_filename = os.path.join(config.expressionFolder,files[i])
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices) 
 
-        pdb.set_trace()
+        #pdb.set_trace()
       
         print "Top gene:" + str(correlated_data[1])
 
