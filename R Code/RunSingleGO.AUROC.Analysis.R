@@ -10,12 +10,14 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
+#Sys.info()["nodename"]
+
 if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
-  if(Sys.info()['sysname'] == "Darwin") {
+  if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
     filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
   } else {
     filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
@@ -204,7 +206,7 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
   genesOfInterest$term <- shortName
   
   #already a human gene list
-  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "House keeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
+  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
     print(" converting to mouse")

@@ -56,7 +56,6 @@ def check_probes():
   #pdb.set_trace()
 
 def main():
-
   probes = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/Probes.csv")
   annotations = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/SampleAnnot.csv")
   exp_data = pandas.read_csv("~/Documents/microarray_data/normalized_microarray_donor10021/MicroarrayExpression.csv", header=None)

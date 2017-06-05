@@ -29,7 +29,7 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     return [numerical_entries[i] for i in indices]
 
 def main():
-  gene_name =  "CAPN6"
+  gene_name =  "NOL4"
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
   regionID = 4008 #cortex
   region_name = "cortex"
@@ -50,7 +50,9 @@ def main():
   filenames = [baseProjectFolder + "single_gene_data_avg/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
   
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
-
+  
+  cortex_divisions = [str(x) for x in o.hierarchy.get(4008)]
+  
   num_brains = len(brain_ids)
   for i in range(num_brains):
 
@@ -73,13 +75,23 @@ def main():
         results[2,:] = single_gene_data
         coord_subset = [coords[j] for j in indices]
 
+
+
         with open(filenames[i], "w") as f:
-          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name\n")
+          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name,cortical_division\n")
           for j in range(len(indices)):
             str_coords = [str(coord) for coord in coord_subset[j]]
             coord_string = "(" + ",".join(str_coords) + ")" 
             results[3,j] = coord_to_region_map[coord_string]
-            f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(int(results[3,j])) + ",\""+ o.names[results[3,j]] + "\"\n")
+            current_region_ID = int(results[3,j])
+            #get the main cortical lobe
+            enclosing_regions = [str(x) for x in o.get_enclosing_regions(current_region_ID)]
+            cortex_subdivision = set(enclosing_regions).intersection(cortex_divisions)
+            cortex_subdivision= next(iter(cortex_subdivision))
+            cortex_subdivision = o.names[int(cortex_subdivision)]
+            f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(current_region_ID) + ",\""+ o.names[current_region_ID] + "\", " + cortex_subdivision + "\n")
+            #f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(int(results[3,j])) + ",\""+ o.names[results[3,j]] + "\"\n")
+
 
 
 if __name__ == '__main__':
