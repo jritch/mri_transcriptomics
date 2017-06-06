@@ -95,7 +95,7 @@ def main():
   data.columns.values[0] = None
   
   #print small csv for test purposes
-  data.loc[0:10].to_csv("~/test.csv",sep="\t",index=False)
+  data.to_csv("~/test_full.csv",sep="\t",index=False)
 
   #print full csv (takes a long time)
   #data.to_csv("~/test.csv",sep="\t",index=False)

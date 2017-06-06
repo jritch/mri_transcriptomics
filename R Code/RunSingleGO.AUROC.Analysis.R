@@ -51,14 +51,25 @@ geneStatistics <- read_csv(filename)
 geneStatistics <- geneStatistics %>% filter(X1 != "ID")
 
 geneStatistics <- rowwise(geneStatistics) %>% mutate(medianCorrelation = median(c(correlation,X3,X4,X5,X6,X7)))
+<<<<<<< HEAD
 geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
+=======
+
+geneStatistics <- rowwise(geneStatistics) %>% mutate(adj_p = sumlog(c(adjusted,X15,X16,X17,X18,X19))$p)
+                          
+geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="BH")
+
+>>>>>>> branch 'master' of https://github.com/jritch/mri_transcriptomics.git
 #####################################
 cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
 plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
 
 #comparison
 plot(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p)
+
 plot(geneStatistics$raw_meta_p, geneStatistics$adjustAgain)
+
+plot(geneStatistics$raw_meta_p, geneStatistics$adj_p)
 
 cor.test(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p,m='s')
 cor.test(geneStatistics$raw_meta_p, geneStatistics$adjustAgain,m='s')

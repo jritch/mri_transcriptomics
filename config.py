@@ -15,7 +15,7 @@ elif platform.node() =='RES-CO2T6CS3GTFL.local':
     expressionFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionWithBrainID/"
 
     #outputCSVFolder = "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/"
-    outputCSVFolder = "/Users/jritchie/data/garbage"
+    outputCSVFolder = "/Users/jritchie/data/garbage2/"
     basePathMRI = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor"
 
 # Leon's CAMH Laptop
@@ -31,8 +31,8 @@ else:
 
 
 expression_filenames = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
-                        "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
+                       "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
                         "14380.matrix.regionID.MRI(xyz).29131 x 529.txt",
                         "15496.matrix.regionID.MRI(xyz).29131 x 470.txt",
                         "15697.matrix.regionID.MRI(xyz).29131 x 501.txt",
-                        "9861.matrix.regionID.MRI(xyz).29131 x 946.txt"]
+                        "9861.matrix.regionID.MRI(xyz).29131 x 946.txt"] 
