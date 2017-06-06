@@ -90,7 +90,6 @@ def main():
             cortex_subdivision= next(iter(cortex_subdivision))
             cortex_subdivision = o.names[int(cortex_subdivision)]
             f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(current_region_ID) + ",\""+ o.names[current_region_ID] + "\", " + cortex_subdivision + "\n")
-            #f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(int(results[3,j])) + ",\""+ o.names[results[3,j]] + "\"\n")
 
 
 
