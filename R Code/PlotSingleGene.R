@@ -48,4 +48,9 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
   facet_wrap(~ donor, scales="free")+ theme_bw()
 
-
+unique(allDonors$donor)
+singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
+singleCorrelationSummary <- correlationSummary%>% filter(donor=="Donor 9861" )
+ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
+  ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="Cortical Division") + 
+  geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw()
