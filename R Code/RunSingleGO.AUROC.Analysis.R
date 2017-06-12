@@ -134,8 +134,9 @@ head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select
 head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
 source("./R Code/ROCPlots.R")
-plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0045095", "GO:0000502", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO)
+plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9))) #add labels = c("A", "B"), for manuscript
+plot(plots$rasterPlot)
 
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
 #remove synonyms/duplicate results - use the first name of a match
