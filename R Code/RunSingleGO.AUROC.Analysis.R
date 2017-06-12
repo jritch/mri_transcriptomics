@@ -1,5 +1,5 @@
 library(optparse)
-#todo - GO synonyms (have done in past - Yohan code?)
+#todo - Leon is using GOSOURCEDATE: 20160305 (type GO.db to find out)
 
 #example call: Rscript RunSingleGO.AUROC.Analysis.R -f "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
 option_list = list(
@@ -37,7 +37,7 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-
+library(magrittr)
 library(homologene) #install via install_github('oganm/homologene')
 library(org.Hs.eg.db)
 library(AnnotationDbi)
@@ -120,11 +120,11 @@ if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume 
 }
 
 result <- tbl_df(tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T))
-(result %<>% group_by(U, N1, AUC, P.Value,adj.P.Val) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
+result %<>% rowwise() %>% mutate(aspect = Ontology(ID))
+(result %<>% group_by(U, N1, AUC, P.Value,adj.P.Val) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), aspect= first(aspect), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
 result %<>% arrange(adj.P.Val)
 result$rank <- 1:nrow(result)
 result %<>% dplyr::select(MainTitle, N1, AUC, P.Value, adj.P.Val, everything()) %>% arrange(adj.P.Val)
-result %<>% rowwise() %>% mutate(aspect = Ontology(ID))
 
 result1 <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=20)
 resutl2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
@@ -134,7 +134,7 @@ head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select
 head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
 source("./R Code/ROCPlots.R")
-plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0045095", "GO:0000502", "GO:0060076", "GO:0044309","GO:0007422"), geneSetsGO)
+plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0045095", "GO:0000502", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9))) #add labels = c("A", "B"), for manuscript
 
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
