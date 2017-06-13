@@ -5,7 +5,7 @@ library(plotROC)
 
 #input 
 #sorted genes, gene ID names, tmod object for getting genes <-> group
-createPlots <- function(sortedGenes, groupIDs, tmodSets) {
+createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   
   ranking <- tbl_df(data.frame(gene_symbol = rev(sortedGenes), rank = 1: length(sortedGenes), stringsAsFactors = F))
   geneToClass <- NULL
