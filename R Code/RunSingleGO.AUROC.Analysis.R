@@ -13,9 +13,12 @@ opt = parse_args(opt_parser);
 #Sys.info()["nodename"]
 
 if (interactive()) { #set the variables manually if in Rstudio, for testing
+  
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
+  
+  filename <- "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
   
   if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
     filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex.gene_list.csv"
@@ -134,8 +137,9 @@ head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select
 head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
 source("./R Code/ROCPlots.R")
+
 plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9))) #add labels = c("A", "B"), for manuscript
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9)),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 plot(plots$rasterPlot)
 
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
@@ -145,7 +149,7 @@ myelinResult$adj.P.Val <- p.adjust(myelinResult$P.Value, method="fdr")
 myelinResult
 
 plots <- createPlots(sortedGenes, c("GO:0042552", "GO:0043218", "GO:0022010", "GO:0043209"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
@@ -155,8 +159,8 @@ plots <- createPlots(sortedGenes, c("GO:0042552", "GO:0043218", "GO:0022010", "G
 
 loadPhenocarta <- function(taxon, geneBackground) {
   #guess column types from the whole dataset, basically
-  phenocarta <- read_tsv("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
-  #phenocarta <- read_tsv("C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  #phenocarta <- read_tsv("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  phenocarta <- read_tsv("/Users/jritchie/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
   phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
   phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
   geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
@@ -177,7 +181,7 @@ head(result, n=20)
 #write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
 
 plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 
 #looking at one result - epilepsy
 #filter(geneStatistics, geneSymbol %in% geneSets["DOID_1932"]$GENES$ID)
@@ -192,7 +196,7 @@ modules2genes <- list()
 if(Sys.info()['sysname'] == "Darwin") {
   otherGeneListsFolder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/"
 } else {
-  otherGeneListsFolder <- "C://Users/Jacob/Google Drive/4th Year/Thesis/other gene lists/"
+  otherGeneListsFolder <- "/Users/jritchie/Google Drive/4th Year/Thesis/other gene lists/"
 }
 
 for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full.names = T)) {
@@ -207,13 +211,31 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
 
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
+  
+  #if (grepl("Zeisel.oligo",shortName)) {
+   # shortName <- "Oligodendrocytes"
+  #}
+  #if (grepl("Zeisel.Endothelial",shortName)) {
+   # shortName <- "Endothelial Cells"
+  #}  
+  #if (grepl("Zeisel.Neuron.interneuron",shortName)) {
+   # shortName <- "Interneurons"
+  #}
+  #if (grepl("Zeisel.Neuron.CA1.pryamidal",shortName)) {
+   # shortName <- "CA1 Pyramidal Neurons"
+  #}
+  
+  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.CA1.pryamidal"] <- "CA1 Pyramidal Neurons"
+  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Endothelial"] <- "Endothelial Cells"
+  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.interneuron"] <- "Interneurons"  
+
   genesOfInterest$term <- shortName
   
   #already a human gene list
   if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
-    print(" converting to mouse")
+    print(" converting from mouse to human")
     modules2genes[shortName] <- list(mouse2human(genesOfInterest$V1)$humanGene)
   }
 
@@ -236,13 +258,26 @@ zeisel
 
 
 #print out the genes for the oligo list
+#colnames(geneSets)
+#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.oligo"] <- "Oligodendrocytes"
+#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.CA1.pryamidal"] <- "CA1 Pyramidal Neurons"
+#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Endothelial"] <- "Endothelial Cells"
+#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.interneuron"] <- "Interneurons"
+
+#geneSets$MODULES2GENES$Oligodendrocytes <- geneSets$MODULES2GENES$Zeisel.oligo
+#geneSets$MODULES2GENES["CA1 Pyramidal Neurons"] <-geneSets$MODULES2GENES$Zeisel.Neuron.CA1.pryamidal
+#geneSets$MODULES2GENES["Endothelial Cells"] <-geneSets$MODULES2GENES$Zeisel.Endothelial
+#geneSets$MODULES2GENES$Interneurons <-geneSets$MODULES2GENES$Zeisel.Neuron.interneuron
+
 filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)
 
-plots <- createPlots(sortedGenes, c("Zeisel.oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
+plots <- createPlots(sortedGenes, c("Zeisel.oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
+#plots <- createPlots(sortedGenes, , geneSets)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+
 
 plots <- createPlots(sortedGenes, darm$ID, geneSets)
-plots$rasterPlot
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
 
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 

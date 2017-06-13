@@ -4,12 +4,12 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "NOL4"
+geneOfInterest <- "FLJ23867"
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
 } else {
-  filename <- ""
+  filename <- "/Users/jritchie/git-repos/mri_transcriptomics/single_gene_data_avg/"
 }
 
 
