@@ -4,7 +4,8 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "FLJ23867"
+geneOfInterest <- "FLJ23867" #
+
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
@@ -43,6 +44,11 @@ if ( median(correlationSummary$cor) < 0) {
   vjustLegend=1
 }
 
+if(geneOfInterest == "CAT") {
+  yLegend = -Inf
+  vjustLegend=0
+}
+
 ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="Cortical Division") + 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
@@ -51,9 +57,11 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
 unique(allDonors$donor)
 singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
 singleCorrelationSummary <- correlationSummary%>% filter(donor=="Donor 9861" )
+
 ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
-  ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="Cortical Division") + 
-  geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw()
+  ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="") + 
+  geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
+  theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) #guides(color=FALSE) + theme(aspect.ratio=1) + 
 
 
 
@@ -62,5 +70,5 @@ ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6
 donor9861 <- allDonors %>% filter(donor == "Donor 9861")
 ggplot(donor9861, aes(donor, factor(regionID))) +
   geom_tile(aes(fill = MRI_Intensity), color="black") + theme_void() +
-  scale_fill_gradientn(name="", colors=c("#000000", "#FFFFFF"), guide=F)  + theme(plot.margin = unit(c(.1,.1,.1,.1), "cm"))
+  scale_fill_gradientn(name="", colors=c("#000000", "#FFFFFF"), guide=F)  + theme(plot.margin = unit(c(1,1,1,1), "cm"))
 #save as 3x100 PDF in rstudio   
