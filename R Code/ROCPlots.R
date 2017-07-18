@@ -25,13 +25,21 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   #forOrder %<>% filter(ID %in% groupIDs ) %>% arrange(desc(sign(AUC-0.5)* P.Value))
   geneToClassAUC$group <- factor(geneToClassAUC$group, levels= as.character(forOrder$Title))
   
-  (AUCPlot <- ggplot(geneToClassAUC, aes(d = present, m = rank, color=group)) + ylab("") + 
+  throwawayAUC <-geneToClassAUC 
+  
+  if (length(customNames) > 0){
+    levels(throwawayAUC$group) <- customNames
+  }
+  
+  (AUCPlot <- ggplot(throwawayAUC, aes(d = present, m = rank, color=group)) + ylab("") + 
     geom_roc(n.cuts=0) + 
     style_roc() + coord_cartesian(expand=F) +
     theme(legend.position = c(1,0), legend.justification = c(1, 0), legend.background= element_rect(fill = "transparent", colour = "transparent"), plot.margin=unit(c(.5,.5,.5,.5),"cm")) + 
     labs(color='Gene Group')  + 
     #facet_grid(dummy ~ ., switch="y")  + ylab("") +
     theme(strip.background = element_blank(), strip.placement = "inside", strip.text = element_blank()) )
+  
+  #geneToClassAUC$group <- save
 
   forOrder$labelWithAUC <- paste0(tmodSets$MODULES[groupID,]$Title, " (AUC=", signif(forOrder[groupID, "AUC"],digits=2), ")")
   forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUC=", signif(AUC,digits=2), ")")) %>% dplyr::select(group = Title, labelWithAUC)
@@ -42,16 +50,23 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   geneToClassAUC$group <- factor(geneToClassAUC$group, levels= as.character(forOrder$labelWithAUC))
 
   geneToClassAUC$rank <- -1*geneToClassAUC$rank
-  (rasterPlot <- ggplot(geneToClassAUC, aes(x = rank, y = present, color= group)) + 
+ 
+  throwawayAUC <-geneToClassAUC 
+ 
+   if (length(customNames) > 0){
+    levels(throwawayAUC$group) <- customNames
+  }
+  
+  (rasterPlot <- ggplot(throwawayAUC, aes(x = rank, y = present, color= group)) + 
     geom_blank() + 
-    geom_vline(data = filter(geneToClassAUC, present == 1), aes(xintercept=rank, color=group)) + #,color="black") + #, size=0.07) + 
+    geom_vline(data = filter(throwawayAUC, present == 1), aes(xintercept=rank, color=group)) + #,color="black") + #, size=0.07) + 
     theme_bw()+coord_cartesian(expand=F) +
     ylab("Transcriptomic cell type") + 
     facet_wrap(~group, strip.position="top",ncol=1) + #, switch = "both"
     theme(strip.background = element_blank(), strip.placement = "inside") + #, strip.text.y = element_text(angle = 180)) +
     theme(axis.title.y = element_blank(),  axis.text.y=element_blank(), axis.ticks.y=element_blank(),axis.ticks.x=element_blank()) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + guides(color=FALSE) +
-    scale_x_continuous(name = paste0("T1-/T2-w association gene ranking (",length(unique(geneToClassAUC$gene_symbol))," genes)"), breaks= c(min(geneToClassAUC$rank)+700, max(geneToClassAUC$rank)-700), labels = c("Positive correlation", "Negative correlation")))
+    scale_x_continuous(name = paste0("T1-/T2-w association gene ranking (",length(unique(throwawayAUC$gene_symbol))," genes)"), breaks= c(min(throwawayAUC$rank)+700, max(throwawayAUC$rank)-700), labels = c("Positive correlation", "Negative correlation")))
   returnPlots = list()
   returnPlots[["AUCPlot"]] <- AUCPlot
   returnPlots[["rasterPlot"]] <- rasterPlot
