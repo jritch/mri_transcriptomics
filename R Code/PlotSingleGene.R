@@ -6,13 +6,11 @@ library(dplyr)
 allDonors <- NULL
 geneOfInterest <- "FLJ23867" #
 
-
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
 } else {
-  filename <- "/Users/jritchie/git-repos/mri_transcriptomics/single_gene_data_avg/"
+  single_gene_folder <- "/Users/jritchie/git-repos/mri_transcriptomics/single_gene_data_avg/"
 }
-
 
 for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]"), full.names = T)) {
   print(file)
