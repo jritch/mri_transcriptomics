@@ -12,12 +12,23 @@ if 'Windows-10' in platform.platform():
 elif platform.node() =='RES-CO2T6CS3GTFL.local':
     baseAllenFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/"
     ontologyFolder = baseAllenFolder + "../"
-    expressionFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionWithBrainID/"
+    #expressionFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionWithBrainID/"
 
+    expressionFolder= "/Users/jritchie/git-repos/mri_transcriptomics/python_processed_expression_data"
+
+    microarrayFolder = "/Users/jritchie/Documents/microarray_data"
     #outputCSVFolder = "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/"
     outputCSVFolder = "/Users/jritchie/data/garbage2/"
+    outputCSVFolder = "/Users/jritchie/data/garbage3/"
+    outputCSVFolder = "/Users/jritchie/data/garbage4/"
+
     basePathMRI = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor"
 
+    '''
+    expressionFolder
+    basePathMRI =
+
+    '''
 # Leon's CAMH Laptop
 elif platform.node() =='RES-C02RF0T2.local':
     baseAllenFolder = "/Users/lfrench/Desktop/data/Allen/HBA/"
