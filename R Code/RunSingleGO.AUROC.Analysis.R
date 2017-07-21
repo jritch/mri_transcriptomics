@@ -7,6 +7,7 @@ option_list = list(
   #more options here...
 ); 
 
+
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
@@ -19,13 +20,23 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
   filename <- "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T2.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_stripped/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
+  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1.full_brain.gene_list.csv"
+  
+  filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex.gene_list.csv"
+  output_dir <- "/Users/jritchie/data/r_code_out"
   
   if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
     filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex.gene_list.csv"
   } else {
-    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
-    filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
+    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
+    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
+    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
   }
   
 } else if (!is.null(opt$filename)) {
@@ -34,6 +45,9 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   print_help(opt_parser)
   stop()
 }
+
+cat(paste("USING INPUT FILE:",filename))
+cat(paste("WRITING OUTPUT FILES TO:",output_dir))
 
 library(cowplot)
 library(readr)
@@ -48,6 +62,7 @@ library(annotate)
 library(GO.db)
 library(tmod)
 
+source("./R Code/Utils.R")
 
 #needs direction statistic
 geneStatistics <- read_csv(filename) 
@@ -59,7 +74,6 @@ geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
 geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="BH")
 
 geneStatistics <- rowwise(geneStatistics) %>% mutate(adj_p = sumlog(c(adjusted,X15,X16,X17,X18,X19))$p)
-
 
 cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
 plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
@@ -73,7 +87,6 @@ plot(geneStatistics$raw_meta_p, geneStatistics$adj_p)
 
 cor.test(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p,m='s')
 cor.test(geneStatistics$raw_meta_p, geneStatistics$adjustAgain,m='s')
-
 
 geneStatistics <- geneStatistics %>% dplyr::select(geneSymbol = X1, raw_meta_p, medianCorrelation) 
 #filter custom and unmapped probes
@@ -135,22 +148,23 @@ resutl2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
+filter(result,grepl("myelin",MainTitle))
 
 source("./R Code/ROCPlots.R")
 
-plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9)),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
+plot(plots$rasterPlot)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 plot(plots$rasterPlot)
 
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
 #remove synonyms/duplicate results - use the first name of a match
 myelinResult %<>% group_by(U, N1, AUC, P.Value) %>% dplyr::select(rank, MainTitle, ID, everything()) %>% arrange(P.Value)
-myelinResult$adj.P.Val <- p.adjust(myelinResult$P.Value, method="fdr")
+myelinResult$adj.P.Val <- p.adjust(myelinResult$P.Value, method="BH")
 myelinResult
 
 plots <- createPlots(sortedGenes, c("GO:0042552", "GO:0043218", "GO:0022010", "GO:0043209"), geneSetsGO)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
@@ -212,23 +226,6 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
   
-  #if (grepl("Zeisel.oligo",shortName)) {
-   # shortName <- "Oligodendrocytes"
-  #}
-  #if (grepl("Zeisel.Endothelial",shortName)) {
-   # shortName <- "Endothelial Cells"
-  #}  
-  #if (grepl("Zeisel.Neuron.interneuron",shortName)) {
-   # shortName <- "Interneurons"
-  #}
-  #if (grepl("Zeisel.Neuron.CA1.pryamidal",shortName)) {
-   # shortName <- "CA1 Pyramidal Neurons"
-  #}
-  
-  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.CA1.pryamidal"] <- "CA1 Pyramidal Neurons"
-  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Endothelial"] <- "Endothelial Cells"
-  levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.interneuron"] <- "Interneurons"  
-
   genesOfInterest$term <- shortName
   
   #already a human gene list
@@ -243,7 +240,6 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
 }
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
-
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
 
@@ -256,32 +252,23 @@ zeisel <- filter(result, grepl("Zeisel", Title))
 zeisel$adj.P.Val <- p.adjust(zeisel$P.Value)
 zeisel
 
-
 #print out the genes for the oligo list
 #colnames(geneSets)
-#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.oligo"] <- "Oligodendrocytes"
-#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.CA1.pryamidal"] <- "CA1 Pyramidal Neurons"
-#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Endothelial"] <- "Endothelial Cells"
-#levels(geneSets$MODULES$ID)[levels(geneSets$MODULES$ID)=="Zeisel.Neuron.interneuron"] <- "Interneurons"
-
-#geneSets$MODULES2GENES$Oligodendrocytes <- geneSets$MODULES2GENES$Zeisel.oligo
-#geneSets$MODULES2GENES["CA1 Pyramidal Neurons"] <-geneSets$MODULES2GENES$Zeisel.Neuron.CA1.pryamidal
-#geneSets$MODULES2GENES["Endothelial Cells"] <-geneSets$MODULES2GENES$Zeisel.Endothelial
-#geneSets$MODULES2GENES$Interneurons <-geneSets$MODULES2GENES$Zeisel.Neuron.interneuron
 
 filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)
 
 plots <- createPlots(sortedGenes, c("Zeisel.oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
-#plots <- createPlots(sortedGenes, , geneSets)
+
+#plots <- createPlots(sortedGenes, , geneSets)=c())
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-
-
+  
 plots <- createPlots(sortedGenes, darm$ID, geneSets)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
 
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 
 #write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
+
 
 
 
