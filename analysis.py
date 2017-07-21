@@ -23,7 +23,6 @@ from ontology import *
 print inspect.getfile(inspect.currentframe()) # script filename (usually with path)
 baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" # script directory
 
-
 print "Base Allen folder:" + config.baseAllenFolder
 print "Base script folder:" + baseProjectFolder
 
@@ -83,9 +82,11 @@ def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
 
   return coords,coord_to_region_map
 
-def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology):
+def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_exclude=None):
   '''
   Returns the list of all coordinates corresponding to a regionID (including all its child regions)
+
+  to_exclude is an optional parameter containing a regionID to exlude from the list
   '''
   regionIDs = ontology.get_all_regionIDs(regionID)
   coords_list = []
@@ -93,6 +94,10 @@ def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology):
     for k,v in coord_to_region_map.iteritems():
       if v == regionID_iter:
         coords_list.append(k)
+  if to_exclude:
+    excluded_coords = get_coords_from_region_id(to_exclude,coords,coord_to_region_map,ontology)
+    return [x for x in coords_list if x not in excluded_coords] 
+
   return coords_list
 
 
@@ -138,9 +143,9 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
   print all_intensities
   return sorted(rank,key=lambda x: x[1],reverse=True)
 
-def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology):
+def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude=None):
   flat_coords_list = []
-  coords_list = get_coords_from_region_id(ID,coords,coord_to_region_map,ontology)
+  coords_list = get_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude=to_exclude)
   for coord in coords_list:
     flat_coords_list.append(coords.index(eval(coord)))
   return flat_coords_list
@@ -209,7 +214,7 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
         label = brain_ids[i] + "." + MRI_data_labels[j] + "." + regions_of_interest[k][0]
         print 'Correlating MRI and gene expression data for ' + label
 
-        indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o)
+        indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o,regions_of_interest[k][2])
         gene_exp_filename = os.path.join(config.expressionFolder,files[i])
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices) 
 
@@ -229,11 +234,25 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
           data_array[j][k][ind][0] = ind 
           data_array[j][k][ind][i+1+len(files)] = str(p_values_in_order[ind])
           data_array[j][k][ind][i+1] = str(correlations_in_order[ind])
-          data_array[j][k][ind][i+1+2*len(files)] = str(adj_p_values_in_order[ind]) 
+          data_array[j][k][ind][i+1+2*len(files)] = str(adj_p_values_in_order[ind])
+
+
+  meta_p_values = np.zeros((3,4,2,len(data_array[j][k])))
+  print("Calculating Meta-P Values")
+  for j in range(3):
+    for k in range(len(regions_of_interest)):
+      ind = 0
+      for gene_entry in data_array[j][k]:
+        meta_p_values[j][k][0][ind] = fisher_p(gene_entry[7:13])
+        ind +=1
+
+      meta_p_values[j][k][1] = statsmodels.sandbox.stats.multicomp.multipletests(meta_p_values[j][k][0],method="fdr_bh")[1]
 
   print("Writing Files")
   for j in range(3):
-    for k in range(len(regions_of_interest)):     
+    if MRI_data_labels[j] not in MRI_of_interest:
+      pass
+    for k in range(len(regions_of_interest)):
       label = MRI_data_labels[j] + "." + regions_of_interest[k][0]
       
       with open(config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
@@ -241,10 +260,11 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
         f.write(",correlation,,,,,,raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
         f.write("ID," + (",").join(brain_ids) + "," + ",".join(brain_ids)+ "\n")
 
+        ind=0
         for gene_entry in data:
           gene_name = gene_names_in_order[int(gene_entry[0])]
-          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(fisher_p(gene_entry[7:13])) + "," + str(fisher_p(gene_entry[13:19])) + "\n")
-
+          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "," + str(meta_p_values[j][k][0][ind]) + "," + str(meta_p_values[j][k][1][ind]) + "\n")
+          ind +=1
 
 def main():
   correlated_data = None
@@ -258,7 +278,10 @@ def main():
   
   brain_ids = [f.split(".")[0] for f in files]
   
-  regions_of_interest = [('cortex',4008)]
+
+  #### regions of interest are defined as a 3-tuple (name,ID, ID of excluded subregion)
+  regions_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219)]
+  #regions_of_interest = [('cortex',4008,None)]
   
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_of_interest = ["T1T2Ratio"]

@@ -29,10 +29,19 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     return [numerical_entries[i] for i in indices]
 
 def main():
-  gene_name =  "NOL4"
+  gene_name =  "FLJ23867"
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
+
   regionID = 4008 #cortex
   region_name = "cortex"
+  to_exclude = 4219
+
+  '''
+  regionID = 4008 #cortex
+  region_name = "cortex_excluding_limbic_lobe"
+	to_exclude = 4219
+
+	'''
 
   files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
            "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
@@ -47,6 +56,7 @@ def main():
   baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" 
   if not os.path.exists(baseProjectFolder + "single_gene_data_avg/"):
       os.mkdir(baseProjectFolder + "single_gene_data_avg/")
+
   filenames = [baseProjectFolder + "single_gene_data_avg/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
   
   o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
@@ -58,7 +68,7 @@ def main():
 
         gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
-        indices = analysis.get_flat_coords_from_region_id(regionID,coords,coord_to_region_map,o)
+        indices = analysis.get_flat_coords_from_region_id(regionID,coords,coord_to_region_map,o,to_exclude=to_exclude)
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
@@ -74,8 +84,6 @@ def main():
         results[1,:] = region_specific_flat_mri_data
         results[2,:] = single_gene_data
         coord_subset = [coords[j] for j in indices]
-
-
 
         with open(filenames[i], "w") as f:
           f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name,cortical_division\n")
