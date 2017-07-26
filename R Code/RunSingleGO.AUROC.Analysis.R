@@ -269,7 +269,53 @@ plots <- createPlots(sortedGenes, darm$ID, geneSets)
 
 #write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
 
+##################
+# Zeng et al. 
+################
 
+library(xlsx)
+library(dplyr)
+library(magrittr)
+library(tidyr)
 
+zengTable <- read.xlsx("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx", sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
 
+(zengTable <- tbl_df(zengTable))
 
+zengTable %<>% select(Gene.symbol, Cortical.marker..human.)
+backGroundGenes <- zengTable$Gene.symbol
+
+expandedZengTable <- zengTable %>% 
+  mutate(Cortical.marker..human. = strsplit(as.character(Cortical.marker..human.), "[/+]|( or )")) %>% 
+  unnest(Cortical.marker..human.)
+
+as.data.frame(expandedZengTable)
+
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("layer( )?","", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("[?]","", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("4c","4", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("5a","5", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("6b","6", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("([0-6])","layer \\1", Cortical.marker..human.))
+expandedZengTable %<>% filter(Cortical.marker..human. != 'others' & Cortical.marker..human. != "laminar")
+expandedZengTable %>% group_by(Cortical.marker..human.) %>% summarise(n())
+
+tmodNames <- data.frame()
+modules2genes <- list()
+
+for(geneSetName in unique(expandedZengTable$Cortical.marker..human.)) {
+  print(geneSetName)
+  
+  genesOfInterest <- filter(expandedZengTable, Cortical.marker..human. == geneSetName) %>% .$Gene.symbol
+  shortName <- geneSetName
+  
+  modules2genes[shortName] <- list(genesOfInterest)
+
+  tmodNames <- rbind(tmodNames, data.frame(ID=shortName, Title = shortName))
+}
+
+geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
+sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
+
+result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
+result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
