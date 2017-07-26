@@ -16,7 +16,7 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     entries = line.strip().split('\t') 
     numerical_entries = map(float,entries[1:])
     ID = entries[0]
-    if ID == gene_name:
+    if ID == gene_name or ID == gene_name.strip("\""):
        flag = 1
        break
     line = gene_exp_fh.readline()
