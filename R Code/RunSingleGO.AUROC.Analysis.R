@@ -18,19 +18,30 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1.cortex.gene_list.csv" #should be passed as an argument so python can call it
   filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
   
-  filename <- "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T2.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_stripped/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
-  filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1.full_brain.gene_list.csv"
+  #filename <- "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T2.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1T2Ratio.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_stripped/T1T2Ratio.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
+  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1.full_brain.gene_list.csv"
+  #filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.full_brain.gene_list.csv"
+  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex.gene_list.csv"
   
-  filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.full_brain.gene_list.csv"
-  filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  output_dir <- "/Users/jritchie/data/r_code_out"
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.full_brain.gene_list.csv"
+  
+  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.full_brain.gene_list.csv"
+  
+  output_dir <- "/Users/jritchie/data/bias_corrected_results"
+  output_dir <- "/Users/jritchie/data/results"
+  
   
   if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
     filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex.gene_list.csv"
@@ -187,7 +198,7 @@ myelinResult$AUC <- signif(myelinResult$AUC, digits=3)
 myelinResult
 
 output_filename <- paste(analysis_id,".myelin.enrichment.results.csv",sep="")
-writeTableWrapper(myelinResult,output_dir,output_filename,col_indices = c(2,4,5,7,9),col_names=c("GO group",    "gene count",    "AUROC",    "adjusted p. value", "aspect"))
+writeTableWrapper(myelinResult,output_dir,output_filename,col_indices = c(2,1,4,5,7,9),col_names=c("GO group",  "rank",  "gene count",    "AUROC",    "adjusted p. value", "aspect"))
 
 plots <- createPlots(sortedGenes, c("GO:0043217", "GO:0043218", "GO:0022010", "GO:0008366","GO:0042552"), geneSetsGO)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript

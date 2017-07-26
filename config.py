@@ -1,5 +1,7 @@
 import platform
 
+USE_BIAS_CORRECTED_IMAGES = True
+
 # Jacob's Personal Laptop
 if 'Windows-10' in platform.platform():
     baseAllenFolder = "C:/Users/Jacob/large_thesis_files/AllenHBAProcessedExpressionAndMRIs/"
@@ -18,11 +20,17 @@ elif platform.node() =='RES-CO2T6CS3GTFL.local':
 
     microarrayFolder = "/Users/jritchie/Documents/microarray_data"
     #outputCSVFolder = "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/"
-    outputCSVFolder = "/Users/jritchie/data/garbage2/"
-    outputCSVFolder = "/Users/jritchie/data/garbage3/"
-    outputCSVFolder = "/Users/jritchie/data/garbage4/"
 
-    basePathMRI = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor"
+    if USE_BIAS_CORRECTED_IMAGES:
+        outputCSVFolder = "/Users/jritchie/data/final_with_bias_correction/"
+    else:
+        outputCSVFolder = "/Users/jritchie/data/final/"
+
+    if USE_BIAS_CORRECTED_IMAGES:
+        basePathMRI = "/Users/jritchie/data/allen_bias_corrected/"
+    
+    else:
+        basePathMRI = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/normalized_microarray_donor"
 
     '''
     expressionFolder

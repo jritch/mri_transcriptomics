@@ -280,8 +280,9 @@ def main():
   
 
   #### regions of interest are defined as a 3-tuple (name,ID, ID of excluded subregion)
-  regions_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219)]
+  regions_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None)]
   #regions_of_interest = [('cortex',4008,None)]
+  #regions_of_interest = []
   
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_of_interest = ["T1T2Ratio"]
