@@ -29,7 +29,11 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     return [numerical_entries[i] for i in indices]
 
 def main():
-  gene_name =  "FLJ23867"
+
+  if len(sys.argv) > 1:
+    gene_name = sys.argv[1]
+  else:
+    gene_name =  "CAT"
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
 
   regionID = 4008 #cortex
