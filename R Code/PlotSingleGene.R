@@ -4,7 +4,7 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "FLJ23867" #
+geneOfInterest <- "CDR2L" #
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
@@ -47,10 +47,19 @@ if(geneOfInterest == "CAT") {
   vjustLegend=0
 }
 
+old_id <- c(14380,15496,15697,9861,10021,12876)
+old_id <- paste("Donor",as.character(old_id))
+new_id <- c("H0351.1012","H0351.1015","H0351.1016","H0351.2001","H0351.2002","H0351.1009")
+donor_id_mapping <- data.frame(old_id,new_id,stringsAsFactors = F)
+
+allDonors %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
+correlationSummary %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
+
+plot(NULL)
 ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="Cortical Division") + 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
-  facet_wrap(~ donor, scales="free")+ theme_bw()
+  facet_wrap(~ new_id, scales="free")+ theme_bw()
 
 unique(allDonors$donor)
 singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
@@ -60,8 +69,6 @@ ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6
   ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="") + 
   geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
   theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) #guides(color=FALSE) + theme(aspect.ratio=1) + 
-
-
 
 
 #for poster
