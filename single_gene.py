@@ -34,10 +34,12 @@ def main():
     gene_name = sys.argv[1]
   else:
     gene_name =  "CAT"
+
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
 
   regionID = 4008 #cortex
   region_name = "cortex"
+  #to_exclude = 0
   to_exclude = 4219
 
   '''
@@ -47,13 +49,9 @@ def main():
 
 	'''
 
-  files = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
-           "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
-           "14380.matrix.regionID.MRI(xyz).29131 x 529.txt",
-           "15496.matrix.regionID.MRI(xyz).29131 x 470.txt",
-           "15697.matrix.regionID.MRI(xyz).29131 x 501.txt",
-           "9861.matrix.regionID.MRI(xyz).29131 x 946.txt"]
-  
+
+  files = config.expression_filenames
+
   brain_ids = [f.split(".")[0] for f in files]
 
   header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
@@ -76,9 +74,8 @@ def main():
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
-        mri_data = analysis.load_nifti_data(config.baseAllenFolder + "normalized_microarray_donor" + brain_ids[i])[MRI_dimension]
-
-        use_voxel_avg = True
+        mri_data = analysis.load_nifti_data(config.basePathMRI + brain_ids[i])[MRI_dimension]
+        use_voxel_avg = False #True
         if use_voxel_avg:
             mri_data = voxel_averaged_mri.voxel_average(mri_data)
 
