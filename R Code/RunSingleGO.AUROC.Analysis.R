@@ -82,30 +82,38 @@ geneStatistics <- geneStatistics %>% filter(X1 != "ID")
 
 geneStatistics <- rowwise(geneStatistics) %>% mutate(medianCorrelation = median(c(correlation,X3,X4,X5,X6,X7)))
 
-geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
+#geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
 geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="BH")
 
 geneStatistics <- rowwise(geneStatistics) %>% mutate(adj_p = sumlog(c(adjusted,X15,X16,X17,X18,X19))$p)
 
-cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
-plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
+#cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
+#cor.test(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p,m='s')
+#cor.test(geneStatistics$raw_meta_p, geneStatistics$adjustAgain,m='s')
+#plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
+#plot(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p)
+#plot(geneStatistics$raw_meta_p, geneStatistics$adjustAgain)
 
-#comparison
-plot(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p)
-
-plot(geneStatistics$raw_meta_p, geneStatistics$adjustAgain)
-
-plot(geneStatistics$raw_meta_p, geneStatistics$adj_p)
-
-cor.test(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p,m='s')
-cor.test(geneStatistics$raw_meta_p, geneStatistics$adjustAgain,m='s')
-
-geneStatistics <- geneStatistics %>% dplyr::select(geneSymbol = X1, raw_meta_p, medianCorrelation) 
+geneStatistics <- geneStatistics %>% dplyr::select(geneSymbol = X1, raw_meta_p, adjusted_meta_p, medianCorrelation) 
 #filter custom and unmapped probes
 geneStatistics <- geneStatistics %>% filter(!grepl("A_", geneSymbol)) %>% filter(!grepl("CUST_", geneSymbol)) 
 
+print(paste(sum(geneStatistics$adjusted_meta_p < 0.05),"of",length(row.names(geneStatistics)),"genes survive BH multiple-test correction"))
+# Re-adjust after getting rid of other probes to see if it affects analysis.
+survive <- sum(p.adjust(geneStatistics$raw_meta_p, method="BH") < 0.05)
+print(paste(survive,"of",length(row.names(geneStatistics)),"genes survive BH multiple-test correction after getting rid of custom probes"))
+# Doesn't have much affect
+
+significantCorrelations <- geneStatistics %>% filter(adjusted_meta_p < 0.05) %>% dplyr::select(medianCorrelation)
+nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) %>% dplyr::select(medianCorrelation)
+plot_grid(qplot(significantCorrelations, geom="histogram",bins=80),
+          qplot(nonSignificantCorrelations, geom="histogram",bins=80),
+          qplot(geneStatistics$medianCorrelation, geom="histogram",bins=80),
+          qplot(geneStatistics$adjusted_meta_p, geom="histogram",bins=100) + geom_vline(xintercept=0.05, color="red"))
+
 #sort by median correlation
 geneStatistics <- arrange(geneStatistics, desc(medianCorrelation))
+
 #geneStatistics <- arrange(geneStatistics, raw_meta_p)
 
 #todo - check if this is in the right order
@@ -258,21 +266,13 @@ if(Sys.info()['user'] == "lfrench") {
 
 for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full.names = T)) {
   print(geneListFilename)
-  
-  for (keyword in c("Cajigas","Axon")) {
-    if (grepl(keyword,geneListFilename)) {
-      print("Skipping")
-      next()
-    }
-  }
-
   genesOfInterest <- read.csv(geneListFilename,header=F,stringsAsFactors = F)
   shortName <- gsub(".txt","",gsub(paste0(".*/"),"", geneListFilename))
   
   genesOfInterest$term <- shortName
   
   #already a human gene list
-  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
+  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "SCZ", geneListFilename) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
     print(" converting from mouse to human")
@@ -303,10 +303,19 @@ writeTableWrapper(result2,output_dir,output_filename,col_indices = c(1:3,5),col_
 
 darm <- filter(result, grepl("Darmanis", Title))
 darm$adj.P.Val <- p.adjust(darm$P.Value)
+#darm %>% filter(AUC < 0.5)
+darm %>% filter(AUC > 0.5)
 
 zeisel <- filter(result, grepl("Zeisel", Title))
 zeisel$adj.P.Val <- p.adjust(zeisel$P.Value)
-zeisel
+
+#zeisel %>% filter(AUC < 0.5)
+zeisel %>% filter(AUC > 0.5)
+
+neuro_expresso <- filter(result, grepl("Expresso", Title))
+neuro_expresso$adj.P.Val <- p.adjust(neuro_expresso$P.Value)
+#neuro_expresso %>% filter(AUC < 0.5)
+neuro_expresso %>% filter(AUC > 0.5)
 
 #print out the genes for the oligo list
 #colnames(geneSets)
@@ -334,7 +343,14 @@ library(dplyr)
 library(magrittr)
 library(tidyr)
 
-zengTable <- read.xlsx("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx", sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
+if(Sys.info()['user'] == "lfrench") {
+  zengPath <- "/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
+} else {
+  zengPath <- "/Users/jritchie/git-repos/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
+}
+
+
+zengTable <- read.xlsx(zengPath, sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
 
 (zengTable <- tbl_df(zengTable))
 
