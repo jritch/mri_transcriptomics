@@ -2,7 +2,7 @@ import nibabel
 import numpy
 import os
 import sys
-import csv 
+import csv
 import pprint
 import scipy
 
@@ -39,7 +39,7 @@ def load_nifti_data(directory):
   os.chdir(directory)
   NIFTI_FILES = ['T1.nii','T2.nii']
 
-  imgs = [] 
+  imgs = []
   data = []
   for f in NIFTI_FILES:
     img = nibabel.load(f)
@@ -70,7 +70,7 @@ def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
   '''
   Returns a list of coordinates (x,y,z tuples) and a dictionary mapping regionIDs to coords
   '''
-  header_line = gene_exp_fh.readline().strip() 
+  header_line = gene_exp_fh.readline().strip()
   coord_strings = header_line.split('\t')
   evaluate_strings = lambda x : eval(x.strip('"').split('|')[1].split(':')[1])
   coord_to_region_map = {}
@@ -96,7 +96,7 @@ def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_ex
         coords_list.append(k)
   if to_exclude:
     excluded_coords = get_coords_from_region_id(to_exclude,coords,coord_to_region_map,ontology)
-    return [x for x in coords_list if x not in excluded_coords] 
+    return [x for x in coords_list if x not in excluded_coords]
 
   return coords_list
 
@@ -104,14 +104,14 @@ def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_ex
 def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data):
   '''
   Returns a list of all brain regions from the ontology, ranked by the average T2/T1 MRI intensity at each
-  point 
+  point
   '''
   rank = []
   total = 0
   nonzero = 0
   all_intensities = []
   for ID,name in ontology.names.iteritems():
-    
+
     flag = 0
     if ID == 9299:
       flag = 1
@@ -123,9 +123,9 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
 
       if flag:
         print len(coords_list)
-      
+
       for coord in coords_list:
-        
+
         index = coords.index(eval(coord))
         intensity += float(flat_mri_data[index])
 
@@ -168,7 +168,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
   '''
 
   t1 = time.clock()
-  
+
   expression_values = pandas.read_csv(gene_exp_filename,delimiter="\t")
   IDs = expression_values.iloc[:,0].apply(lambda x: '"' + x + '"')
   adjusted_indices = [x+1 for x in indices]
@@ -178,7 +178,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
   correlations = expression_values.apply(correlate,axis=1)
   correlations = pandas.concat([IDs,correlations],axis=1).sort_values(0,ascending=False)
   result=zip(list(correlations.iloc[:,0].values),list(correlations.iloc[:,1].values))
-  
+  import pdb; pdb.set_trace()
   t2 = time.clock()
 
   print "Correlation execution time was", t2-t1
@@ -201,7 +201,7 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
     gene_exp_fh.close()
 
     for j in range(len(MRI_data)):
-     
+
       if MRI_data_labels[j] not in MRI_of_interest:
           print "SKIPPING {} FOR BRAIN {}".format(MRI_data_labels[j],brain_ids[i])
           continue
@@ -215,13 +215,13 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
         print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(regions_of_interest[k][1],coords,coord_to_region_map,o,regions_of_interest[k][2])
+        if regions_of_interest[k][0] == "hippocampus" and brain_ids[i] == 10021:
+            print len (indices)
+
         gene_exp_filename = os.path.join(config.expressionFolder,files[i])
-        correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices) 
+        correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices)
 
         #pdb.set_trace()
-      
-        print "Top gene:" + str(correlated_data[1])
-
         # Get all columns in order (sorted alphabetically by gene)
 
         data_in_order = map(lambda y: (y[0],y[1]), sorted(correlated_data, key=lambda x: x[0] ))
@@ -231,7 +231,7 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
         adj_p_values_in_order = statsmodels.sandbox.stats.multicomp.multipletests(p_values_in_order,method="fdr_bh")[1]
 
         for ind in range(len(gene_names_in_order)):
-          data_array[j][k][ind][0] = ind 
+          data_array[j][k][ind][0] = ind
           data_array[j][k][ind][i+1+len(files)] = str(p_values_in_order[ind])
           data_array[j][k][ind][i+1] = str(correlations_in_order[ind])
           data_array[j][k][ind][i+1+2*len(files)] = str(adj_p_values_in_order[ind])
@@ -254,7 +254,7 @@ def analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_intere
       pass
     for k in range(len(regions_of_interest)):
       label = MRI_data_labels[j] + "." + regions_of_interest[k][0]
-      
+
       with open(config.outputCSVFolder + label + ".gene_list.csv",'w') as f:
         data = data_array[j][k]
         f.write(",correlation,,,,,,raw,,,,,,adjusted,,,,,,raw_meta_p,adjusted_meta_p\n")
@@ -275,17 +275,17 @@ def main():
   print 'Getting coordinates from gene expression file.'
 
   files = config.expression_filenames
-  
+
   brain_ids = [f.split(".")[0] for f in files]
-  
+
 
   #### regions of interest are defined as a 3-tuple (name,ID, ID of excluded subregion)
-  regions_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None)]
+  regions_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None),("hippocampus",4005,None)]
   #regions_of_interest = [('cortex',4008,None)]
   #regions_of_interest = []
-  
+
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
-  MRI_of_interest = ["T1T2Ratio"]
+  MRI_of_interest = ["T1","T2","T1T2Ratio"]
 
   analysis(o,files,brain_ids,regions_of_interest,MRI_data_labels,MRI_of_interest)
 
