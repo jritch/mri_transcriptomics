@@ -17,6 +17,9 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   geneToClassAUC <- geneToClassAUC %>% mutate(present = if_else(is.na(present), 0, 1))
   
   #geneToClassAUC$dummy <- "True positive fraction" #to create a fake facet for lining things up - no longer needed
+  if (length(customNames) > 0){
+    names_df = data.frame(ID=groupIDs,customNames)
+  }
   
   #order groups by direction of AUC
   forOrder <- tmodUtest(c(sortedGenes), mset=tmodSets, qval = 1, filter = T)
@@ -28,7 +31,8 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   throwawayAUC <-geneToClassAUC 
   
   if (length(customNames) > 0){
-    levels(throwawayAUC$group) <- customNames
+    forOrder <- forOrder %>% left_join(names_df)
+    levels(throwawayAUC$group) <- forOrder$customNames
   }
   
   (AUCPlot <- ggplot(throwawayAUC, aes(d = present, m = rank, color=group)) + ylab("") + 
@@ -42,7 +46,15 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   #geneToClassAUC$group <- save
 
   forOrder$labelWithAUC <- paste0(tmodSets$MODULES[groupID,]$Title, " (AUC=", signif(forOrder[groupID, "AUC"],digits=2), ")")
-  forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUC=", signif(AUC,digits=2), ")")) %>% dplyr::select(group = Title, labelWithAUC)
+
+  
+  forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUC=", signif(AUC,digits=2), ")")) %>% dplyr::select(ID,AUC,group = Title, labelWithAUC)
+  
+  if (length(customNames > 0)) {
+    forOrder <- forOrder %>% left_join(names_df)
+    forOrder <- forOrder %>% mutate(labelWithAUC = paste0(customNames, " (AUC=", signif(AUC,digits=2), ")")) 
+  }
+  
   forOrder$group <- as.character(forOrder$group)
   geneToClassAUC$group<- as.character(geneToClassAUC$group)
   geneToClassAUC <- inner_join(geneToClassAUC, forOrder, by="group") %>% dplyr::select(-group) %>% dplyr::rename(group = labelWithAUC)
@@ -50,13 +62,11 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   geneToClassAUC$group <- factor(geneToClassAUC$group, levels= as.character(forOrder$labelWithAUC))
 
   geneToClassAUC$rank <- -1*geneToClassAUC$rank
+  
+  print(geneToClassAUC$group)
  
   throwawayAUC <-geneToClassAUC 
  
-   if (length(customNames) > 0){
-    levels(throwawayAUC$group) <- customNames
-  }
-  
   (rasterPlot <- ggplot(throwawayAUC, aes(x = rank, y = present, color= group)) + 
     geom_blank() + 
     geom_vline(data = filter(throwawayAUC, present == 1), aes(xintercept=rank, color=group)) + #,color="black") + #, size=0.07) + 
@@ -72,4 +82,8 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   returnPlots[["rasterPlot"]] <- rasterPlot
   returnPlots
 }
+
+plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
+
+plot_grid(plots$AUCPlot,plots$rasterPlot)
 
