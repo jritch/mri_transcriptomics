@@ -14,7 +14,7 @@ pyramidal_cell_list
 
 cell_lists = other_cell_lists + [pyramidal_cell_list]
 
-new_names = ["other gene lists/" + ".".join(itertools.compress(x.split("/"),[0,1,0,1,1])) for x in cell_lists];
+new_names = ["other gene lists/" + ".".join(itertools.compress(x.split("/"),[0,1,0,1,1])) + ".txt" for x in cell_lists];
 
 for i in range(len(new_names)):
     name = new_names[i]
