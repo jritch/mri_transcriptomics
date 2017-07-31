@@ -37,7 +37,7 @@ def main():
 
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
 
-  regionID = 4008 #cortex
+  regionIDs = [4008] #cortex
   region_name = "cortex"
   #to_exclude = 0
   to_exclude = 4219
@@ -48,7 +48,6 @@ def main():
 	to_exclude = 4219
 
 	'''
-
 
   files = config.expression_filenames
 
@@ -70,7 +69,10 @@ def main():
 
         gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
-        indices = analysis.get_flat_coords_from_region_id(regionID,coords,coord_to_region_map,o,to_exclude=to_exclude)
+        indices = []
+        for j in range(len(regionIDs)):
+          indices += analysis.get_flat_coords_from_region_id(regionIDs,coords,coord_to_region_map,o,to_exclude=to_exclude)
+        assert(len(set(indices)) == len(indices))
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
@@ -99,7 +101,6 @@ def main():
             cortex_subdivision= next(iter(cortex_subdivision))
             cortex_subdivision = o.names[int(cortex_subdivision)]
             f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(current_region_ID) + ",\""+ o.names[current_region_ID] + "\", " + cortex_subdivision + "\n")
-
 
 
 if __name__ == '__main__':
