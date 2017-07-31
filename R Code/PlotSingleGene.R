@@ -4,7 +4,8 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "CDR2L" #
+geneOfInterest <- "NEFH"
+regionOfInterest <- "limbic_lobe"
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
@@ -12,7 +13,7 @@ if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   single_gene_folder <- "/Users/jritchie/git-repos/mri_transcriptomics/single_gene_data_avg/"
 }
 
-for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]"), full.names = T)) {
+for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]",regionOfInterest, "[.]"), full.names = T)) {
   print(file)
   oneDonor <- as.data.frame(read_csv(file))
   oneDonor$Expression <- oneDonor[,geneOfInterest]
@@ -64,6 +65,16 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
 unique(allDonors$donor)
 singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
 singleCorrelationSummary <- correlationSummary%>% filter(donor=="Donor 9861" )
+
+
+#### If p is too small, look it up from RunSingleGO.AUROC.Analysis.R and hard-code ###
+
+if (singleCorrelationSummary$p == 0) {
+  hard_coded_p <- 4.79 * 10 ^-17
+  singleCorrelationSummary$p <- hard_coded_p
+  singleCorrelationSummary$label <- paste0("\n  ρ = ", singleCorrelationSummary$cor, "  \n  p-value = ", singleCorrelationSummary$p,"\n")
+  
+}
 
 ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="") + 

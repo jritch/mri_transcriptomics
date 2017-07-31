@@ -37,10 +37,9 @@ def main():
 
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
 
-  regionIDs = [4008] #cortex
-  region_name = "cortex"
-  #to_exclude = 0
-  to_exclude = 4219
+  regionIDs = [4219] 
+  region_name = "limbic_lobe"
+  to_exclude = None
 
   '''
   regionID = 4008 #cortex
@@ -71,7 +70,7 @@ def main():
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         indices = []
         for j in range(len(regionIDs)):
-          indices += analysis.get_flat_coords_from_region_id(regionIDs,coords,coord_to_region_map,o,to_exclude=to_exclude)
+          indices += analysis.get_flat_coords_from_region_id(regionIDs[j],coords,coord_to_region_map,o,to_exclude=to_exclude)
         assert(len(set(indices)) == len(indices))
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
