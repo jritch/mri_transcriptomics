@@ -16,6 +16,7 @@ files = config.expression_filenames
 brain_ids = [f.split(".")[0] for f in files]
 
 example_dir = config.basePathMRI + brain_ids[0]
+print (example_dir)
 
 # How we do it in analysis
 # Note: this calls " os.chdir(example_dir) "
@@ -38,6 +39,8 @@ changed_data = data[2]
 
 changed_data = numpy.nan_to_num(data[2])
 
+#  pre-processing and z-scoring
+
 changed_data[ data[1] == 0] = 2
 changed_data[ data[0] == 0] = 0
 
@@ -53,19 +56,16 @@ changed_data = (0 + stats.zscore(numpy.nan_to_num(changed_data)))
 #changed_data[ data[1] == 0] = 0
 changed_data[ data[0] == 0] = 0
 
-changed_data = numpy.nan_to_num(changed_data)
+img = nibabel.Nifti1Image(data[2] , hdr.get_sform())
+img.to_filename("raw_ratio.nii")
 
-img = nibabel.Nifti2Image(changed_data, hdr.get_sform())
-
+img = nibabel.Nifti1Image(changed_data , hdr.get_sform())
 img.to_filename("z_scored_ratio.nii")
 
-# See if it's aligned
-#plotting.plot_glass_brain("ratio.nii")
-#plt.show()
-
-plotting.plot_glass_brain("z_scored_ratio.nii", axes=ax[2], alpha=0,threshold=0);
+plotting.plot_glass_brain("z_scored_ratio.nii",axes=ax[2], alpha=0,threshold=0);
 #plotting.plot_glass_brain("ratio.nii", axes=ax[1], alpha=0);
 #plotting.plot_glass_brain("ratio.nii", axes=ax[2], alpha=0);
 
-plt.show()
+# uncomment to display plot
+#plt.show()
 #plt.savefig("3_images.png")
