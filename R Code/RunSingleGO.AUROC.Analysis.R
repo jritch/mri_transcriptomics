@@ -194,6 +194,33 @@ head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select
 head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
 
+
+##### Look at what proportion of the results match certain categories
+
+result %>% filter (AUC < 0.5, adj.P.Val < 0.05)
+
+cat(paste("Total number of GO groups",as.character(lengths(result)[1])))
+
+cat(paste("Number of significant GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05))[1])))
+
+cat(paste("Number of significant positively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC > 0.5))[1])))
+
+cat(paste("Number of significant negatively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5))[1])))
+
+cat(paste("Number of significant negatively enriched CC GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC"))[1])))
+
+cat(paste("Number of significant negatively enriched CC GO groups related to mitochondria",
+          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC", grepl("mitoc",MainTitle)))[1])))
+
+cat(paste("Number of significant negatively enriched CC GO groups related to ribosome",
+          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC", grepl("ribos",MainTitle)))[1])))
+
+cat(paste("Number of significant negatively enriched BP GO groups related to mitochondria",
+          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="BP", grepl("mitoc",MainTitle)))[1])))
+
+cat(paste("Number of significant negatively enriched BP GO groups related to synapse",
+          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="BP", grepl("synap",MainTitle)))[1])))
+
 filter(result,grepl("myelin",MainTitle))
 
 source("./R Code/ROCPlots.R")
