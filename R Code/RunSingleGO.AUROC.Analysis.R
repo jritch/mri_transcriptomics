@@ -3,7 +3,9 @@ library(optparse)
 
 #example call: Rscript RunSingleGO.AUROC.Analysis.R -f "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
 option_list = list(
-  make_option(c("-f", "--filename"), type="character", default=NULL, help="filename of per gene statistics", metavar="character")
+  make_option(c("-f", "--filename"), type="character", default=NULL, help="filename of per gene statistics", metavar="character"),
+  make_option(c("-o", "--output_dir"), type="character", default=NULL, help="output directory", metavar="character")
+  
   #more options here...
 ); 
 
@@ -34,10 +36,13 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex.gene_list.csv"
   filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
   filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.full_brain.gene_list.csv"
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T1.hippocampus.gene_list.csv"  
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T2.hippocampus.gene_list.csv"
+  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.hippocampus.gene_list.csv"
   
-  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.full_brain.gene_list.csv"
+  filename <- "/Users/jritchie/data/final/T1T2Ratio.cortex.gene_list.csv"
+  filename <- "/Users/jritchie/data/final/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
   
   output_dir <- "/Users/jritchie/data/bias_corrected_results"
   output_dir <- "/Users/jritchie/data/results"
@@ -53,6 +58,8 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   
 } else if (!is.null(opt$filename)) {
   filename <- opt$filename
+  output_dir <- opt$output_dir
+  
 } else {
   print_help(opt_parser)
   stop()
@@ -73,6 +80,7 @@ library(AnnotationDbi)
 library(annotate)
 library(GO.db)
 library(tmod)
+library(metap)
 
 source("./R Code/Utils.R")
 
@@ -106,10 +114,11 @@ print(paste(survive,"of",length(row.names(geneStatistics)),"genes survive BH mul
 
 significantCorrelations <- geneStatistics %>% filter(adjusted_meta_p < 0.05) %>% dplyr::select(medianCorrelation)
 nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) %>% dplyr::select(medianCorrelation)
-plot_grid(qplot(significantCorrelations, geom="histogram",bins=80),
-          qplot(nonSignificantCorrelations, geom="histogram",bins=80),
-          qplot(geneStatistics$medianCorrelation, geom="histogram",bins=80),
-          qplot(geneStatistics$adjusted_meta_p, geom="histogram",bins=100) + geom_vline(xintercept=0.05, color="red"))
+
+#plot_grid(qplot(significantCorrelations, geom="histogram",bins=80),
+#          qplot(nonSignificantCorrelations, geom="histogram",bins=80),
+#          qplot(geneStatistics$medianCorrelation, geom="histogram",bins=80),
+#          qplot(geneStatistics$adjusted_meta_p, geom="histogram",bins=100) + geom_vline(xintercept=0.05, color="red"))
 
 #sort by median correlation
 geneStatistics <- arrange(geneStatistics, desc(medianCorrelation))
@@ -189,11 +198,11 @@ filter(result,grepl("myelin",MainTitle))
 
 source("./R Code/ROCPlots.R")
 
-plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
-plot(plots$rasterPlot)
+#plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
+#plot(plots$rasterPlot)
 
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-plot(plots$rasterPlot)
+#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+#plot(plots$rasterPlot)
 
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
 #remove synonyms/duplicate results - use the first name of a match
@@ -208,8 +217,8 @@ myelinResult
 output_filename <- paste(analysis_id,".myelin.enrichment.results.csv",sep="")
 writeTableWrapper(myelinResult,output_dir,output_filename,col_indices = c(2,1,4,5,7,9),col_names=c("GO group",  "rank",  "gene count",    "AUROC",    "adjusted p. value", "aspect"))
 
-plots <- createPlots(sortedGenes, c("GO:0043217", "GO:0043218", "GO:0022010", "GO:0008366","GO:0042552"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+#plots <- createPlots(sortedGenes, c("GO:0043217", "GO:0043218", "GO:0022010", "GO:0008366","GO:0042552"), geneSetsGO)
+#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 
 #write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
@@ -246,8 +255,8 @@ writeTableWrapper(result,output_dir,output_filename,col_indices = c(2:4,6),col_n
 
 #write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
 
-plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+#plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
+#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 
 #looking at one result - epilepsy
 #filter(geneStatistics, geneSymbol %in% geneSets["DOID_1932"]$GENES$ID)
@@ -389,5 +398,5 @@ for(geneSetName in unique(expandedZengTable$Cortical.marker..human.)) {
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
 
-result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
-result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
+zeng_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
+zeng_result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
