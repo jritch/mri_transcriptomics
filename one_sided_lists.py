@@ -66,16 +66,23 @@ def adjust_single_list(l):
     return adjusted_meta_list
 
 def main():
-    # TODO: change to using config.py
-    # For nowm, this is a file that has T1/T2 ratio in the cortex
-    filename = "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
-    #filename = config.outputCSVFolder + "/T1T2Ratio.cortex.gene_list.csv"
+    filename = "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
     data = pandas.read_csv(filename, sep=",")
     lists = get_one_sided_lists(data)
     l = get_single_two_sided_list(data)
     adj_single_list = adjust_single_list(l)
     adj_lists = adjust_one_sided_lists(lists)
     adj=pandas.DataFrame(data= {"gene_symbol": data.iloc[1:,0],"up":adj_lists[0],"down":adj_lists[1],"two_sided":adj_single_list}).reindex_axis(["gene_symbol","up","down","two_sided"],axis=1)
+ 
+    import re
+    r = r'(?:CUST|A)_.*'
+    adj = adj[~adj.gene_symbol.str.match(r)]
+
+
+    print "Significant (up)", len(adj[adj.up < 0.05])
+    print "Significant (down)", len(adj[adj.down < 0.05])
+    print "Significant (both)", len(adj[(adj.up < 0.05) & (adj.down < 0.05)])
+    print "Significant (two-sided)", len(adj[(adj.two_sided < 0.05)])
     return adj
 
 if __name__ == '__main__':
