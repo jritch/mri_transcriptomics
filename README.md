@@ -60,4 +60,10 @@ Update config.py with the the paths for these two sets of downloaded files. (mic
 2. Run write_t1t2_img.py to write out an example T1-w/T2-w ratio image in NIFTI1 format.
 
 
+## Data sources used
 
+Neuroexpresso
+Freesurfer 34
+Allen Human brain atlas
+Gene lists from Zeisel, Zeng and Darmanis
+Phenocarta

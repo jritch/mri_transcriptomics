@@ -20,7 +20,7 @@ import pandas
 
 from ontology import *
 
-print("Base script folder:" + config.scriptLocation)
+print "Base script folder:" + config.scriptLocation
 
 R_VALUE_FUNCTION = spearmanr
 
@@ -119,7 +119,7 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
     if coords_list != []:
 
       if flag:
-        print(len(coords_list))
+        print len(coords_list)
 
       for coord in coords_list:
 
@@ -128,16 +128,16 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
 
         if flag:
           all_intensities.append(flat_mri_data[index])
-          print("i:", intensity)
+          print "i:", intensity
 
       intensity = intensity / float(len(coords_list))
       if flag:
           all_intensities.append(intensity)
-          print("i:", intensity)
-          print(name)
+          print "i:", intensity
+          print name
     rank.append((name, intensity))
 
-  print(all_intensities)
+  print all_intensities
   return sorted(rank,key=lambda x: x[1],reverse=True)
 
 def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude=None):
@@ -178,7 +178,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
   #import pdb; pdb.set_trace()
   t2 = time.clock()
 
-  print("Correlation execution time was", str(t2-t1))
+  print "Correlation execution time was", t2-t1
 
   return result
 
@@ -192,12 +192,12 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
   #get number of genes
   expression_values = pandas.read_csv(os.path.join(config.processedOutputLocation,files[0]),delimiter="\t")
   gene_count = expression_values.shape[0]
-  print ("Gene count:" + str(gene_count)) 
+  print "Gene count:" + str(gene_count) 
   
   # dimensions are: MRI modality, regions of interest, genes, statistics (for each 6 correlation, raw p, corrected p (not used)) 
   data_array =  np.zeros((len(MRI_data_labels),len(region_sets),gene_count,3*6+1))  
 
-  print ("Data array shape:" + str(data_array.shape))
+  print "Data array shape:" + str(data_array.shape)
   # i is the brain
   for i in range(len(brain_ids)):
 
@@ -209,7 +209,7 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
     for j in range(len(MRI_data)):
 
       if MRI_data_labels[j] not in MRI_of_interest:
-          print("SKIPPING {} FOR BRAIN {}".format(MRI_data_labels[j],brain_ids[i]))
+          print "SKIPPING {} FOR BRAIN {}".format(MRI_data_labels[j],brain_ids[i])
           continue
 
       measure = MRI_data[j]
@@ -218,11 +218,11 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
       for k in range(len(region_sets)):
 
         label = brain_ids[i] + "." + MRI_data_labels[j] + "." + region_sets[k][0]
-        print('Correlating MRI and gene expression data for ' + label)
+        print 'Correlating MRI and gene expression data for ' + label
 
         indices = get_flat_coords_from_region_id(region_sets[k][1],coords,coord_to_region_map,o,region_sets[k][2])
         if region_sets[k][0] == "hippocampus" and brain_ids[i] == 10021:
-            print( len (indices))
+            print len (indices)
 
         gene_exp_filename = os.path.join(config.processedOutputLocation,files[i])
         correlated_data = correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=indices)
@@ -284,7 +284,7 @@ def main():
 
   t2 = time.clock()
 
-  print ("Total execution time was",t2-t1)
+  print "Total execution time was",t2-t1
 
 if __name__ == '__main__':
   main()

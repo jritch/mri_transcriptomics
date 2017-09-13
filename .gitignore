@@ -3,10 +3,13 @@
 *.pyc
 ~*
 .Rproj.user
+.ipynb_checkpoints
 /AllenHBAProcessedExpressionWithBrainID/
 /mri_transcriptomics.Rproj
 /.project
 /.pydevproject
+/data
+/results
 /.DS_Store
 .RData
 .Rhistory

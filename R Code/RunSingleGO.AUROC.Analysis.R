@@ -1,42 +1,22 @@
-library(optparse)
-#todo - Leon is using GOSOURCEDATE: 2017-Mar29 (type GO.db to find out)
-
-#example call: Rscript RunSingleGO.AUROC.Analysis.R -f "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-option_list = list(
-  make_option(c("-f", "--filename"), type="character", default=NULL, help="filename of per gene statistics", metavar="character"),
-  make_option(c("-o", "--output_dir"), type="character", default=NULL, help="output directory", metavar="character")
-  
-  #more options here...
-); 
-
-opt_parser = OptionParser(option_list=option_list);
-opt = parse_args(opt_parser);
+#Leon is using GOSOURCEDATE: 2017-Mar29 (type GO.db to find out)
 
 Sys.info()["nodename"]
 
-if (interactive()) { #set the variables manually if in Rstudio, for testing
-  
-  if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
-    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T2.cortex_excluding_limbic_lobe.gene_list.csv"
-    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1.cortex_excluding_limbic_lobe.gene_list.csv"
-    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.full_brain.gene_list.csv"
-    output_dir <- '/Users/lfrench/Desktop/results/mri_transcriptomics/results/GO tables/'
-  } else {
-    filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
-    output_dir <- "/Users/jritchie/data/results"
-  }
-} else if (!is.null(opt$filename)) {
-  filename <- opt$filename
-  output_dir <- opt$output_dir
-  
+#set working directory
+setwd("/Users/lfrench/Desktop/results/mri_transcriptomics_fresh/")
+#set figshare data folder
+figshare_data_folder = "./data/figshare data/"
+
+if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
+  #filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1.cortex_excluding_limbic_lobe.gene_list.csv"
+  #filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T2.cortex_excluding_limbic_lobe.gene_list.csv"
+  filename <- "/Users/lfrench/LiClipseWorkspace/mri_transcriptomcs_fresh/results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
 } else {
-  print_help(opt_parser)
-  stop()
+  filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
 }
+
 cat(paste("Working directory:", getwd()))
 cat(paste("Using input file:",filename))
-cat(paste("Writing output files to:",output_dir))
 baseFilename <- gsub(".csv", "", filename)
 
 otherGeneListsFolder <- "./other gene lists/"
@@ -79,7 +59,7 @@ geneStatistics %<>% dplyr::rename(geneSymbol = ID)
 #filter custom and unmapped probes
 geneStatistics <- geneStatistics %>% filter(!grepl("A_", geneSymbol)) %>% filter(!grepl("CUST_", geneSymbol)) 
 
-#adjust
+#adjust p-values
 geneStatistics %<>% mutate(metaP.pos.adj = p.adjust(metaP.pos))
 geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg))
 
@@ -96,7 +76,7 @@ plot(geneStatistics$pValueWithDirection, geneStatistics$medianCorrelation)
 ggplot(geneStatistics, aes(x=pValueWithDirection, y = medianCorrelation, color = isSig)) + geom_point()
 
 
-freeSurferData <- read_tsv("./data/figshare data/AllenHBA_DK_ExpressionMatrix.tsv")
+freeSurferData <- read_tsv(paste0(figshare_data_folder, "AllenHBA_DK_ExpressionMatrix.tsv"))
 freeSurferData <- tbl_df(melt(freeSurferData))
 #add in median donor correlation
 geneStatistics %<>% inner_join(filter(freeSurferData, variable == 'Average donor correlation to median') %>% dplyr::select(geneSymbol = X1, DonorCorrelation = value))
@@ -108,26 +88,22 @@ geneStatistics %<>% inner_join(averageExpression)
 
 cor.test(geneStatistics$averageExpression, geneStatistics$metaP.neg, m='s')
 cor.test(geneStatistics$averageExpression, geneStatistics$metaP.pos, m='s')
-cor.test(geneStatistics$DonorCorrelation, geneStatistics$pValueWithDirection,m='s')
 plot(geneStatistics$averageExpression, geneStatistics$medianCorrelation, m='s')
 plot(geneStatistics$DonorCorrelation, geneStatistics$pValueWithDirection, m='s')
 
-#significant in both directions
+ggplot(geneStatistics, aes(x=medianCorrelation, y = log(metaP.pos.adj), color = isSig)) + geom_point()
+
+#significant in both directions - should be none
 dplyr::filter(geneStatistics, metaP.neg.adj < 0.05 & metaP.pos.adj < 0.05)
 
-#significantCorrelations <- geneStatistics %>% filter(adjusted_meta_p < 0.05) %>% dplyr::select(medianCorrelation)
-#nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) %>% dplyr::select(medianCorrelation)
 
-#plot_grid(qplot(significantCorrelations, geom="histogram",bins=80),
-#          qplot(nonSignificantCorrelations, geom="histogram",bins=80),
-#          qplot(geneStatistics$medianCorrelation, geom="histogram",bins=80),
-#          qplot(geneStatistics$adjusted_meta_p, geom="histogram",bins=100) + geom_vline(xintercept=0.05, color="red"))
+paste("Genes with negative correlations:", dplyr::filter(geneStatistics, metaP.neg.adj < 0.05) %>% summarize(n = n()))
+paste("Genes with positive correlations:", dplyr::filter(geneStatistics, metaP.pos.adj < 0.05) %>% summarize(n = n()))
 
-#sort by median correlation
+#sort 
 geneStatistics <- arrange(geneStatistics, desc(pValueWithDirection))
 
 write_csv(geneStatistics, paste0(baseFilename, ".addedStats.csv"))
-
 
 sortedGenes <- geneStatistics$geneSymbol
 
@@ -241,8 +217,7 @@ write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount
 
 loadPhenocarta <- function(taxon, geneBackground) {
   #guess column types from the whole dataset, basically
-  phenocarta <- read_tsv("./data/figshare data/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
-  #phenocarta <- read_tsv("/Users/jritchie/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  phenocarta <- read_tsv(paste0(figshare_data_folder, "AllPhenocartaAnnotations.downloadedOct28.2016.tsv"), skip = 4, guess_max = 130000)
   phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
   phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
   geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
@@ -267,9 +242,6 @@ result$AUC <- signif(result$AUC, digits=3)
 write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val),  
            paste0(baseFilename,".phenocarta.results.csv"))
 
-
-#write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
-
 #plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
 #(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 
@@ -280,6 +252,7 @@ write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC
 #################################################################
 tmodNames <- data.frame()
 modules2genes <- list()
+
 
 for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full.names = T)) {
   print(geneListFilename)
@@ -335,7 +308,7 @@ plots <- createPlots(sortedGenes, c("Zeisel.Oligo", "Zeisel.Neuron.CA1.pryamidal
 darm <- filter(result, grepl("Darmanis", Title))
 plots <- createPlots(sortedGenes, darm$Title, geneSets)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
-
+plots$rasterPlot
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 
 ##################
