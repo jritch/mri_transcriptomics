@@ -50,7 +50,7 @@ Update config.py with the the paths for these two sets of downloaded files. (mic
 
 1. Run average_probes.py to obtain average expression values for each gene from the AHBA normalized expression data. This file is created in the python_processed_expression_data folder that is created in the parent folder of the microarrayFolder. 
 2. Run analysis.py on the output files of the previous step to generate .csv files summarizing the correlation between gene expression and MRI intensity in each donor for each image and region of interest. Regions of interest and MRI measures can be specified in the main method. 
-3. Run R Code/RunSingleGO.AUROC.Analysis.R to perform gene set enrichment analysis on the .csv files from the previous step. Requires setting of figshare_data_folder (to location of figshare files).
+3. Run R Code/RunSingleGO.AUROC.Analysis.R to perform gene set enrichment analysis on the .csv files from the previous step. Requires setting of figshare_data_folder (to location of figshare files) and setting of the working directory (start of the script).
 
 ### Additional analyses
 
