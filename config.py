@@ -1,6 +1,9 @@
 import platform
+import os
+from os import listdir
+from os.path import isfile, join
 
-USE_BIAS_CORRECTED_IMAGES = True
+
 
 # Jacob's Personal Laptop
 if 'Windows-10' in platform.platform():
@@ -12,8 +15,10 @@ if 'Windows-10' in platform.platform():
 
 # Jacob's CAMH laptop
 elif platform.node() =='RES-CO2T6CS3GTFL.local':
+
+
     baseAllenFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionAndMRIs/"
-    ontologyFolder = baseAllenFolder + "../"
+    #figShareFolder = 
     #expressionFolder = "/Users/jritchie/data/AllenHBAProcessedExpressionWithBrainID/"
 
     expressionFolder= "/Users/jritchie/git-repos/mri_transcriptomics/python_processed_expression_data"
@@ -39,19 +44,22 @@ elif platform.node() =='RES-CO2T6CS3GTFL.local':
     '''
 # Leon's CAMH Laptop
 elif platform.node() =='RES-C02RF0T2.local':
-    baseAllenFolder = "/Users/lfrench/Desktop/data/Allen/HBA/"
-    ontologyFolder = "/Users/lfrench/Desktop/results/mri_transcriptomics/data/"
-    expressionFolder = "/Users/lfrench/Desktop/data/Allen/HBA/ignore.regoinIDDataForJacob/"
-    outputCSVFolder = "/Users/lfrench/Desktop/results/mri_transcriptomics/results/"
-    basePathMRI = "/Users/lfrench/Desktop/data/Allen/HBA/normalized_microarray_donor"
+    microarrayFolder = "/Users/lfrench/Desktop/results/mri_transcriptomics/data/allen expression/"
+    figShareFolder = "/Users/lfrench/Desktop/results/mri_transcriptomics/data/figshare data/"
 else:
     print("Please setup config.py")
     print(platform.node())
 
 
-expression_filenames = ["10021.matrix.regionID.MRI(xyz).29131 x 893.txt",
-                       "12876.matrix.regionID.MRI(xyz).29131 x 363.txt",
-                        "14380.matrix.regionID.MRI(xyz).29131 x 529.txt",
-                        "15496.matrix.regionID.MRI(xyz).29131 x 470.txt",
-                        "15697.matrix.regionID.MRI(xyz).29131 x 501.txt",
-                        "9861.matrix.regionID.MRI(xyz).29131 x 946.txt"] 
+scriptLocation = os.path.dirname(os.path.realpath(__file__))
+processedOutputLocation = os.path.join(scriptLocation, "data", "python_processed_expression_data")
+if not os.path.exists(processedOutputLocation):
+  os.makedirs(processedOutputLocation)
+
+expression_filenames = [f for f in listdir(processedOutputLocation) if '.matrix.regionID.MRI(xyz).tsv' in f]
+
+resultFolder = os.path.join(scriptLocation, "results")
+if not os.path.exists(resultFolder):
+  os.makedirs(resultFolder)
+
+

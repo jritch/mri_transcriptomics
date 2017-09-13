@@ -1,6 +1,8 @@
 import config, analysis, os, csv, sys, inspect
 import numpy as np
 
+from ontology import *
+
 import voxel_averaged_mri
 
 def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
@@ -33,40 +35,40 @@ def main():
   if len(sys.argv) > 1:
     gene_name = sys.argv[1]
   else:
-    gene_name =  "CAT"
+    gene_name =  "AGPAT9"
 
+  MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
-
+  MRI_data_label = MRI_data_labels[MRI_dimension]
+  '''
   regionIDs = [4219] 
   region_name = "limbic_lobe"
   to_exclude = None
-
   '''
-  regionID = 4008 #cortex
-  region_name = "cortex_excluding_limbic_lobe"
-	to_exclude = 4219
 
-	'''
+  regionIDs = [4008] #cortex
+  region_name = "cortex_excluding_limbic_lobe"
+  to_exclude = 4219
 
   files = config.expression_filenames
 
   brain_ids = [f.split(".")[0] for f in files]
 
   header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
-  baseProjectFolder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/" 
-  if not os.path.exists(baseProjectFolder + "single_gene_data_avg/"):
-      os.mkdir(baseProjectFolder + "single_gene_data_avg/")
+  outputFolder = os.path.join(config.scriptLocation, "results", "single_gene_data")
+  if not os.path.exists(outputFolder):
+      os.mkdir(outputFolder)
 
-  filenames = [baseProjectFolder + "single_gene_data_avg/" + f + "." + gene_name + "." + region_name + ".MRI(xyz).expression.csv" for f in brain_ids]
+  filenames = [os.path.join(outputFolder, f + "." + gene_name + "." + region_name + ".MRI(xyz).expression."+ MRI_data_label +".csv") for f in brain_ids]
   
-  o = analysis.Ontology(config.ontologyFolder + "Ontology.csv")
+  o = Ontology(os.path.join(config.scriptLocation, "data",  "Ontology.csv"))
   
   cortex_divisions = [str(x) for x in o.hierarchy.get(4008)]
   
   num_brains = len(brain_ids)
   for i in range(num_brains):
 
-        gene_exp_fh = open(os.path.join(config.expressionFolder,files[i]))
+        gene_exp_fh = open(os.path.join(config.processedOutputLocation,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         indices = []
         for j in range(len(regionIDs)):
@@ -75,7 +77,7 @@ def main():
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
-        mri_data = analysis.load_nifti_data(config.basePathMRI + brain_ids[i])[MRI_dimension]
+        mri_data = analysis.load_nifti_data(brain_ids[i])[MRI_dimension]
         use_voxel_avg = False #True
         if use_voxel_avg:
             mri_data = voxel_averaged_mri.voxel_average(mri_data)
@@ -88,7 +90,7 @@ def main():
         coord_subset = [coords[j] for j in indices]
 
         with open(filenames[i], "w") as f:
-          f.write("\"(x,y,z)\",MRI_Intensity," + gene_name  + ",regionID,region_name,cortical_division\n")
+          f.write("\"(x,y,z)\","  + "MRI_Intensity" +"," + gene_name  + ",regionID,region_name,cortical_division\n")
           for j in range(len(indices)):
             str_coords = [str(coord) for coord in coord_subset[j]]
             coord_string = "(" + ",".join(str_coords) + ")" 

@@ -15,23 +15,20 @@ f, ax = plt.subplots(3);
 files = config.expression_filenames
 brain_ids = [f.split(".")[0] for f in files]
 
-example_dir = config.basePathMRI + brain_ids[0]
-print (example_dir)
+brain_to_use = brain_ids[0]
 
 # How we do it in analysis
-# Note: this calls " os.chdir(example_dir) "
+data = analysis.load_nifti_data(brain_to_use)
 
-data = analysis.load_nifti_data(example_dir)
-
-img = nibabel.load("T1.nii")
+#get the structure from a single file
+print(config.figShareFolder + 'm'+ brain_to_use + "_T1.nii.gz")
+img = nibabel.load(config.figShareFolder + 'm'+ brain_to_use + "_T1.nii.gz")
 hdr = img.header
 #print hdr
 #print img.affine
 
-plotting.plot_glass_brain("T1.nii", axes=ax[0],alpha=0,threshold=0)
-plotting.plot_glass_brain("T2.nii", axes=ax[1], alpha=0,threshold=0);
-
-os.chdir(analysis.baseProjectFolder)
+#plotting.plot_glass_brain("T1.nii", axes=ax[0],alpha=0,threshold=0)
+#plotting.plot_glass_brain("T2.nii", axes=ax[1], alpha=0,threshold=0);
 
 #changed_data = numpy.nan_to_num(data[2]) #* np.mean( data[1][np.nonzero(data[1])] )
 
@@ -57,12 +54,12 @@ changed_data = (0 + stats.zscore(numpy.nan_to_num(changed_data)))
 changed_data[ data[0] == 0] = 0
 
 img = nibabel.Nifti1Image(data[2] , hdr.get_sform())
-img.to_filename("raw_ratio.nii")
+img.to_filename(config.figShareFolder + '/m' + brain_to_use +"_raw_ratio.nii")
 
 img = nibabel.Nifti1Image(changed_data , hdr.get_sform())
-img.to_filename("z_scored_ratio.nii")
+img.to_filename(config.figShareFolder + '/m' + brain_to_use +"_z_scored_ratio.nii")
 
-plotting.plot_glass_brain("z_scored_ratio.nii",axes=ax[2], alpha=0,threshold=0);
+plotting.plot_glass_brain(config.figShareFolder + '/m' + brain_to_use + "_z_scored_ratio.nii",axes=ax[2], alpha=0,threshold=0);
 #plotting.plot_glass_brain("ratio.nii", axes=ax[1], alpha=0);
 #plotting.plot_glass_brain("ratio.nii", axes=ax[2], alpha=0);
 

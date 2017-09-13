@@ -1,5 +1,5 @@
 library(optparse)
-#todo - Leon is using GOSOURCEDATE: 20160305 (type GO.db to find out)
+#todo - Leon is using GOSOURCEDATE: 2017-Mar29 (type GO.db to find out)
 
 #example call: Rscript RunSingleGO.AUROC.Analysis.R -f "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
 option_list = list(
@@ -12,50 +12,20 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-#Sys.info()["nodename"]
+Sys.info()["nodename"]
 
 if (interactive()) { #set the variables manually if in Rstudio, for testing
   
-  filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv" #should be passed as an argument so python can call it
-  filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T1.cortex.gene_list.csv" #should be passed as an argument so python can call it
-  filename <- "/Users/lfrench/Google Drive/gene_list_csvs/T2.cortex.gene_list.csv" #should be passed as an argument so python can call it #looks like the ratio
-  
-  #filename <- "/Users/jritchie/data/garbage2/T1T2Ratio.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T2.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_float/T1T2Ratio.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs_stripped/T1T2Ratio.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
-  #filename <- "/Users/jritchie/Google Drive/4th year/Thesis/gene_list_csvs/T1.full_brain.gene_list.csv"
-  #filename <- "/Users/jritchie/data/garbage4/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.full_brain.gene_list.csv"
-  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  #filename <- "/Users/jritchie/data/garbage3/T1T2Ratio.cortex.gene_list.csv"
-  
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.full_brain.gene_list.csv"
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T1.hippocampus.gene_list.csv"  
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T2.hippocampus.gene_list.csv"
-  filename <- "/Users/jritchie/data/final_with_bias_correction/T1T2Ratio.hippocampus.gene_list.csv"
-  
-  filename <- "/Users/jritchie/data/final/T1T2Ratio.cortex.gene_list.csv"
-  filename <- "/Users/jritchie/data/final/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
-  filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
-  
-  output_dir <- "/Users/jritchie/data/bias_corrected_results"
-  output_dir <- "/Users/jritchie/data/results"
-  
-  
   if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
-    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex.gene_list.csv"
+    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T2.cortex_excluding_limbic_lobe.gene_list.csv"
+    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1.cortex_excluding_limbic_lobe.gene_list.csv"
+    filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.full_brain.gene_list.csv"
+    output_dir <- '/Users/lfrench/Desktop/results/mri_transcriptomics/results/GO tables/'
   } else {
-    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.cortex.gene_list.csv"
-    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T2.full_brain.gene_list.csv"
-    #filename <- "C://Users/Jacob/Google Drive/4th Year/Thesis/gene_list_csvs/T1T2Ratio.full_brain.gene_list.csv"
+    filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
+    output_dir <- "/Users/jritchie/data/results"
   }
-  
 } else if (!is.null(opt$filename)) {
   filename <- opt$filename
   output_dir <- opt$output_dir
@@ -64,9 +34,12 @@ if (interactive()) { #set the variables manually if in Rstudio, for testing
   print_help(opt_parser)
   stop()
 }
+cat(paste("Working directory:", getwd()))
+cat(paste("Using input file:",filename))
+cat(paste("Writing output files to:",output_dir))
+baseFilename <- gsub(".csv", "", filename)
 
-cat(paste("USING INPUT FILE:",filename))
-cat(paste("WRITING OUTPUT FILES TO:",output_dir))
+otherGeneListsFolder <- "./other gene lists/"
 
 library(cowplot)
 library(readr)
@@ -81,39 +54,69 @@ library(annotate)
 library(GO.db)
 library(tmod)
 library(metap)
+library(reshape2)
+library(xlsx)
 
-source("./R Code/Utils.R")
-
-#needs direction statistic
 geneStatistics <- read_csv(filename) 
-geneStatistics <- geneStatistics %>% filter(X1 != "ID")
 
-geneStatistics <- rowwise(geneStatistics) %>% mutate(medianCorrelation = median(c(correlation,X3,X4,X5,X6,X7)))
+#convert to one sided
+#melt into gene, brain
+correlationLongForm <- gather(dplyr::select(geneStatistics, ID, contains("Correlation.")), brain, correlation, -ID)
+(correlationLongForm %<>% mutate(brain = gsub("Correlation.", "", brain)))
+pvaluesLongForm <- gather(dplyr::select(geneStatistics, ID,  contains("PValue.")), brain, pvalue, -ID)
+(pvaluesLongForm %<>% mutate(brain = gsub("PValue.", "", brain)))
+longFormGeneStats <- inner_join(pvaluesLongForm, correlationLongForm)
+longFormGeneStats %<>% mutate(pvalue.pos = if_else(sign(correlation) > 0, pvalue, 1 - pvalue ))
+longFormGeneStats %<>% mutate(pvalue.neg = if_else(sign(correlation) < 0, pvalue, 1 - pvalue ))
+(geneStatistics <- longFormGeneStats %>% group_by(ID ) %>% 
+    summarise(medianCorrelation = median(correlation), 
+              directionSum = (sum(sign(correlation))/2 +3)/6, 
+              metaP.pos = sumlog(pvalue.pos)$p, 
+              metaP.neg = sumlog(pvalue.neg)$p, 
+              metaP.anydirection = sumlog(pvalue)$p))
 
-#geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="fdr")
-geneStatistics$adjustAgain <- p.adjust(geneStatistics$raw_meta_p, method="BH")
-
-geneStatistics <- rowwise(geneStatistics) %>% mutate(adj_p = sumlog(c(adjusted,X15,X16,X17,X18,X19))$p)
-
-#cor.test(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p) #todo - fix, the adjusted p-values are not lining up
-#cor.test(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p,m='s')
-#cor.test(geneStatistics$raw_meta_p, geneStatistics$adjustAgain,m='s')
-#plot(geneStatistics$adjustAgain, geneStatistics$adjusted_meta_p)
-#plot(geneStatistics$raw_meta_p, geneStatistics$adjusted_meta_p)
-#plot(geneStatistics$raw_meta_p, geneStatistics$adjustAgain)
-
-geneStatistics <- geneStatistics %>% dplyr::select(geneSymbol = X1, raw_meta_p, adjusted_meta_p, medianCorrelation) 
+geneStatistics %<>% dplyr::rename(geneSymbol = ID)
 #filter custom and unmapped probes
 geneStatistics <- geneStatistics %>% filter(!grepl("A_", geneSymbol)) %>% filter(!grepl("CUST_", geneSymbol)) 
 
-print(paste(sum(geneStatistics$adjusted_meta_p < 0.05),"of",length(row.names(geneStatistics)),"genes survive BH multiple-test correction"))
-# Re-adjust after getting rid of other probes to see if it affects analysis.
-survive <- sum(p.adjust(geneStatistics$raw_meta_p, method="BH") < 0.05)
-print(paste(survive,"of",length(row.names(geneStatistics)),"genes survive BH multiple-test correction after getting rid of custom probes"))
-# Doesn't have much affect
+#adjust
+geneStatistics %<>% mutate(metaP.pos.adj = p.adjust(metaP.pos))
+geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg))
 
-significantCorrelations <- geneStatistics %>% filter(adjusted_meta_p < 0.05) %>% dplyr::select(medianCorrelation)
-nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) %>% dplyr::select(medianCorrelation)
+(geneStatistics %<>% arrange(metaP.pos))
+(geneStatistics %<>% arrange(metaP.neg))
+
+sum(geneStatistics$metaP.pos.adj < 0.05)
+sum(geneStatistics$metaP.neg.adj < 0.05)
+geneStatistics %<>% dplyr::mutate(isSig = metaP.neg.adj < 0.05 | metaP.pos.adj < 0.05)
+
+geneStatistics %<>% mutate(pValueWithDirection = if_else(metaP.pos < metaP.neg, nrow(geneStatistics) - rank(metaP.pos), -1* nrow(geneStatistics) + rank(metaP.neg)))
+
+plot(geneStatistics$pValueWithDirection, geneStatistics$medianCorrelation)
+ggplot(geneStatistics, aes(x=pValueWithDirection, y = medianCorrelation, color = isSig)) + geom_point()
+
+
+freeSurferData <- read_tsv("./data/figshare data/AllenHBA_DK_ExpressionMatrix.tsv")
+freeSurferData <- tbl_df(melt(freeSurferData))
+#add in median donor correlation
+geneStatistics %<>% inner_join(filter(freeSurferData, variable == 'Average donor correlation to median') %>% dplyr::select(geneSymbol = X1, DonorCorrelation = value))
+cor.test(geneStatistics$DonorCorrelation, abs(geneStatistics$pValueWithDirection), m='s')
+
+#add in average expression level (left hemisphere)
+averageExpression <- filter(freeSurferData, grepl("ctx-lh-", variable)) %>% group_by(X1) %>% summarize(averageExpression = mean(value)) %>% dplyr::rename(geneSymbol = X1)
+geneStatistics %<>% inner_join(averageExpression)
+
+cor.test(geneStatistics$averageExpression, geneStatistics$metaP.neg, m='s')
+cor.test(geneStatistics$averageExpression, geneStatistics$metaP.pos, m='s')
+cor.test(geneStatistics$DonorCorrelation, geneStatistics$pValueWithDirection,m='s')
+plot(geneStatistics$averageExpression, geneStatistics$medianCorrelation, m='s')
+plot(geneStatistics$DonorCorrelation, geneStatistics$pValueWithDirection, m='s')
+
+#significant in both directions
+dplyr::filter(geneStatistics, metaP.neg.adj < 0.05 & metaP.pos.adj < 0.05)
+
+#significantCorrelations <- geneStatistics %>% filter(adjusted_meta_p < 0.05) %>% dplyr::select(medianCorrelation)
+#nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) %>% dplyr::select(medianCorrelation)
 
 #plot_grid(qplot(significantCorrelations, geom="histogram",bins=80),
 #          qplot(nonSignificantCorrelations, geom="histogram",bins=80),
@@ -121,11 +124,11 @@ nonSignificantCorrelations <- geneStatistics %>% filter(adjusted_meta_p > 0.05) 
 #          qplot(geneStatistics$adjusted_meta_p, geom="histogram",bins=100) + geom_vline(xintercept=0.05, color="red"))
 
 #sort by median correlation
-geneStatistics <- arrange(geneStatistics, desc(medianCorrelation))
+geneStatistics <- arrange(geneStatistics, desc(pValueWithDirection))
 
-#geneStatistics <- arrange(geneStatistics, raw_meta_p)
+write_csv(geneStatistics, paste0(baseFilename, ".addedStats.csv"))
 
-#todo - check if this is in the right order
+
 sortedGenes <- geneStatistics$geneSymbol
 
 ######################################################
@@ -155,7 +158,7 @@ if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume 
     genesymbols <- unique(getSYMBOL(geneIDs, data='org.Hs.eg'))
     
     genesymbols <- intersect(genesymbols, sortedGenes)
-    if (!(length(genesymbols) > 10 & length(genesymbols) < 200)) next();
+    if (!(length(genesymbols) >= 10 & length(genesymbols) <= 200)) next();
     
     modules2genes[goGroupName] <- list(genesymbols)
     
@@ -169,59 +172,48 @@ result %<>% rowwise() %>% mutate(aspect = Ontology(ID))
 (result %<>% group_by(U, N1, AUC, P.Value,adj.P.Val) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), aspect= first(aspect), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
 result %<>% arrange(adj.P.Val)
 result$rank <- 1:nrow(result)
-result %<>% dplyr::select(MainTitle, N1, AUC, P.Value, adj.P.Val, everything()) %>% arrange(adj.P.Val)
+result %<>% ungroup() %>% dplyr::select(MainTitle, geneCount = N1, AUC, P.Value, adj.P.Value = adj.P.Val, everything(), -U) %>% arrange(adj.P.Value)
 
-result$adj.P.Val <- signif(result$adj.P.Val, digits=2)
+result$adj.P.Value <- signif(result$adj.P.Value, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
 
-# Output tables for top ten positively and negatively enriched GO groups
+# Output tables for top ten positively and negatively enriched GO groups for paper
+(result.up <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=10))
+(result.down <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=10))
 
-result1 <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=10)
-result2 <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=10)
 
-split_filename = strsplit(filename,"/")
-analysis_id = gsub(".gene_list.csv","",unlist(split_filename)[length(unlist(split_filename))])
-
-output_filename <- paste(analysis_id,".GO.enrichment.positive.results.csv",sep="")
-writeTableWrapper(result1,output_dir,output_filename,col_indices = c(1:3,5,7),col_names=c("GO group",    "gene count",    "AUROC",    "adjusted p. value", "aspect"))
-
-output_filename <- paste(analysis_id,".GO.enrichment.negative.results.csv",sep="")
-writeTableWrapper(result2,output_dir,output_filename,col_indices = c(1:3,5,7),col_names=c("GO group",    "gene count",    "AUROC",    "adjusted p. value", "aspect"))
-
-# Examine the 3 aspects in the Gene Ontology separately
-
-head(filter(result, AUC < 0.5, aspect=="BP", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
-head(filter(result, AUC < 0.5, aspect=="CC", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
-head(filter(result, AUC < 0.5, aspect=="MF", adj.P.Val < 0.05) %>% dplyr::select(-ID), n=20)
+write_csv( result,  paste(baseFilename,".GO.results.csv",sep=""))
+write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  paste(baseFilename,".GO.up10.csv",sep=""))
+write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  paste(baseFilename,".GO.down10.csv",sep=""))
 
 
 ##### Look at what proportion of the results match certain categories
 
-result %>% filter (AUC < 0.5, adj.P.Val < 0.05)
+cat(paste("Total number of GO groups tested",as.character(lengths(result)[1])))
 
-cat(paste("Total number of GO groups",as.character(lengths(result)[1])))
+cat(paste("Number of significant GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05))[1])))
 
-cat(paste("Number of significant GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05))[1])))
+cat(paste("Number of significant positively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC > 0.5))[1])))
 
-cat(paste("Number of significant positively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC > 0.5))[1])))
+cat(paste("Number of significant negatively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5))[1])))
 
-cat(paste("Number of significant negatively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5))[1])))
-
-cat(paste("Number of significant negatively enriched CC GO groups",as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC"))[1])))
+cat(paste("Number of significant negatively enriched CC GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC"))[1])))
 
 cat(paste("Number of significant negatively enriched CC GO groups related to mitochondria",
-          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC", grepl("mitoc",MainTitle)))[1])))
+          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC", grepl("mitoc",MainTitle)))[1])))
+cat(paste("Mito groups tested: ", as.character(lengths(result %>% filter (aspect=="CC", grepl("mitoc",MainTitle)))[1])))
 
 cat(paste("Number of significant negatively enriched CC GO groups related to ribosome",
-          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="CC", grepl("ribos",MainTitle)))[1])))
+          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC", grepl("ribos",MainTitle)))[1])))
+cat(paste("ribos groups tested: ", as.character(lengths(result %>% filter (aspect=="CC", grepl("ribos",MainTitle)))[1])))
 
 cat(paste("Number of significant negatively enriched BP GO groups related to mitochondria",
-          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="BP", grepl("mitoc",MainTitle)))[1])))
+          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="BP", grepl("mitoc",MainTitle)))[1])))
+cat(paste("ribos groups tested: ", as.character(lengths(result %>% filter (aspect=="BP", grepl("mitoc",MainTitle)))[1])))
 
 cat(paste("Number of significant negatively enriched BP GO groups related to synapse",
-          as.character(lengths(result %>% filter (adj.P.Val < 0.05, AUC < 0.5,aspect=="BP", grepl("synap",MainTitle)))[1])))
-
-filter(result,grepl("myelin",MainTitle))
+          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="BP", grepl("synap",MainTitle)))[1])))
+cat(paste("synapse groups tested: ", as.character(lengths(result %>% filter (aspect=="BP", grepl("synap",MainTitle)))[1])))
 
 source("./R Code/ROCPlots.R")
 
@@ -231,31 +223,26 @@ source("./R Code/ROCPlots.R")
 #(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95)) #add labels = c("A", "B"), for manuscript
 #plot(plots$rasterPlot)
 
+filter(result,grepl("myelin",MainTitle))
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
-#remove synonyms/duplicate results - use the first name of a match
-myelinResult %<>% group_by(U, N1, AUC, P.Value) %>% dplyr::select(rank, MainTitle, ID, everything()) %>% arrange(P.Value)
-myelinResult$adj.P.Val <- p.adjust(myelinResult$P.Value, method="BH")
-
-myelinResult$adj.P.Val <- signif(myelinResult$adj.P.Val, digits=2)
-myelinResult$AUC <- signif(myelinResult$AUC, digits=3)
+myelinResult$adj.P.Value <- p.adjust(myelinResult$P.Value, method="BH")
+myelinResult$adj.P.Value <- signif(myelinResult$adj.P.Value, digits=3)
 
 myelinResult
 
-output_filename <- paste(analysis_id,".myelin.enrichment.results.csv",sep="")
-writeTableWrapper(myelinResult,output_dir,output_filename,col_indices = c(2,1,4,5,7,9),col_names=c("GO group",  "rank",  "gene count",    "AUROC",    "adjusted p. value", "aspect"))
+write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  
+           paste0(baseFilename,".GO.myelin.results.csv"))
 
 #plots <- createPlots(sortedGenes, c("GO:0043217", "GO:0043218", "GO:0022010", "GO:0008366","GO:0042552"), geneSetsGO)
 #(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-
-#write.csv(result, file=paste0(filename, ".enrichment.GO.csv"))
 
 #################################################################
 #################################################################
 
 loadPhenocarta <- function(taxon, geneBackground) {
   #guess column types from the whole dataset, basically
-  #phenocarta <- read_tsv("/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
-  phenocarta <- read_tsv("/Users/jritchie/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  phenocarta <- read_tsv("./data/figshare data/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
+  #phenocarta <- read_tsv("/Users/jritchie/Google Drive/4th Year/Thesis/other gene lists/phenoCarta/AllPhenocartaAnnotations.downloadedOct28.2016.tsv", skip = 4, guess_max = 130000)
   phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
   phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
   geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
@@ -272,13 +259,14 @@ geneSets <- loadPhenocarta("human", sortedGenes)
 result <- tmodUtest(c(sortedGenes), mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 
-result$adj.P.Val <- signif(result$adj.P.Val, digits=2)
+result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
 
-result <- head(result, n=10)
+# HIV finding is relevant to https://doi.org/10.1093/cid/cix035
 
-output_filename <- paste(analysis_id,".phenocarta.enrichment.results.csv",sep="")
-writeTableWrapper(result,output_dir,output_filename,col_indices = c(2:4,6),col_names=c("Disease group",    "gene count",    "AUROC",    "adjusted p. value"))
+write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val),  
+           paste0(baseFilename,".phenocarta.results.csv"))
+
 
 #write.csv(result, file=paste0(filename, ".enrichment.PhenoCarta.csv"))
 
@@ -292,13 +280,6 @@ writeTableWrapper(result,output_dir,output_filename,col_indices = c(2:4,6),col_n
 #################################################################
 tmodNames <- data.frame()
 modules2genes <- list()
-
-#need to set folder here
-if(Sys.info()['user'] == "lfrench") {
-  otherGeneListsFolder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/"
-} else {
-  otherGeneListsFolder <- "/Users/jritchie/git-repos/mri_transcriptomics/other gene lists/"
-}
 
 for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full.names = T)) {
   print(geneListFilename)
@@ -320,70 +301,48 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
-result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
+(result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))
 
-result$adj.P.Val <- signif(result$adj.P.Val, digits=2)
+result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
 
+writeTableWrapper <- function(prefixFilter, result) {
+  subsetResult <- filter(result, grepl(prefixFilter, Title))
+  subsetResult$Title <- gsub(paste0(prefixFilter, "."), "", subsetResult$Title)
+  subsetResult$Title <- gsub("[.]", " ", subsetResult$Title)
+  subsetResult$Title <- gsub("[_]", " ", subsetResult$Title)
+  subsetResult$Title <- gsub("ligo", "ligodendrocyte", subsetResult$Title)
+  subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value)
+  write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
+  subsetResult
+}
 
-(result1 <- subset(result, AUC > 0.5))
-#(result1 <- subset(result1, adj.P.Val < 0.05))
-
-output_filename <- paste(analysis_id,".cell.type.positive.enrichment.results.csv",sep="")
-writeTableWrapper(result1,output_dir,output_filename,col_indices = c(1:3,5),col_names=c("Cell type",    "gene count",    "AUROC",    "adjusted p. value"))
-
-(result2 <- subset(result, AUC < 0.5))
-
-output_filename <- paste(analysis_id,".cell.type.negative.enrichment.results.csv",sep="")
-writeTableWrapper(result2,output_dir,output_filename,col_indices = c(1:3,5),col_names=c("Cell type",    "gene count",    "AUROC",    "adjusted p. value"))
-
-darm <- filter(result, grepl("Darmanis", Title))
-darm$adj.P.Val <- p.adjust(darm$P.Value)
-#darm %>% filter(AUC < 0.5)
-darm %>% filter(AUC > 0.5)
-
-zeisel <- filter(result, grepl("Zeisel", Title))
-zeisel$adj.P.Val <- p.adjust(zeisel$P.Value)
-
-#zeisel %>% filter(AUC < 0.5)
-zeisel %>% filter(AUC > 0.5)
-
-neuro_expresso <- filter(result, grepl("Expresso", Title))
-neuro_expresso$adj.P.Val <- p.adjust(neuro_expresso$P.Value)
-#neuro_expresso %>% filter(AUC < 0.5)
-neuro_expresso %>% filter(AUC > 0.5)
+writeTableWrapper("Zeisel", result)
+writeTableWrapper("Darmanis", result)
+writeTableWrapper("NeuroExpresso.Cortex", result)
 
 #print out the genes for the oligo list
 #colnames(geneSets)
 
 filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)
 
-plots <- createPlots(sortedGenes, c("Zeisel.oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=NULL)#c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
+plots <- createPlots(sortedGenes, c("Zeisel.Oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=NULL)#c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
 
 #plots <- createPlots(sortedGenes, , geneSets)=c())
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
   
-plots <- createPlots(sortedGenes, darm$ID, geneSets)
+
+darm <- filter(result, grepl("Darmanis", Title))
+plots <- createPlots(sortedGenes, darm$Title, geneSets)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
 
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
-
-#write.csv(result, file=paste0(filename, ".enrichment.CellTypes.csv"))
 
 ##################
 # Zeng et al. 
 ################
 
-library(xlsx)
-library(dplyr)
-library(magrittr)
-library(tidyr)
-
-if(Sys.info()['user'] == "lfrench") {
-  zengPath <- "/Users/lfrench/Desktop/results/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
-} else {
-  zengPath <- "/Users/jritchie/git-repos/mri_transcriptomics/other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
-}
+zengPath <- "./other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
 
 
 zengTable <- read.xlsx(zengPath, sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
@@ -405,6 +364,8 @@ expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("4c","4", Cortical.
 expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("5a","5", Cortical.marker..human.))
 expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("6b","6", Cortical.marker..human.))
 expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("([0-6])","layer \\1", Cortical.marker..human.))
+expandedZengTable %<>% mutate(Cortical.marker..human. = gsub("VEC","vascular endothelial cell", Cortical.marker..human.))
+
 expandedZengTable %<>% filter(Cortical.marker..human. != 'others' & Cortical.marker..human. != "laminar")
 expandedZengTable %>% group_by(Cortical.marker..human.) %>% summarise(n())
 
@@ -426,4 +387,16 @@ geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
 
 zeng_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
-zeng_result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, ID)
+zeng_result <- tbl_df(zeng_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
+zeng_result %<>% arrange(as.character(Title))
+
+filter(geneStatistics, geneSymbol %in% expandedZengTable$Gene.symbol)
+
+write_csv(dplyr::select(zeng_result, `Type` = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val), paste0(baseFilename,".ZengEtAl.csv")) 
+
+zeng_result$Title <- factor(zeng_result$Title, levels=rev(sort(as.character(unique(zeng_result$Title)))))
+(barplot <- ggplot(zeng_result, aes(y=AUC-0.5, x=Title, fill=AUC > 0.5)) + geom_col() + 
+  coord_flip() + xlab("") + ylab("AUROC") + guides(fill=FALSE) +
+  scale_y_continuous(breaks=seq(-0.9, .9, by= .1), labels=seq(-0.9, .9, by= .1) + .5))
+ggsave(plot= barplot,paste0(baseFilename,".ZengEtAl.pdf" ), height=5, width=5)
+    

@@ -4,16 +4,15 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "NEFH"
-regionOfInterest <- "limbic_lobe"
+geneOfInterest <- "AGPAT9"
+regionOfInterest <- "cortex_excluding_limbic_lobe"
+modalityOfInterest <- "T1T2Ratio"
+xLabel <- "T1-/T2-w Ratio"
 
-if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
-  single_gene_folder <- "/Users/lfrench/Desktop/results/mri_transcriptomics/single_gene_data_avg/"
-} else {
-  single_gene_folder <- "/Users/jritchie/git-repos/mri_transcriptomics/single_gene_data_avg/"
-}
+#assume working directory is base project folder
+single_gene_folder <- "./results/single_gene_data/"
 
-for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]",regionOfInterest, "[.]"), full.names = T)) {
+for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]",regionOfInterest, ".*", modalityOfInterest, "[.]"), full.names = T)) {
   print(file)
   oneDonor <- as.data.frame(read_csv(file))
   oneDonor$Expression <- oneDonor[,geneOfInterest]
@@ -26,10 +25,16 @@ filter(allDonors, is.nan(MRI_Intensity) | is.infinite(MRI_Intensity))
 #remove those points
 allDonors %<>% filter(!(is.nan(MRI_Intensity)| is.infinite(MRI_Intensity)))
 
-correlationSummary <- allDonors %>% group_by(donor) %>% summarize(cor = cor(MRI_Intensity , Expression, m='s'), p=cor.test(MRI_Intensity , Expression, m='s')$p.value)
+allDonors %>% group_by(new_id) %>% summarize(n())
+
+correlationSummary <- allDonors %>% group_by(donor) %>% summarize(n = n(), cor = cor(MRI_Intensity , Expression, m='s'), p=cor.test(MRI_Intensity , Expression, m='s')$p.value)
 correlationSummary$p <- signif(correlationSummary$p, digits=2)
 correlationSummary$cor <- round(correlationSummary$cor, digits=2)
-correlationSummary$label <- paste0("\n  ρ = ", correlationSummary$cor, "  \n  p-value = ", correlationSummary$p,"\n")
+correlationSummary$label <- paste0("\n  n = ", correlationSummary$n,"\n  ρ = ", correlationSummary$cor, "  \n  p-value = ", correlationSummary$p,"\n")
+
+#get rid of p=0
+correlationSummary %<>% dplyr::mutate(label = gsub("p-value = 0\n", paste0("p-value < ", min(setdiff(p,0)), "\n") , label ))
+
 
 #linear model for exploration
 summary(lm(data=allDonors, MRI_Intensity ~ Expression + cortical_division + donor ))
@@ -56,9 +61,9 @@ donor_id_mapping <- data.frame(old_id,new_id,stringsAsFactors = F)
 allDonors %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
 correlationSummary %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
 
-plot(NULL)
+plot(1) #to clear plot area
 ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
-  ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="Cortical Division") + 
+  ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="Cortical Division") + 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
   facet_wrap(~ new_id, scales="free")+ theme_bw()
 
@@ -77,7 +82,7 @@ if (singleCorrelationSummary$p == 0) {
 }
 
 ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
-  ylab(paste(geneOfInterest, "Expression")) + xlab("T1-/T2-w Ratio") + labs(color="") + 
+  ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="") + 
   geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
   theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) #guides(color=FALSE) + theme(aspect.ratio=1) + 
 

@@ -7,6 +7,7 @@ def voxel_average(arr,voxel_size=1):
     kernel /= 27.0
     return scipy.ndimage.filters.convolve(arr,kernel,mode='constant')
 
+#deprecated
 def write_avg_image(dirname="C:\Users\Jacob\large_thesis_files\AllenHBAProcessedExpressionAndMRIs\\normalized_microarray_donor9861"):
     imgs = analysis.load_nifti_data(dirname)
     ratio = nibabel.Nifti1Image(imgs[0], np.eye(4,4))

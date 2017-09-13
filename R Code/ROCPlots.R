@@ -63,7 +63,7 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
 
   geneToClassAUC$rank <- -1*geneToClassAUC$rank
   
-  print(geneToClassAUC$group)
+  #print(geneToClassAUC$group)
  
   throwawayAUC <-geneToClassAUC 
  
@@ -83,7 +83,7 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   returnPlots
 }
 
-plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
+#plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
 
-plot_grid(plots$AUCPlot,plots$rasterPlot)
+#plot_grid(plots$AUCPlot,plots$rasterPlot)
 
