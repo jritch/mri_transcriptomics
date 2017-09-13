@@ -60,10 +60,18 @@ Update config.py with the the paths for these two sets of downloaded files. (mic
 2. Run write_t1t2_img.py to write out an example T1-w/T2-w ratio image in NIFTI1 format.
 
 
-## Data sources used
+## References for Data sources used
 
-Neuroexpresso
-Freesurfer 34
-Allen Human brain atlas
-Gene lists from Zeisel, Zeng and Darmanis
-Phenocarta
+Mancarci, B. O., Toker, L., Tripathy, S. J., Li, B., and Rocco, B. (2017). Cross-laboratory analysis of brain cell type transcriptomes with applications to interpretation of bulk tissue data. bioRxiv. Available at: http://www.biorxiv.org/content/early/2017/05/18/089219.abstract.
+
+Hawrylycz, M. J., Lein, E. S., Guillozet-Bongaarts, A. L., Shen, E. H., Ng, L., Miller, J. A., et al. (2012). An anatomically comprehensive atlas of the adult human brain transcriptome. Nature 489, 391–399.
+
+French, L., and Paus, T. (2015). A FreeSurfer view of the cortical transcriptome generated from the Allen Human Brain Atlas. Front. Neurosci. 9, 323.
+
+Darmanis, S., Sloan, S. A., Zhang, Y., Enge, M., Caneda, C., Shuer, L. M., et al. (2015). A survey of human brain transcriptome diversity at the single cell level. Proc. Natl. Acad. Sci. U. S. A. 112, 7285–7290.
+
+Zeisel, A., Muñoz-Manchado, A. B., Codeluppi, S., Lönnerberg, P., La Manno, G., Juréus, A., et al. (2015). Cell types in the mouse cortex and hippocampus revealed by single-cell RNA-seq. Science 347, 1138–1142.
+
+Zeng, H., Shen, E. H., Hohmann, J. G., Oh, S. W., Bernard, A., Royall, J. J., et al. (2012). Large-scale cellular-resolution gene profiling in human neocortex reveals species-specific molecular signatures. Cell 149, 483–496.
+
+Portales-Casamar, E., Ch’ng, C., Lui, F., St-Georges, N., Zoubarev, A., Lai, A. Y., et al. (2013). Neurocarta: aggregating and sharing disease-gene relations for the neurosciences. BMC Genomics 14, 129.
