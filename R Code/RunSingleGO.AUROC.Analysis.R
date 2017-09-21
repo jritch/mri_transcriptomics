@@ -4,6 +4,7 @@ Sys.info()["nodename"]
 
 #set working directory
 setwd("/Users/lfrench/Desktop/results/mri_transcriptomics_fresh/")
+
 #set figshare data folder
 figshare_data_folder = "./data/figshare data/"
 
@@ -12,7 +13,9 @@ if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   #filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T2.cortex_excluding_limbic_lobe.gene_list.csv"
   filename <- "/Users/lfrench/LiClipseWorkspace/mri_transcriptomcs_fresh/results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
 } else {
-  filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
+  setwd("C:/Users/Jacob/mri_transcriptomics")
+  
+  filename <- "./results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
 }
 
 cat(paste("Working directory:", getwd()))
