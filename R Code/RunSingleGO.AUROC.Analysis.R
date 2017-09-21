@@ -2,15 +2,13 @@
 
 Sys.info()["nodename"]
 
-#set working directory
-setwd("/Users/lfrench/Desktop/results/mri_transcriptomics_fresh/")
 #set figshare data folder
 figshare_data_folder = "./data/figshare data/"
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
-  #filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1.cortex_excluding_limbic_lobe.gene_list.csv"
-  #filename <- "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T2.cortex_excluding_limbic_lobe.gene_list.csv"
-  filename <- "/Users/lfrench/LiClipseWorkspace/mri_transcriptomcs_fresh/results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
+  #set working directory
+  setwd("/Users/lfrench/Desktop/results/mri_transcriptomics/")
+  filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_piriform_hippocampus.gene_list.csv"
 } else {
   filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
 }
@@ -21,6 +19,7 @@ baseFilename <- gsub(".csv", "", filename)
 
 otherGeneListsFolder <- "./other gene lists/"
 
+library(ggsignif)
 library(cowplot)
 library(readr)
 library(dplyr)
@@ -229,15 +228,13 @@ loadPhenocarta <- function(taxon, geneBackground) {
   geneSets
 }
 
-geneSets <- loadPhenocarta("human", sortedGenes)
+geneSetsPhenoCarta <- loadPhenocarta("human", sortedGenes)
 
-result <- tmodUtest(c(sortedGenes), mset=geneSets, qval = 1, filter = F)
+result <- tmodUtest(c(sortedGenes), mset=geneSetsPhenoCarta, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 
 result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
-
-# HIV finding is relevant to https://doi.org/10.1093/cid/cix035
 
 write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val),  
            paste0(baseFilename,".phenocarta.results.csv"))
@@ -262,7 +259,7 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
   genesOfInterest$term <- shortName
   
   #already a human gene list
-  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "SCZ", geneListFilename) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
+  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "PH", geneListFilename) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
     print(" converting from mouse to human")
@@ -272,6 +269,7 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
   tmodNames <- rbind(tmodNames, data.frame(ID=shortName, Title = shortName))
 }
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
+geneSetsCellType <- geneSets #for later reuse
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 (result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))
@@ -293,11 +291,7 @@ writeTableWrapper <- function(prefixFilter, result) {
 writeTableWrapper("Zeisel", result)
 writeTableWrapper("Darmanis", result)
 writeTableWrapper("NeuroExpresso.Cortex", result)
-
-#print out the genes for the oligo list
-#colnames(geneSets)
-
-filter(geneStatistics, geneSymbol %in% modules2genes$Darmanis.Oligo)
+writeTableWrapper("Mistry", result)
 
 plots <- createPlots(sortedGenes, c("Zeisel.Oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=NULL)#c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
 
@@ -359,6 +353,9 @@ for(geneSetName in unique(expandedZengTable$Cortical.marker..human.)) {
 geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
 
+#for the whole Zeng list, is it biased?
+mean(filter(geneStatistics, geneSymbol %in% sortedGenesInBackground)$medianCorrelation)
+
 zeng_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 zeng_result <- tbl_df(zeng_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
 zeng_result %<>% arrange(as.character(Title))
@@ -371,5 +368,8 @@ zeng_result$Title <- factor(zeng_result$Title, levels=rev(sort(as.character(uniq
 (barplot <- ggplot(zeng_result, aes(y=AUC-0.5, x=Title, fill=AUC > 0.5)) + geom_col() + 
   coord_flip() + xlab("") + ylab("AUROC") + guides(fill=FALSE) +
   scale_y_continuous(breaks=seq(-0.9, .9, by= .1), labels=seq(-0.9, .9, by= .1) + .5))
+barplot <- barplot + geom_text(data = filter(zeng_result, adj.P.Val  < 0.05 & adj.P.Val > 0.005), aes(hjust = -.5*sign(AUC-0.5)+.5), label = "*")
+barplot <- barplot + geom_text(data = filter(zeng_result, adj.P.Val < 0.005), aes(hjust = -.5*sign(AUC-0.5)+.5), label = "**")
+barplot
 ggsave(plot= barplot,paste0(baseFilename,".ZengEtAl.pdf" ), height=5, width=5)
     
