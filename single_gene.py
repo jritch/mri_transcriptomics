@@ -3,8 +3,6 @@ import numpy as np
 
 from ontology import *
 
-import voxel_averaged_mri
-
 def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
   '''
   Takes a file handle and an optional list of indices.
@@ -35,7 +33,7 @@ def main():
   if len(sys.argv) > 1:
     gene_name = sys.argv[1]
   else:
-    gene_name =  "AGPAT9"
+    gene_name =  "OR9Q1"
 
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
@@ -43,12 +41,12 @@ def main():
   '''
   regionIDs = [4219] 
   region_name = "limbic_lobe"
-  to_exclude = None
+  to_exclude_list = None
   '''
 
   regionIDs = [4008] #cortex
-  region_name = "cortex_excluding_limbic_lobe"
-  to_exclude = 4219
+  region_name = "cortex_excluding_piriform_hippocampus"
+  to_exclude_list = [4249, 10142]
 
   files = config.expression_filenames
 
@@ -72,7 +70,7 @@ def main():
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         indices = []
         for j in range(len(regionIDs)):
-          indices += analysis.get_flat_coords_from_region_id(regionIDs[j],coords,coord_to_region_map,o,to_exclude=to_exclude)
+          indices += analysis.get_flat_coords_from_region_id(regionIDs[j],coords,coord_to_region_map,o,to_exclude_list=to_exclude_list)
         assert(len(set(indices)) == len(indices))
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()

@@ -79,7 +79,7 @@ def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
 
   return coords,coord_to_region_map
 
-def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_exclude=None):
+def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_exclude_list=None):
   '''
   Returns the list of all coordinates corresponding to a regionID (including all its child regions)
 
@@ -91,8 +91,12 @@ def get_coords_from_region_id(regionID,coords,coord_to_region_map,ontology,to_ex
     for k,v in coord_to_region_map.iteritems():
       if v == regionID_iter:
         coords_list.append(k)
-  if to_exclude:
-    excluded_coords = get_coords_from_region_id(to_exclude,coords,coord_to_region_map,ontology)
+  if to_exclude_list:
+    excluded_coords = []
+    for to_exclude in to_exclude_list:
+      to_exclude_coords = get_coords_from_region_id(to_exclude,coords,coord_to_region_map,ontology)
+      excluded_coords.append(to_exclude_coords)
+    excluded_coords = [item for sublist in excluded_coords for item in sublist]
     return [x for x in coords_list if x not in excluded_coords]
 
   return coords_list
@@ -140,9 +144,9 @@ def rank_regions_by_intensity(coords,coord_to_region_map,ontology,flat_mri_data)
   print all_intensities
   return sorted(rank,key=lambda x: x[1],reverse=True)
 
-def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude=None):
+def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude_list=None):
   flat_coords_list = []
-  coords_list = get_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude=to_exclude)
+  coords_list = get_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exclude_list=to_exclude_list)
   for coord in coords_list:
     flat_coords_list.append(coords.index(eval(coord)))
   return flat_coords_list
@@ -153,7 +157,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
 
   Reads all three files.
 
-  Correlates(using the pearson correlation coefficient) the expression data for each gene with the one measure of MRI intensity.
+  Correlates the expression data for each gene with the one measure of MRI intensity.
 
   Returns a list of genes
 
@@ -181,11 +185,6 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
   print "Correlation execution time was", t2-t1
 
   return result
-
-def fisher_p(p_vector):
-  return scipy.stats.combine_pvalues(p_vector)[1]
-
-
 
 
 def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
@@ -274,7 +273,7 @@ def main():
   #### regions of interest are defined as a 3-tuple (name,ID, ID of excluded subregion)
   #regions_sets_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None),("hippocampus",4005,None)]
   #regions_sets_of_interest = [('cortex',4008,None)]
-  regions_sets_of_interest = [('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None)]
+  regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] ),('full_brain',4005,None)]
 
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_of_interest = ["T1","T2","T1T2Ratio"]

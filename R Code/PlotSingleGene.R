@@ -4,12 +4,16 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "AGPAT9"
-regionOfInterest <- "cortex_excluding_limbic_lobe"
+geneOfInterest <- "RBP4"
+regionOfInterest <- "cortex_excluding_piriform_hippocampus"
 modalityOfInterest <- "T1T2Ratio"
 xLabel <- "T1-/T2-w Ratio"
 
-#assume working directory is base project folder
+if (Sys.info()['nodename'] == "RES-C02RF0T2.local") {
+  #set working directory
+  setwd("/Users/lfrench/Desktop/results/mri_transcriptomics/")
+}
+
 single_gene_folder <- "./results/single_gene_data/"
 
 for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]",regionOfInterest, ".*", modalityOfInterest, "[.]"), full.names = T)) {
@@ -25,7 +29,7 @@ filter(allDonors, is.nan(MRI_Intensity) | is.infinite(MRI_Intensity))
 #remove those points
 allDonors %<>% filter(!(is.nan(MRI_Intensity)| is.infinite(MRI_Intensity)))
 
-allDonors %>% group_by(new_id) %>% summarize(n())
+allDonors %>% group_by(donor) %>% summarize(n())
 
 correlationSummary <- allDonors %>% group_by(donor) %>% summarize(n = n(), cor = cor(MRI_Intensity , Expression, m='s'), p=cor.test(MRI_Intensity , Expression, m='s')$p.value)
 correlationSummary$p <- signif(correlationSummary$p, digits=2)
@@ -67,10 +71,10 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
   facet_wrap(~ new_id, scales="free")+ theme_bw()
 
+#for single donor/figures
 unique(allDonors$donor)
 singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
 singleCorrelationSummary <- correlationSummary%>% filter(donor=="Donor 9861" )
-
 
 #### If p is too small, look it up from RunSingleGO.AUROC.Analysis.R and hard-code ###
 
@@ -81,13 +85,14 @@ if (singleCorrelationSummary$p == 0) {
   
 }
 
+#plot single
 ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="") + 
   geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
-  theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) #guides(color=FALSE) + theme(aspect.ratio=1) + 
+  theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) + guides(color=FALSE) + theme(aspect.ratio=1) 
+#use 3.5 inches pdf for figure
 
-
-#for poster
+#for figure/poster raster bar
 donor9861 <- allDonors %>% filter(donor == "Donor 9861")
 ggplot(donor9861, aes(donor, factor(regionID))) +
   geom_tile(aes(fill = MRI_Intensity), color="black") + theme_void() +

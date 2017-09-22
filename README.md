@@ -35,7 +35,7 @@ And the following R packages :
 
 ## Configuration 
 
-Download the three files from the figshare dataset ()
+Download the three files from the figshare dataset (https://figshare.com/s/9a5fc70f3d0b7a6ab7fb)
 * AllenMRImages.zip - requires unziping, with expanded files kept in the same folder as the below files. m prefix on files denotes bias corrected images.
 * AllenHBA_DK_ExpressionMatrix.tsv - expression matrix from a Freesurfer view of the cortical transcriptome
 * AllPhenocartaAnnotations.downloadedOct28.2016.tsv - annotations from Phenocarta
