@@ -62,7 +62,7 @@ Update config.py with the the paths for these two sets of downloaded files. (mic
 
 ## References for Data sources used
 
-Mancarci, B. O., Toker, L., Tripathy, S. J., Li, B., and Rocco, B. (2017). Cross-laboratory analysis of brain cell type transcriptomes with applications to interpretation of bulk tissue data. bioRxiv. Available at: http://www.biorxiv.org/content/early/2017/05/18/089219.abstract.
+Mancarci, B. O., Toker, L., Tripathy, S. J., Li, B., and Rocco, B. (2017). Cross-laboratory analysis of brain cell type transcriptomes with applications to interpretation of bulk tissue data. bioRxiv. Available at: http://www.biorxiv.org/content/early/2017/05/18/089219.abstract. Gene lists taken from https://github.com/oganm/neuroExpressoAnalysis/tree/master/analysis/01.SelectGenes/Markers_Final/CellTypes/Cortex .
 
 Hawrylycz, M. J., Lein, E. S., Guillozet-Bongaarts, A. L., Shen, E. H., Ng, L., Miller, J. A., et al. (2012). An anatomically comprehensive atlas of the adult human brain transcriptome. Nature 489, 391–399.
 

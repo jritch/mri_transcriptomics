@@ -70,6 +70,7 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
   ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="Cortical Division") + 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
   facet_wrap(~ new_id, scales="free")+ theme_bw()
+#11x6 inch pdf
 
 #for single donor/figures
 unique(allDonors$donor)

@@ -8,7 +8,9 @@ figshare_data_folder = "./data/figshare data/"
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   #set working directory
   setwd("/Users/lfrench/Desktop/results/mri_transcriptomics/")
+  filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.full_brain.gene_list.csv"
   filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_piriform_hippocampus.gene_list.csv"
+  
 } else {
   filename <- "/Users/jritchie/data/final/T1T2Ratio.full_brain.gene_list.csv"
 }
@@ -71,33 +73,27 @@ geneStatistics %<>% dplyr::mutate(isSig = metaP.neg.adj < 0.05 | metaP.pos.adj <
 
 geneStatistics %<>% mutate(pValueWithDirection = if_else(metaP.pos < metaP.neg, nrow(geneStatistics) - rank(metaP.pos), -1* nrow(geneStatistics) + rank(metaP.neg)))
 
-plot(geneStatistics$pValueWithDirection, geneStatistics$medianCorrelation)
-ggplot(geneStatistics, aes(x=pValueWithDirection, y = medianCorrelation, color = isSig)) + geom_point()
-
-
 freeSurferData <- read_tsv(paste0(figshare_data_folder, "AllenHBA_DK_ExpressionMatrix.tsv"))
 freeSurferData <- tbl_df(melt(freeSurferData))
 #add in median donor correlation
 geneStatistics %<>% inner_join(filter(freeSurferData, variable == 'Average donor correlation to median') %>% dplyr::select(geneSymbol = X1, DonorCorrelation = value))
-cor.test(geneStatistics$DonorCorrelation, abs(geneStatistics$pValueWithDirection), m='s')
 
 #add in average expression level (left hemisphere)
 averageExpression <- filter(freeSurferData, grepl("ctx-lh-", variable)) %>% group_by(X1) %>% summarize(averageExpression = mean(value)) %>% dplyr::rename(geneSymbol = X1)
 geneStatistics %<>% inner_join(averageExpression)
 
-cor.test(geneStatistics$averageExpression, geneStatistics$metaP.neg, m='s')
-cor.test(geneStatistics$averageExpression, geneStatistics$metaP.pos, m='s')
-plot(geneStatistics$averageExpression, geneStatistics$medianCorrelation, m='s')
-plot(geneStatistics$DonorCorrelation, geneStatistics$pValueWithDirection, m='s')
-
-ggplot(geneStatistics, aes(x=medianCorrelation, y = log(metaP.pos.adj), color = isSig)) + geom_point()
-
 #significant in both directions - should be none
 dplyr::filter(geneStatistics, metaP.neg.adj < 0.05 & metaP.pos.adj < 0.05)
 
 
+
 paste("Genes with negative correlations:", dplyr::filter(geneStatistics, metaP.neg.adj < 0.05) %>% summarize(n = n()))
 paste("Genes with positive correlations:", dplyr::filter(geneStatistics, metaP.pos.adj < 0.05) %>% summarize(n = n()))
+
+#average expression for neg and positive
+geneStatistics %>% filter(isSig) %>% group_by(medianCorrelation > 0 ,isSig ) %>% summarize(n=n(), averageExpression = mean(averageExpression,na.rm=TRUE))
+wilcox.test(filter(geneStatistics, isSig, medianCorrelation > 0)$averageExpression, filter(geneStatistics, isSig, medianCorrelation < 0)$averageExpression)
+
 
 #sort 
 geneStatistics <- arrange(geneStatistics, desc(pValueWithDirection))
@@ -156,15 +152,14 @@ result$AUC <- signif(result$AUC, digits=3)
 (result.up <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=10))
 (result.down <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=10))
 
-
 write_csv( result,  paste(baseFilename,".GO.results.csv",sep=""))
-write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  paste(baseFilename,".GO.up10.csv",sep=""))
-write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  paste(baseFilename,".GO.down10.csv",sep=""))
+write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect),  paste0(baseFilename,".GO.up10.csv"))
+write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `Adjusted PValue` = adj.P.Value, aspect),  paste0(baseFilename,".GO.down10.csv"))
 
 
 ##### Look at what proportion of the results match certain categories
 
-cat(paste("Total number of GO groups tested",as.character(lengths(result)[1])))
+cat(paste("Total number of GO groups tested",nrow(result)))
 
 cat(paste("Number of significant GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05))[1])))
 
@@ -178,10 +173,6 @@ cat(paste("Number of significant negatively enriched CC GO groups related to mit
           as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC", grepl("mitoc",MainTitle)))[1])))
 cat(paste("Mito groups tested: ", as.character(lengths(result %>% filter (aspect=="CC", grepl("mitoc",MainTitle)))[1])))
 
-cat(paste("Number of significant negatively enriched CC GO groups related to ribosome",
-          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC", grepl("ribos",MainTitle)))[1])))
-cat(paste("ribos groups tested: ", as.character(lengths(result %>% filter (aspect=="CC", grepl("ribos",MainTitle)))[1])))
-
 cat(paste("Number of significant negatively enriched BP GO groups related to mitochondria",
           as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="BP", grepl("mitoc",MainTitle)))[1])))
 cat(paste("ribos groups tested: ", as.character(lengths(result %>% filter (aspect=="BP", grepl("mitoc",MainTitle)))[1])))
@@ -192,11 +183,15 @@ cat(paste("synapse groups tested: ", as.character(lengths(result %>% filter (asp
 
 source("./R Code/ROCPlots.R")
 
-#plots <- createPlots(sortedGenes, c("GO:0005882", "GO:0032543", "GO:0000502", "GO:0060337", "GO:0060076", "GO:0044309","GO:0007422", "GO:0042552"), geneSetsGO,customNames = as.character(1:8))
-#plot(plots$rasterPlot)
+dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "core promoter binding")$ID
+dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "transcriptional repressor activity, RNA polymerase II transcription regulatory region sequence-specific binding")$ID
 
-#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot,  nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-#plot(plots$rasterPlot)
+#plots <- createPlots(sortedGenes, c("GO:0098798", "GO:1905368", "GO:0005882","GO:0031490","GO:0005814","GO:0033038","GO:0032452", "GO:0001227", "GO:0045178", "GO:0001047"), geneSetsGO)
+
+
+plots <- createPlots(sortedGenes, c("GO:0098798", "GO:1905368", "GO:0005882","GO:0031490","GO:0005814","GO:0033038","GO:0032452"), geneSetsGO)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+#save as 11x11 PDF
 
 filter(result,grepl("myelin",MainTitle))
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
@@ -208,8 +203,9 @@ myelinResult
 write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  
            paste0(baseFilename,".GO.myelin.results.csv"))
 
-#plots <- createPlots(sortedGenes, c("GO:0043217", "GO:0043218", "GO:0022010", "GO:0008366","GO:0042552"), geneSetsGO)
-#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+plots <- createPlots(sortedGenes, c("GO:0008366","GO:0043209", "GO:0032288"), geneSetsGO)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95, labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+#save as 11x8
 
 #################################################################
 #################################################################
@@ -279,30 +275,32 @@ result$AUC <- signif(result$AUC, digits=3)
 
 writeTableWrapper <- function(prefixFilter, result) {
   subsetResult <- filter(result, grepl(prefixFilter, Title))
+  subsetResult$oldTitle <- subsetResult$Title
   subsetResult$Title <- gsub(paste0(prefixFilter, "."), "", subsetResult$Title)
   subsetResult$Title <- gsub("[.]", " ", subsetResult$Title)
   subsetResult$Title <- gsub("[_]", " ", subsetResult$Title)
+  subsetResult$Title <- gsub("Neuron interneuron", "Interneuron", subsetResult$Title)
   subsetResult$Title <- gsub("ligo", "ligodendrocyte", subsetResult$Title)
   subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value)
+  subsetResult$adj.P.Val <- signif(subsetResult$adj.P.Val, digits=3)
   write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
   subsetResult
 }
 
-writeTableWrapper("Zeisel", result)
-writeTableWrapper("Darmanis", result)
+zeiselResult <- writeTableWrapper("Zeisel", result)
+darmResult <- writeTableWrapper("Darmanis", result)
 writeTableWrapper("NeuroExpresso.Cortex", result)
 writeTableWrapper("Mistry", result)
 
-plots <- createPlots(sortedGenes, c("Zeisel.Oligo", "Zeisel.Neuron.CA1.pryamidal", "Zeisel.Endothelial", "Zeisel.Neuron.interneuron"), geneSets, customNames=NULL)#c("Oligodendrocytes", "CA1 Pyramidal Neurons", "Endothelial Cells", "Interneurons"))
 
-#plots <- createPlots(sortedGenes, , geneSets)=c())
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-  
+plots <- createPlots(sortedGenes, as.character(zeiselResult$oldTitle), geneSets, customNames=zeiselResult$Title)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+#save as 11x11
 
-darm <- filter(result, grepl("Darmanis", Title))
-plots <- createPlots(sortedGenes, darm$Title, geneSets)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8))) #add labels = c("A", "B"), for manuscript
-plots$rasterPlot
+
+plots <- createPlots(sortedGenes, as.character(darmResult$oldTitle), geneSets, customNames=darmResult$Title)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8), labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+plots$rasterPlot #save as 10x4 pdf
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
 
 ##################

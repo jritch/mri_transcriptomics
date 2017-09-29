@@ -3,6 +3,7 @@ library(ggplot2)
 library(tidyr)
 library(plotROC)
 
+
 #input 
 #sorted genes, gene ID names, tmod object for getting genes <-> group
 createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
@@ -12,6 +13,7 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   for(groupID in groupIDs) {
     geneToClass <- bind_rows(geneToClass, tbl_df(data.frame(gene_symbol = unlist(tmodSets$MODULES2GENES[groupID]), group = tmodSets$MODULES[groupID,]$Title, stringsAsFactors = F)))  
   }
+  geneToClass %<>% distinct()
   geneToClassAUC <- left_join(ranking, geneToClass, by = "gene_symbol") %>% spread(key=group, value=group)
   geneToClassAUC %<>% gather(group, present, -gene_symbol, -rank) %>% filter(group != "<NA>")
   geneToClassAUC <- geneToClassAUC %>% mutate(present = if_else(is.na(present), 0, 1))
@@ -45,14 +47,14 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   
   #geneToClassAUC$group <- save
 
-  forOrder$labelWithAUC <- paste0(tmodSets$MODULES[groupID,]$Title, " (AUC=", signif(forOrder[groupID, "AUC"],digits=2), ")")
+  forOrder$labelWithAUC <- paste0(tmodSets$MODULES[groupID,]$Title, " (AUROC=", signif(forOrder[groupID, "AUC"],digits=2), ")")
 
   
-  forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUC=", signif(AUC,digits=2), ")")) %>% dplyr::select(ID,AUC,group = Title, labelWithAUC)
+  forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUROC=", signif(AUC,digits=2), ")")) %>% dplyr::select(ID,AUC,group = Title, labelWithAUC)
   
   if (length(customNames > 0)) {
     forOrder <- forOrder %>% left_join(names_df)
-    forOrder <- forOrder %>% mutate(labelWithAUC = paste0(customNames, " (AUC=", signif(AUC,digits=2), ")")) 
+    forOrder <- forOrder %>% mutate(labelWithAUC = paste0(customNames, " (AUROC=", signif(AUC,digits=2), ")")) 
   }
   
   forOrder$group <- as.character(forOrder$group)
@@ -76,7 +78,7 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
     theme(strip.background = element_blank(), strip.placement = "inside") + #, strip.text.y = element_text(angle = 180)) +
     theme(axis.title.y = element_blank(),  axis.text.y=element_blank(), axis.ticks.y=element_blank(),axis.ticks.x=element_blank()) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + guides(color=FALSE) +
-    scale_x_continuous(name = paste0("T1-/T2-w association gene ranking (",length(unique(throwawayAUC$gene_symbol))," genes)"), breaks= c(min(throwawayAUC$rank)+700, max(throwawayAUC$rank)-700), labels = c("Positive correlation", "Negative correlation")))
+    scale_x_continuous(name = paste0("T1-/T2-w association gene ranking (",length(unique(throwawayAUC$gene_symbol))," genes)"), breaks= c(min(throwawayAUC$rank)+1000, max(throwawayAUC$rank)-1000), labels = c("Positive correlation", "Negative correlation")))
   returnPlots = list()
   returnPlots[["AUCPlot"]] <- AUCPlot
   returnPlots[["rasterPlot"]] <- rasterPlot
