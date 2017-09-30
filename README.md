@@ -1,4 +1,4 @@
-# Code to replicate analysis from "Magnetic Resonance Imaging From The Transcriptomic Perspective"
+# Code to replicate analysis from "Transcriptomic  characterization  of  MRI  contrast focused  on  the T1-w/T2-w  ratio  in  the  cerebral  cortex"
 
 This project is compatible with Python v2.7 and R v3.4.0
 
