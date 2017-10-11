@@ -422,7 +422,7 @@ ggsave(plot= barplot,paste0(baseFilename,".HeEtAl.pdf" ), height=5, width=5)
 #DisGeNET
 ###############
 
-disgenet <- read_tsv("/Users/lfrench/Downloads/curated_gene_disease_associations.tsv.gz")
+disgenet <- read_tsv("./other gene lists/DisGeNET/curated_gene_disease_associations.tsv.gz")
 disgenet %<>% dplyr::select(symbol = geneSymbol, name = diseaseName, ID = diseaseId)
   
 
