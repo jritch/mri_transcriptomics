@@ -309,7 +309,6 @@ plots$rasterPlot #save as 10x4 pdf
 
 zengPath <- "./other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
 
-
 zengTable <- read.xlsx(zengPath, sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
 
 (zengTable <- tbl_df(zengTable))
@@ -371,3 +370,65 @@ barplot <- barplot + geom_text(data = filter(zeng_result, adj.P.Val < 0.005), ae
 barplot
 ggsave(plot= barplot,paste0(baseFilename,".ZengEtAl.pdf" ), height=5, width=5)
     
+################################################
+#### He Z et al. cortical layer markers (not currently used in manuscript)
+#    https://www.ncbi.nlm.nih.gov/pubmed/28414332
+#    http://www.picb.ac.cn/Comparative/data_methods/data_layer_2017.html
+################################################
+HeZPath <- "./other gene lists/HeEtAl/table_s2.xlsx"
+HeZTable <- read.xlsx(HeZPath, sheetName = "Sheet1", stringsAsFactors = F)
+(HeZTable <- tbl_df(HeZTable))
+
+HeZTable %<>% dplyr::select(Gene.symbol, Layer.marker.in.human)
+backGroundGenes <- unique(HeZTable$Gene.symbol)
+
+tmodNames <- data.frame()
+modules2genes <- list()
+
+for(geneSetName in unique(HeZTable$Layer.marker.in.human)) {
+  if(geneSetName == "NA") next
+  print(geneSetName)
+  
+  genesOfInterest <- filter(HeZTable, Layer.marker.in.human == geneSetName) %>% .$Gene.symbol
+  shortName <- geneSetName
+  
+  modules2genes[shortName] <- list(genesOfInterest)
+  
+  tmodNames <- rbind(tmodNames, data.frame(ID=shortName, Title = shortName))
+}
+geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
+sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
+
+HeZ_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
+HeZ_result <- tbl_df(HeZ_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
+HeZ_result %<>% arrange(as.character(Title))
+
+
+HeZ_result$Title <- factor(HeZ_result$Title, levels=rev(sort(as.character(unique(HeZ_result$Title)))))
+(barplot <- ggplot(HeZ_result, aes(y=AUC-0.5, x=Title, fill=AUC > 0.5)) + geom_col() + 
+    coord_flip() + xlab("") + ylab("AUROC") + guides(fill=FALSE) +
+    scale_y_continuous(breaks=seq(-0.9, .9, by= .1), labels=seq(-0.9, .9, by= .1) + .5))
+barplot <- barplot + geom_text(data = filter(HeZ_result, adj.P.Val  < 0.05 & adj.P.Val > 0.005), aes(hjust = -.5*sign(AUC-0.5)+.5), label = "*")
+barplot <- barplot + geom_text(data = filter(HeZ_result, adj.P.Val < 0.005), aes(hjust = -.5*sign(AUC-0.5)+.5), label = "**")
+barplot
+ggsave(plot= barplot,paste0(baseFilename,".HeEtAl.pdf" ), height=5, width=5)
+
+
+################
+#DisGeNET
+###############
+
+disgenet <- read_tsv("/Users/lfrench/Downloads/curated_gene_disease_associations.tsv.gz")
+disgenet %<>% dplyr::select(symbol = geneSymbol, name = diseaseName, ID = diseaseId)
+  
+
+geneLists <- group_by(disgenet, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
+distinct(geneLists)
+namedLists <- geneLists$genes
+names(namedLists) <- geneLists$ID
+idToName <- data.frame(ID = geneLists$ID, Title = geneLists$name)
+geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
+geneSets
+
+result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
+(result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))

@@ -26,6 +26,7 @@ for (targetGO in result.down$MainTitle) {
   write_csv(targetGenes, paste0(baseFilename, ".", targetGO, ".addedStats.csv"))
 }
 
+
 targetGO <- 'Darmanis.Oligo'
 targetGO <- 'Darmanis.Astrocytes'
 targetGO <- 'Darmanis.Microglia'
@@ -50,6 +51,16 @@ targetGO <- "Angelman syndrome"
 
 targetGOID <- dplyr::filter(tbl_df(geneSetsPhenoCarta$MODULES), Title == targetGO)$ID
 targetGenes <- filter(geneStatistics, geneSymbol %in% unlist(geneSetsPhenoCarta$MODULES2GENES[targetGOID]))
+nameFrame <- tbl_df(queryMany(targetGenes$geneSymbol, scopes = 'symbol',species="human"))
+(targetGenes <- left_join(targetGenes, nameFrame %>% dplyr::select(geneSymbol = symbol, name)) %>% dplyr::select(geneSymbol, name, everything())) %>% arrange(pValueWithDirection) %>% distinct()
+targetGenes %<>% distinct()
+write_csv(targetGenes, paste0(baseFilename, ".", targetGO, ".addedStats.csv"))
+
+
+
+targetGO <- "L6"
+targetGOID <- dplyr::filter(tbl_df(geneSets$MODULES), Title == targetGO)$ID
+targetGenes <- filter(geneStatistics, geneSymbol %in% unlist(geneSets$MODULES2GENES[targetGOID]))
 nameFrame <- tbl_df(queryMany(targetGenes$geneSymbol, scopes = 'symbol',species="human"))
 (targetGenes <- left_join(targetGenes, nameFrame %>% dplyr::select(geneSymbol = symbol, name)) %>% dplyr::select(geneSymbol, name, everything())) %>% arrange(pValueWithDirection) %>% distinct()
 targetGenes %<>% distinct()
