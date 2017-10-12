@@ -419,7 +419,7 @@ ggsave(plot= barplot,paste0(baseFilename,".HeEtAl.pdf" ), height=5, width=5)
 
 
 ################
-#DisGeNET
+#DisGeNET (not currently used in manuscript)
 ###############
 
 disgenet <- read_tsv("./other gene lists/DisGeNET/curated_gene_disease_associations.tsv.gz")
@@ -436,3 +436,20 @@ geneSets
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 (result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))
+
+
+################
+# Spaethling et al. lists (not currently used in manuscript, agrees with Darmanis)
+# Primary Cell Culture of Live Neurosurgically Resected Aged Adult Human Brain Cells and Single Cell Transcriptomics
+###############
+SpaethlingTable <- read.xlsx("./other gene lists/Spaethling et al./1-s2.0-S2211124716317739-mmc3.xlsx", sheetName = "Sheet1", stringsAsFactors = F)
+(SpaethlingTable <- tbl_df(SpaethlingTable) %>% dplyr::rename(symbol = Table.S4..Related.to.Figure.3B..Genes.enriched.in.each.cell.type, cellType = NA.) ) 
+
+geneLists <- group_by(SpaethlingTable, cellType) %>% dplyr::summarise(genes = unique(list(symbol)), size = n()) 
+namedLists <- geneLists$genes
+names(namedLists) <- geneLists$cellType
+idToName <- data.frame(ID = geneLists$cellType, Title = geneLists$cellType)
+geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
+
+Spaethling_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
+(Spaethling_result <- tbl_df(Spaethling_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID))
