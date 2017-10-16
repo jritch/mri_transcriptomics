@@ -33,7 +33,7 @@ def main():
   if len(sys.argv) > 1:
     gene_name = sys.argv[1]
   else:
-    gene_name =  "OR9Q1"
+    gene_name =  "HLA-E"
 
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
@@ -44,9 +44,15 @@ def main():
   to_exclude_list = None
   '''
 
+  '''
   regionIDs = [4008] #cortex
   region_name = "cortex_excluding_piriform_hippocampus"
   to_exclude_list = [4249, 10142]
+  '''
+  regionIDs = [4005] #full brain
+  region_name = "whole_brain"
+  to_exclude_list = None
+
 
   files = config.expression_filenames
 
@@ -97,8 +103,11 @@ def main():
             #get the main cortical lobe
             enclosing_regions = [str(x) for x in o.get_enclosing_regions(current_region_ID)]
             cortex_subdivision = set(enclosing_regions).intersection(cortex_divisions)
-            cortex_subdivision= next(iter(cortex_subdivision))
-            cortex_subdivision = o.names[int(cortex_subdivision)]
+            if (len(cortex_subdivision) != 0):
+                cortex_subdivision = next(iter(cortex_subdivision))
+                cortex_subdivision = o.names[int(cortex_subdivision)]
+            else:
+                cortex_subdivision = ""
             f.write("\"" + coord_string + "\","  + str(results[1,j]) + "," + str(results[2,j]) + "," + str(current_region_ID) + ",\""+ o.names[current_region_ID] + "\", " + cortex_subdivision + "\n")
 
 

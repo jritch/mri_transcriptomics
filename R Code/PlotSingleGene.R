@@ -4,8 +4,11 @@ library(readr)
 library(dplyr)
 
 allDonors <- NULL
-geneOfInterest <- "RBP4"
-regionOfInterest <- "cortex_excluding_piriform_hippocampus"
+#geneOfInterest <- "RBP4"
+#regionOfInterest <- "cortex_excluding_piriform_hippocampus"
+geneOfInterest <- "HLA-E"
+regionOfInterest <- "whole_brain"
+
 modalityOfInterest <- "T1T2Ratio"
 xLabel <- "T1-/T2-w Ratio"
 
@@ -42,6 +45,7 @@ correlationSummary %<>% dplyr::mutate(label = gsub("p-value = 0\n", paste0("p-va
 
 #linear model for exploration
 summary(lm(data=allDonors, MRI_Intensity ~ Expression + cortical_division + donor ))
+summary(lm(data=allDonors, MRI_Intensity ~ Expression  + donor ))
 
 #find the best spot for the correlatoin text
 if ( median(correlationSummary$cor) < 0) {
