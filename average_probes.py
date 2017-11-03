@@ -4,15 +4,13 @@ import pdb
 import time
 import pickle
 import config
-import os 
+import os
 import sys
 from numpy.testing import assert_approx_equal
 from os import listdir
 from os.path import isfile, join
 
 num_runs = 0
-
-
 
 def sort_columns(dataframe):
   """
@@ -46,10 +44,14 @@ def average_probes(probes, exp_data):
 
 
 def get_header(x):
-  """ This processes the SampleAnnot.csv file to get the header with RegionID and Location"""
+  """ This processes the SampleAnnot.csv file to get the header with RegionID and Location in native MRI coordinates"""
   LOC_tuple = lambda x : "(" + str(x.mri_voxel_x) + "," + str(x.mri_voxel_y) + "," + str(x.mri_voxel_z) + ")"
   return pandas.Series("RegionID:" + str(x.structure_id) + "|LOC:" + str(LOC_tuple(x)))
-  
+
+def get_MNI_header(x):
+  """ This processes the SampleAnnot.csv file to get the header with RegionID and Location in MNI coordinates"""
+  LOC_tuple = lambda x : "(" + str(x.mni_x) + "," + str(x.mni_y) + "," + str(x.mni_z) + ")"
+  return pandas.Series("RegionID:" + str(x.structure_id) + "|LOC:" + str(LOC_tuple(x)))
 
 def check_probes():
   """
@@ -63,7 +65,7 @@ def check_probes():
   avg = avg.reset_index()
   of_interest = avg.gene_symbol.str.match(r"A_.*_.*")
   print avg[of_interest == True]
-  return 
+  return
   # pdb.set_trace()
 
 def validate(data):
@@ -72,7 +74,7 @@ def validate(data):
   validation_data = pandas.read_csv("~/Downloads/AllenHBAProcessedExpressionWithBrainID/10021.matrix.regionID.MRI(xyz).29131 x 893.tsv", sep="\t")
 
   data.sort_values(by="gene_symbol", inplace=True)
-  
+
   validation_data.sort_values(by="Unnamed: 0", inplace=True)
 
   # check that all the columns are the same
@@ -86,15 +88,15 @@ def validate(data):
   a = [sym in validation_data['Unnamed: 0'].values for sym in data.gene_symbol]
   print a.count(True)
   print a.count(False)
-  
-  return 
+
+  return
 
 
 def spot_check_values(filename, output_filename):
   my_df = pandas.read_csv(filename, sep="\t")
   validation_df = pandas.read_csv(output_filename, sep="\t")
-  my_df_value = my_df[my_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]  
-  validation_df_value = validation_df[validation_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]  
+  my_df_value = my_df[my_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]
+  validation_df_value = validation_df[validation_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]
   assert(my_df_value == validation_df_value)
   sys.exit()
 
@@ -115,11 +117,11 @@ def check_all_values(filename, output_filename):
     print(i)
 
 
-def process_file(probe_filename, annotation_filename, expression_data_filename, output_filename):
+def process_file(probe_filename, annotation_filename, expression_data_filename, output_filename,use_mni_coordinates=False):
   """
-  Gathers data 
+  Gathers data
   """
-  
+
   global num_runs
   num_runs = 0
 
@@ -128,22 +130,25 @@ def process_file(probe_filename, annotation_filename, expression_data_filename, 
   exp_data = pandas.read_csv(expression_data_filename, header=None)
 
   data = average_probes(probes, exp_data)
-  header = annotations.apply(get_header, axis=1) 
+  if use_mni_coordinates:
+      header = annotations.apply(get_MNI_header,axis=1)
+  else:
+      header = annotations.apply(get_header, axis=1)
   # pdb.set_trace()
   col_map = {}
-  
+
   for i in range (0, len(header)):
     col_map[i + 1] = header.loc[i][0]
   col_map["gene_symbol"] = ""
 
   data.rename(columns=col_map, inplace=True)
-  data = data.reset_index() 
+  data = data.reset_index()
 
   # validate(data)
 
   # Get rid of gene_symbol column name so that columns will match
   data.columns.values[0] = None
-  
+
   data.to_csv(output_filename, sep="\t", index=False)
 
 def main():
@@ -151,6 +156,8 @@ def main():
 
 
   donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
+
+  use_mni_coordinates = True
 
   for donorFolder in donorFolders:
     brain_number = donorFolder.split("_donor")[1]
@@ -161,13 +168,15 @@ def main():
     probe_filename = os.path.join(config.microarrayFolder, donorFolder, "Probes.csv")
     annotation_filename = os.path.join(config.microarrayFolder, donorFolder, "SampleAnnot.csv")
     expression_data_filename = os.path.join(config.microarrayFolder, donorFolder, "MicroarrayExpression.csv")
-    output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz).tsv") 
 
-    process_file(probe_filename, annotation_filename, expression_data_filename, output_filename)
+    if use_mni_coordinates:
+        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz).tsv")
+    else:
+        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz_MNI).tsv")
+
+    process_file(probe_filename, annotation_filename, expression_data_filename, output_filename, use_mni_coordinates)
     print("Files written to:" + OUTPUT_FOLDER)
 
 
 if __name__ == '__main__':
   main()
-
-
