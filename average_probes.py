@@ -157,7 +157,7 @@ def main():
 
   donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
 
-  use_mni_coordinates = True
+  use_mni_coordinates = False
 
   for donorFolder in donorFolders:
     brain_number = donorFolder.split("_donor")[1]
@@ -170,12 +170,12 @@ def main():
     expression_data_filename = os.path.join(config.microarrayFolder, donorFolder, "MicroarrayExpression.csv")
 
     if use_mni_coordinates:
-        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz).tsv")
+        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MNI(xyz).tsv")
     else:
-        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz_MNI).tsv")
+        output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz).tsv")
 
     process_file(probe_filename, annotation_filename, expression_data_filename, output_filename, use_mni_coordinates)
-    print("Files written to:" + OUTPUT_FOLDER)
+    print("Matrix written to:" + output_filename)
 
 
 if __name__ == '__main__':
