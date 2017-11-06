@@ -1,3 +1,4 @@
+import os
 import csv
 class Ontology(object):
   """An Ontology has two member variables:
@@ -59,7 +60,7 @@ class Ontology(object):
 
 
 def main():
-    o = Ontology(config.ontologyFolder + "Ontology.csv")
+    o = Ontology(os.path.join(config.scriptLocation, "data",  "Ontology.csv"))
     print(o.names[4008])
     
     print(o.hierarchy.get(4008))

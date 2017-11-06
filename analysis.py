@@ -274,9 +274,11 @@ def main():
   #regions_sets_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None),("hippocampus",4005,None)]
   #regions_sets_of_interest = [('cortex',4008,None)]
   regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] ),('full_brain',4005,None)]
+  #regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] )]
 
   MRI_data_labels = ["T1","T2","T1T2Ratio"]
   MRI_of_interest = ["T1","T2","T1T2Ratio"]
+  #MRI_of_interest = ["T1T2Ratio"]
   #MRI_of_interest = ["T1"]
 
   analysis(o,files,brain_ids,regions_sets_of_interest,MRI_data_labels,MRI_of_interest)

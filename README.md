@@ -14,6 +14,7 @@ You will also need to install the following python libraries (installation using
 * scipy
 * pandas
 * nibabel
+* openpyxl
 
 And the following R packages :
 

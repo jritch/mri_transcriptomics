@@ -5,12 +5,15 @@ import time
 import pickle
 import config
 import os
+from openpyxl import load_workbook
 import sys
 from numpy.testing import assert_approx_equal
 from os import listdir
 from os.path import isfile, join
+from StdSuites.Type_Names_Suite import null
 
 num_runs = 0
+probe_processed_filename = os.path.join(config.microarrayFolder, "Probes.enhanced.csv")
 
 def sort_columns(dataframe):
   """
@@ -21,16 +24,24 @@ def sort_columns(dataframe):
 def average_group(x):
   global num_runs
   num_runs += 1
-  # import pdb; pdb.set_trace()
-  # sys.exit()
 
   if num_runs % 5000 == 0:
     print "GROUP NUMBER:", num_runs
   return np.mean(x[range(1, x.columns[-1] + 1)])
 
-def average_probes(probes, exp_data):
+def average_probes(probes, exp_data, probe_strategy):
   merged_table = pandas.merge(probes, exp_data, left_on="probe_id", right_on=0)  # .iloc[0:1]
   merged_table = merged_table.loc[merged_table['gene_symbol'] != 'na']
+
+  print("Probes before filtering: " + str(merged_table.shape[0]))
+  if probe_strategy is "all":
+    None
+  elif probe_strategy is "highSTD":
+    merged_table = merged_table[merged_table.is_most_variable == True]
+  elif probe_strategy is "passQC":
+    merged_table = merged_table[merged_table.is_qc_pass != False] #count NA values as passing
+  print("Probes after filtering: " + str(merged_table.shape[0]))
+ #my exit()
 
   gb = merged_table.groupby("gene_symbol")
 
@@ -117,7 +128,7 @@ def check_all_values(filename, output_filename):
     print(i)
 
 
-def process_file(probe_filename, annotation_filename, expression_data_filename, output_filename,use_mni_coordinates=False):
+def process_file(probe_filename, annotation_filename, expression_data_filename, output_filename,use_mni_coordinates=False, probe_strategy="all"):
   """
   Gathers data
   """
@@ -129,7 +140,7 @@ def process_file(probe_filename, annotation_filename, expression_data_filename, 
   annotations = pandas.read_csv(annotation_filename)
   exp_data = pandas.read_csv(expression_data_filename, header=None)
 
-  data = average_probes(probes, exp_data)
+  data = average_probes(probes, exp_data, probe_strategy)
   if use_mni_coordinates:
       header = annotations.apply(get_MNI_header,axis=1)
   else:
@@ -150,14 +161,104 @@ def process_file(probe_filename, annotation_filename, expression_data_filename, 
   data.columns.values[0] = None
 
   data.to_csv(output_filename, sep="\t", index=False)
+  
+
+  
+def write_probe_information():
+  OUTPUT_FOLDER = config.processedOutputLocation   
+  donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
+  
+  result_probe_info = None
+  
+  brain_sd_col_list = []
+  for donorFolder in donorFolders:
+    brain_number = donorFolder.split("_donor")[1]
+    brain_number = "BrainSD_" + str(brain_number)
+    brain_sd_col_list.append(brain_number)
+
+    print ("PROCESSING SD for " + donorFolder)
+
+    probe_filename = os.path.join(config.microarrayFolder, donorFolder, "Probes.csv")
+    expression_data_filename = os.path.join(config.microarrayFolder, donorFolder, "MicroarrayExpression.csv")
+    
+    probes = pandas.read_csv(probe_filename)
+    if result_probe_info is None: 
+        result_probe_info = probes.copy()
+    
+    exp_data = pandas.read_csv(expression_data_filename, header=None) #, nrows=100)
+    merged_table = pandas.merge(probes[['probe_id', 'probe_name']], exp_data, left_on="probe_id", right_on=0) 
+
+    merged_table = merged_table.drop(0, axis=1)
+    merged_table = merged_table.drop('probe_id', axis=1)
+
+    sdTable = merged_table.std(axis=1)
+
+    sdTable = pandas.concat([merged_table[['probe_name']], sdTable], axis=1)
+    sdTable.rename(columns={0: brain_number }, inplace=True)
+    result_probe_info = pandas.merge(result_probe_info, sdTable, on='probe_name') 
+  
+  #compute average SD
+  result_probe_info = result_probe_info.assign(mean_sd = result_probe_info[brain_sd_col_list].mean(axis=1))
+  
+  #find probe with highest SD for a gene
+  indexes_with_max_sd = result_probe_info.groupby(['gene_symbol'])['mean_sd'].transform(max) == result_probe_info['mean_sd']
+  result_probe_info['is_most_variable'] = indexes_with_max_sd 
+
+  #merge in xlsx data
+  
+
+  print("Loading Miller et al. probe information (xlsx)")  
+  miller_probe_info = load_workbook(os.path.join(config.scriptLocation, "data",  "Miller et al. doi.org_10.1186_1471-2164-15-154 12864_2013_7016_MOESM8_ESM.xlsx"))
+
+  sheet = miller_probe_info.get_sheet_by_name("Table")
+  probe_col = sheet['A']
+  qc_col = sheet['H']
+
+  probe_col = probe_col[2:]
+  qc_col = qc_col[2:]
+  
+  probe_col = [cell.value for cell in probe_col]
+  qc_col = [cell.value for cell in qc_col]
+  
+  qc_table = pandas.DataFrame(data={'probe_name' : probe_col, 'is_qc_pass' : qc_col})
+  
+  result_probe_info = pandas.merge(result_probe_info, qc_table, on = 'probe_name')
+  
+  #calculate statistics for probes
+  probes_per_gene = result_probe_info.groupby(['gene_symbol']).size().reset_index(name='n')
+
+  genes_with_probes = probes_per_gene.query('n > 1')['gene_symbol']
+  print("Number of genes that have more than one probe:" + str(len(genes_with_probes)))
+  
+  #probes that are in genes that have more than one probe
+  filtered_probes = result_probe_info[result_probe_info['gene_symbol'].isin(genes_with_probes)]
+  print("Number of probes in genes that have more than one probe:" + str(len(filtered_probes.index)))
+  
+  #get statistics
+  print(filtered_probes.groupby(['is_most_variable', 'is_qc_pass']).size())
+   
+  print("Writing enhanced probe information to " + probe_processed_filename)
+  result_probe_info.to_csv(probe_processed_filename, index=False)
+  exit()
+
+    
+
 
 def main():
   OUTPUT_FOLDER = config.processedOutputLocation
 
+  if not os.path.isfile(probe_processed_filename): 
+    write_probe_information()
 
   donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
 
-  use_mni_coordinates = False
+  use_mni_coordinates = True
+  #probe_strategy = "all"
+  #probe_strategy = "highSTD"
+  probe_strategy = "passQC"
+
+  print("Probe filter strategy: " + probe_strategy)
+  print("Using MNI coordinates? " + use_mni_coordinates)
 
   for donorFolder in donorFolders:
     brain_number = donorFolder.split("_donor")[1]
@@ -165,7 +266,7 @@ def main():
     print ("PROCESSING " + donorFolder)
     brain_number = donorFolder.split("_donor")[1]
 
-    probe_filename = os.path.join(config.microarrayFolder, donorFolder, "Probes.csv")
+    probe_filename = probe_processed_filename
     annotation_filename = os.path.join(config.microarrayFolder, donorFolder, "SampleAnnot.csv")
     expression_data_filename = os.path.join(config.microarrayFolder, donorFolder, "MicroarrayExpression.csv")
 
@@ -174,7 +275,7 @@ def main():
     else:
         output_filename = os.path.join(OUTPUT_FOLDER, str(brain_number) + ".matrix.regionID.MRI(xyz).tsv")
 
-    process_file(probe_filename, annotation_filename, expression_data_filename, output_filename, use_mni_coordinates)
+    process_file(probe_filename, annotation_filename, expression_data_filename, output_filename, use_mni_coordinates, probe_strategy)
     print("Matrix written to:" + output_filename)
 
 
