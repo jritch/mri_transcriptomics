@@ -6,7 +6,7 @@ library(plotROC)
 
 #input 
 #sorted genes, gene ID names, tmod object for getting genes <-> group
-createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
+createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL, filter = T) {
   
   ranking <- tbl_df(data.frame(gene_symbol = rev(sortedGenes), rank = 1: length(sortedGenes), stringsAsFactors = F))
   geneToClass <- NULL
@@ -24,7 +24,7 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL) {
   }
   
   #order groups by direction of AUC
-  forOrder <- tmodUtest(c(sortedGenes), mset=tmodSets, qval = 1, filter = T)
+  forOrder <- tmodUtest(c(sortedGenes), mset=tmodSets, qval = 1, filter = filter)
   forOrder <- tbl_df(forOrder)
   forOrder %<>% filter(ID %in% groupIDs ) %>% arrange(desc(AUC))
   #forOrder %<>% filter(ID %in% groupIDs ) %>% arrange(desc(sign(AUC-0.5)* P.Value))

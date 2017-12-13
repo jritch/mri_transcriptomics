@@ -19,7 +19,11 @@ processedOutputLocation = os.path.join(scriptLocation, "data", "python_processed
 if not os.path.exists(processedOutputLocation):
   os.makedirs(processedOutputLocation)
 
-expression_filenames = [f for f in listdir(processedOutputLocation) if '.matrix.regionID.MRI(xyz).tsv' in f]
+def get_expression_filenames(use_MNI):
+  if not use_MNI:
+    return [f for f in listdir(processedOutputLocation) if '.matrix.regionID.MRI(xyz).tsv' in f]
+  else:
+    return [f for f in listdir(processedOutputLocation) if '.matrix.regionID.MNI(xyz).tsv' in f]  
 
 resultFolder = os.path.join(scriptLocation, "results")
 if not os.path.exists(resultFolder):

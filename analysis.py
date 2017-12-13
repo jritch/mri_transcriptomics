@@ -1,3 +1,4 @@
+from nibabel.affines import apply_affine
 import nibabel
 import numpy
 import os
@@ -14,53 +15,81 @@ import pdb
 
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
+from nibabel import processing
 import statsmodels.sandbox.stats.multicomp
 import numpy as np
 import pandas
+import math
 
 from ontology import *
 
-print "Base script folder:" + config.scriptLocation
+print("Base script folder:" + config.scriptLocation)
 
 R_VALUE_FUNCTION = spearmanr
 
-def load_nifti_data(brainID):
+
+def load_nifti_data(brainID, use_HCP_and_MNI):
   '''
 
   Takes the name of a brainID containing two NIFTI files, 'T1.nii' and 'T2.nii'.
 
-  Returns a 3-item list of numpy arrays containing the T1,T2 and T1/T2 measurements.
+  Returns a 3-item list of numpy arrays containing the image measurements.
 
   '''
   os.chdir(config.figShareFolder)
-  NIFTI_FILES = ['m' + brainID + '_T1.nii.gz', 'm' + brainID + '_T2.nii.gz']
+  if use_HCP_and_MNI:
+    NIFTI_FILES = ['S1200_AverageT1wDividedByT2w.nii.gz']
+  else:
+    NIFTI_FILES = ['m' + brainID + '_T1.nii.gz', 'm' + brainID + '_T2.nii.gz']
   #NIFTI_FILES = [brainID + '_T1.nii.gz', brainID + '_T2.nii.gz'] #use images that have not been bias corrected
 
-  imgs = []
   data = []
   for f in NIFTI_FILES:
     img = nibabel.load(f)
-    imgs.append(img)
+    #img = nibabel.processing.smooth_image(img, fwhm = 4) #for smoothing experiments
+
     #print img.header
     data.append(img.get_data())
 
-  data.append(numpy.divide(data[0]*1.0,data[1]*1.0))
+  if not use_HCP_and_MNI:
+    ratio_data = numpy.divide(data[0]*1.0,data[1]*1.0)
+    data.append(ratio_data)
+    
+    ratio_filename = 'm' + brainID + '_T1divideT2.nii.gz'
+    #write out ratio image if it doesn't exist already
+    if not os.path.isfile(ratio_filename): 
+      img = nibabel.load(f) #load a file to get header
+      pair_img = nibabel.Nifti1Pair(ratio_data, img.header.get_sform())
+      print("Writing ratio image")
+      nibabel.save(pair_img, ratio_filename)
+       
   return data
 
-def get_gene_exp_data_file(directory):
-  '''
-  Takes the name of a directory containing a txt file with the MRI data.
 
-  Returns a file handle to the open file
-
-  '''
-  os.chdir(directory)
-  return open('9861.matrix.MRI(xyz).29131 x 946.txt')
-
-def flatten_mri_data(mri_data,coords):
+def flatten_mri_data(mri_data,coords, use_HCP_and_MNI):
+  #convert_coords()
+  if use_HCP_and_MNI:
+    #load the HCP image to get the header information
+    img = nibabel.load('S1200_AverageT1wDividedByT2w.nii.gz')
+    #get transformation matrix
+    sform_matrix = img.header.get_sform()
+    #invert the sform transformation so we can start with MNI coordinates
+    sform_matrix = numpy.linalg.inv(sform_matrix)
+    
+  
   flat_mri_data = []
   for coord in coords:
-    flat_mri_data.append(mri_data[coord])
+    if use_HCP_and_MNI:
+      #transform then round
+      coord = apply_affine(sform_matrix, coord)
+      coord = map(round, coord)
+      coord = map(int, coord)
+      flat_mri_data.append(mri_data[coord[0], coord[1], coord[2]])
+
+    else:
+      #no transformation needed 
+      flat_mri_data.append(mri_data[coord])
+    
   return flat_mri_data
 
 def get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh):
@@ -153,9 +182,7 @@ def get_flat_coords_from_region_id(ID,coords,coord_to_region_map,ontology,to_exc
 
 def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None):
   '''
-  Takes the name of a directory containing a txt file with the gene_expression data and two NIFTI files.
-
-  Reads all three files.
+  Takes the name of a directory containing a txt file with the gene_expression data and MRI data
 
   Correlates the expression data for each gene with the one measure of MRI intensity.
 
@@ -187,7 +214,7 @@ def correlate_MRI_and_gene_exp_data(flat_mri_data,gene_exp_filename,indices=None
   return result
 
 
-def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
+def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest, use_HCP_and_MNI):
   #get number of genes
   expression_values = pandas.read_csv(os.path.join(config.processedOutputLocation,files[0]),delimiter="\t")
   gene_count = expression_values.shape[0]
@@ -200,7 +227,7 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
   # i is the brain
   for i in range(len(brain_ids)):
 
-    MRI_data = load_nifti_data(brain_ids[i])
+    MRI_data = load_nifti_data(brain_ids[i], use_HCP_and_MNI)
     gene_exp_fh = open(os.path.join(config.processedOutputLocation,files[i]))
     coords,coord_to_region_map = get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
     gene_exp_fh.close()
@@ -212,7 +239,7 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
           continue
 
       measure = MRI_data[j]
-      flat_mri_data = flatten_mri_data(measure,coords)
+      flat_mri_data = flatten_mri_data(measure,coords, use_HCP_and_MNI)
 
       for k in range(len(region_sets)):
 
@@ -240,8 +267,13 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
           data_array[j][k][ind][i+1] = str(correlations_in_order[ind])
           data_array[j][k][ind][i+1+2*len(files)] = str(adj_p_values_in_order[ind])
 
+  #load probe info to make symbol to entrez ID map
+  probe_information = pandas.read_csv(os.path.join(config.microarrayFolder, "Probes.enhanced.csv"))
+  probe_information = probe_information[['gene_symbol', 'entrez_id']].drop_duplicates()
+  entrez_dict = probe_information.set_index('gene_symbol').to_dict()['entrez_id']
+
   print("Writing Files")
-  for j in range(3):
+  for j in range(len(MRI_data_labels)):
     if MRI_data_labels[j] not in MRI_of_interest:
       continue
     for k in range(len(region_sets)):
@@ -249,23 +281,33 @@ def analysis(o,files,brain_ids,region_sets,MRI_data_labels,MRI_of_interest):
 
       with open(os.path.join(config.resultFolder,  label + ".gene_list.csv"),'w') as f:
         data = data_array[j][k]
-        f.write("ID,Correlation."  + (",Correlation.").join(brain_ids) + ",PValue."+ (",PValue.").join(brain_ids) +",PValueAdjusted."+ (",PValueAdjusted.").join(brain_ids) + "\n")
+        f.write("ID, entrez_id, Correlation."  + (",Correlation.").join(brain_ids) + ",PValue."+ (",PValue.").join(brain_ids) +",PValueAdjusted."+ (",PValueAdjusted.").join(brain_ids) + "\n")
 
         ind=0
         for gene_entry in data:
           gene_name = gene_names_in_order[int(gene_entry[0])]
-          f.write(gene_name + "," + ",".join(map(str,gene_entry[1:])) + "\n")
+          entrez_id = entrez_dict[gene_name.replace('"',"")].item()
+          if (not math.isnan(entrez_id)):
+            entrez_id = int(entrez_id)
+              
+          f.write(gene_name + "," + str(entrez_id) + "," + ",".join(map(str,gene_entry[1:])) + "\n")
           ind +=1
+      
+      
 
 def main():
+    
   correlated_data = None
   t1 = time.clock()
 
   o = Ontology(os.path.join(config.scriptLocation, "data",  "Ontology.csv"))
 
+  use_HCP_and_MNI = True
   print('Getting coordinates from gene expression file.')
-
-  files = config.expression_filenames
+  print("using HCP ratio image and MNI coordinates:" + str(use_HCP_and_MNI))
+  
+  files = config.get_expression_filenames(use_MNI = use_HCP_and_MNI)
+  print(files)
 
   brain_ids = [f.split(".")[0] for f in files]
 
@@ -273,15 +315,21 @@ def main():
   #### regions of interest are defined as a 3-tuple (name,ID, ID of excluded subregion)
   #regions_sets_of_interest = [('cortex',4008,None),('cortex_excluding_limbic_lobe',4008,4219),('full_brain',4005,None),("hippocampus",4005,None)]
   #regions_sets_of_interest = [('cortex',4008,None)]
-  regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] ),('full_brain',4005,None)]
+  #regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] ),('full_brain',4005,None)]
   #regions_sets_of_interest = [('cortex_excluding_piriform_hippocampus',4008, [4249, 10142] )]
+  regions_sets_of_interest = [('full_brain',4005,None)]
 
-  MRI_data_labels = ["T1","T2","T1T2Ratio"]
-  MRI_of_interest = ["T1","T2","T1T2Ratio"]
-  #MRI_of_interest = ["T1T2Ratio"]
-  #MRI_of_interest = ["T1"]
+  if not use_HCP_and_MNI:
+    MRI_data_labels = ["T1","T2","T1T2Ratio"]
+    MRI_of_interest = ["T1T2Ratio"]
+    #MRI_of_interest = ["T1","T2","T1T2Ratio"]
+  else:
+    MRI_data_labels = ["HCP"]
+    MRI_of_interest = ["HCP"]
+  
+  
 
-  analysis(o,files,brain_ids,regions_sets_of_interest,MRI_data_labels,MRI_of_interest)
+  analysis(o,files,brain_ids,regions_sets_of_interest,MRI_data_labels,MRI_of_interest, use_HCP_and_MNI)
 
   t2 = time.clock()
 

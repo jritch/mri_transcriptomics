@@ -29,22 +29,29 @@ def get_single_gene_data(gene_exp_fh,gene_name,indices=None):
     return [numerical_entries[i] for i in indices]
 
 def main():
-
   if len(sys.argv) > 1:
     gene_name = sys.argv[1]
   else:
-    gene_name =  "HLA-E"
+    gene_name =  "TREML1"
+    
+  use_HCP_and_MNI = False
 
-  MRI_data_labels = ["T1","T2","T1T2Ratio"]
-  MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
+  if not use_HCP_and_MNI:
+    MRI_data_labels = ["T1","T2","T1T2Ratio"]
+    MRI_dimension = 2 # 0: T1, 1: T2, 2: ratio
+  else:
+    MRI_data_labels = ["HCP"]
+    MRI_dimension = 0
+
   MRI_data_label = MRI_data_labels[MRI_dimension]
+  print("Using: " + MRI_data_label)
+  print("Gene:" + gene_name)
   '''
   regionIDs = [4219] 
   region_name = "limbic_lobe"
   to_exclude_list = None
   '''
 
-  '''
   regionIDs = [4008] #cortex
   region_name = "cortex_excluding_piriform_hippocampus"
   to_exclude_list = [4249, 10142]
@@ -52,18 +59,21 @@ def main():
   regionIDs = [4005] #full brain
   region_name = "whole_brain"
   to_exclude_list = None
+  '''
 
 
-  files = config.expression_filenames
+  files = config.get_expression_filenames(use_MNI=use_HCP_and_MNI)
 
   brain_ids = [f.split(".")[0] for f in files]
 
-  header = "\"(x,y,z)\"," + ",".join([ '"' + f + "_MRI\",\"" + f + "_" + gene_name + '"'  for f in brain_ids])
   outputFolder = os.path.join(config.scriptLocation, "results", "single_gene_data")
   if not os.path.exists(outputFolder):
       os.mkdir(outputFolder)
 
-  filenames = [os.path.join(outputFolder, f + "." + gene_name + "." + region_name + ".MRI(xyz).expression."+ MRI_data_label +".csv") for f in brain_ids]
+  if not use_HCP_and_MNI:
+    filenames = [os.path.join(outputFolder, f + "." + gene_name + "." + region_name + ".MRI(xyz).expression."+ MRI_data_label +".csv") for f in brain_ids]
+  else:
+    filenames = [os.path.join(outputFolder, f + "." + gene_name + "." + region_name + ".MNI(xyz).expression."+ MRI_data_label +".csv") for f in brain_ids]
   
   o = Ontology(os.path.join(config.scriptLocation, "data",  "Ontology.csv"))
   
@@ -73,6 +83,7 @@ def main():
   for i in range(num_brains):
 
         gene_exp_fh = open(os.path.join(config.processedOutputLocation,files[i]))
+        print("Loading: " + os.path.join(config.processedOutputLocation,files[i]))
         coords,coord_to_region_map = analysis.get_coords_and_region_ids_from_gene_exp_data(gene_exp_fh)
         indices = []
         for j in range(len(regionIDs)):
@@ -81,12 +92,12 @@ def main():
         single_gene_data = np.array(get_single_gene_data(gene_exp_fh,gene_name,indices))
         gene_exp_fh.close()
 
-        mri_data = analysis.load_nifti_data(brain_ids[i])[MRI_dimension]
+        mri_data = analysis.load_nifti_data(brain_ids[i], use_HCP_and_MNI)[MRI_dimension]
         use_voxel_avg = False #True
         if use_voxel_avg:
             mri_data = voxel_averaged_mri.voxel_average(mri_data)
 
-        flat_mri_data = np.array(analysis.flatten_mri_data(mri_data,coords))
+        flat_mri_data = np.array(analysis.flatten_mri_data(mri_data,coords, use_HCP_and_MNI))
         region_specific_flat_mri_data = [flat_mri_data[j] for j in indices]
         results = np.zeros((5,len(indices)))
         results[1,:] = region_specific_flat_mri_data
@@ -113,3 +124,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print("Done")

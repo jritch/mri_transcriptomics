@@ -7,9 +7,9 @@ from single_gene import get_single_gene_data
 
 def generate_tables():
 
-    regionIDs = [4005] #full brain
-    region_name = "whole_brain"
-    to_exclude_list = None
+    regionIDs = [4008] #full brain
+    region_name = "cortex_excluding_piriform_hippocampus"
+    to_exclude_list = [4249, 10142]
 
     gene_names = [
                   "TAS2R43",
@@ -19,7 +19,7 @@ def generate_tables():
                   "TAS2R50"
                ]
 
-    files = config.expression_filenames
+    files = get_expression_filenames(use_MNI=False)
 
     brain_ids = [f.split(".")[0] for f in files]
 
@@ -31,7 +31,7 @@ def generate_tables():
 
     o = Ontology(os.path.join(config.scriptLocation, "data",  "Ontology.csv"))
 
-    cortex_divisions = [str(x) for x in o.hierarchy.get(4008)]
+    #cortex_divisions = [str(x) for x in o.hierarchy.get(4008)]
 
     num_brains = len(brain_ids)
 
@@ -64,8 +64,8 @@ def get_correlations(df_filename,genes=None):
     for i in itertools.combinations(genes,2):
         corr = analysis.R_VALUE_FUNCTION(df[i[0]],df[i[1]])
         print "Correlation between",i[0],"and",i[1],":",corr
-        table_dict[i[0]][i[1]] = tuple(corr)
-        table_dict[i[1]][i[0]] = tuple(corr)
+        table_dict[i[0]][i[1]] = tuple(corr)[0]
+        table_dict[i[1]][i[0]] = tuple(corr)[0]
 
     filename = df_filename.replace(".raw.csv",".correlation.tsv")
     pandas.DataFrame.from_dict(table_dict).to_csv(filename,sep="\t")
@@ -79,5 +79,6 @@ def get_correlations(df_filename,genes=None):
 if __name__ == '__main__':
     filenames = generate_tables()
     get_correlations(filenames[0])
+    get_correlations(filenames[1])
     #plot_two_genes(filenames[0],("TAS2R43","TAS2R30"))
     df = pandas.read_csv(filenames[0].replace(".raw.csv",".correlation.tsv"),delimiter="\t")

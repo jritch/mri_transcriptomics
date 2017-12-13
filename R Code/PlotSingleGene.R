@@ -3,14 +3,23 @@ library(ggplot2)
 library(readr)
 library(dplyr)
 
-allDonors <- NULL
 #geneOfInterest <- "RBP4"
-#regionOfInterest <- "cortex_excluding_piriform_hippocampus"
-geneOfInterest <- "HLA-E"
-regionOfInterest <- "whole_brain"
+regionOfInterest <- "cortex_excluding_piriform_hippocampus"
+geneOfInterest <- "SCARA5"
+#regionOfInterest <- "whole_brain"
 
 modalityOfInterest <- "T1T2Ratio"
 xLabel <- "T1-/T2-w Ratio"
+
+#modalityOfInterest <- "T2"
+#xLabel <- "T2-w"
+
+#modalityOfInterest <- "T1"
+#xLabel <- "T1-w"
+
+#modalityOfInterest <- "HCP"
+#xLabel <- "HCP T1-/T2-w Ratio"
+
 
 if (Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   #set working directory
@@ -18,15 +27,9 @@ if (Sys.info()['nodename'] == "RES-C02RF0T2.local") {
 }
 
 single_gene_folder <- "./results/single_gene_data/"
+source("get_expression_single_gene_function.R")
+allDonors <- get_expression_single_gene(geneOfInterest, regionOfInterest, modalityOfInterest, single_gene_folder)
 
-for (file in list.files(single_gene_folder, pattern=paste0("[.]", geneOfInterest,"[.]",regionOfInterest, ".*", modalityOfInterest, "[.]"), full.names = T)) {
-  print(file)
-  oneDonor <- as.data.frame(read_csv(file))
-  oneDonor$Expression <- oneDonor[,geneOfInterest]
-  oneDonor$donor <- paste("Donor", gsub("[.].*","", basename(file)))
-  allDonors <- bind_rows(allDonors, oneDonor)
-}
-allDonors <- tbl_df(allDonors)
 #print out regions with bad values
 filter(allDonors, is.nan(MRI_Intensity) | is.infinite(MRI_Intensity))
 #remove those points
@@ -56,9 +59,9 @@ if ( median(correlationSummary$cor) < 0) {
   vjustLegend=1
 }
 
-if(geneOfInterest == "CAT") {
-  yLegend = -Inf
-  vjustLegend=0
+if(geneOfInterest == "TREML1") {
+  yLegend = +Inf
+  vjustLegend=1
 }
 
 old_id <- c(14380,15496,15697,9861,10021,12876)
@@ -76,6 +79,9 @@ ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, 
   facet_wrap(~ new_id, scales="free")+ theme_bw()
 #11x6 inch pdf
 
+
+
+
 #for single donor/figures
 unique(allDonors$donor)
 singleDonor <- allDonors %>% filter(donor=="Donor 9861" )
@@ -89,13 +95,13 @@ if (singleCorrelationSummary$p == 0) {
   singleCorrelationSummary$label <- paste0("\n  ρ = ", singleCorrelationSummary$cor, "  \n  p-value = ", singleCorrelationSummary$p,"\n")
   
 }
-
+vjustLegend
 #plot single
 ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="") + 
   geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
   theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) + guides(color=FALSE) + theme(aspect.ratio=1) 
-#use 3.5 inches pdf for figure
+#use 3.5 inches pdf for figure 1, import into keynote as pdf
 
 #for figure/poster raster bar
 donor9861 <- allDonors %>% filter(donor == "Donor 9861")
@@ -103,3 +109,22 @@ ggplot(donor9861, aes(donor, factor(regionID))) +
   geom_tile(aes(fill = MRI_Intensity), color="black") + theme_void() +
   scale_fill_gradientn(name="", colors=c("#000000", "#FFFFFF"), guide=F)  + theme(plot.margin = unit(c(1,1,1,1), "cm"))
 #save as 3x100 PDF in rstudio   
+
+
+
+#plot lines for each lobe
+allDonors %>% group_by(donor) %>% summarize()
+
+correlationSummary <- allDonors %>% group_by(donor, cortical_division) %>% summarize(n = n(), cor = cor(MRI_Intensity , Expression, m='s'))
+allDonors %>% group_by(donor) %>% summarize(n = n(), cor = cor(MRI_Intensity , Expression, m='s')) %>% summarize(medianCor = median(cor))
+correlationSummary %>% group_by(cortical_division) %>% summarize(median_n=median(n), medianCor = median(cor))
+
+
+ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess', aes(color=cortical_division), se=F)  +
+  ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="Cortical Division") + 
+  geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
+  facet_wrap(~ new_id, scales="free")+ theme_bw()
+ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'lm', aes(color=cortical_division), se=F)  +
+  ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="Cortical Division") + 
+  geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
+  facet_wrap(~ new_id, scales="free")+ theme_bw()

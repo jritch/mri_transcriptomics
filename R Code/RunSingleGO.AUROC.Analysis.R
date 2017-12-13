@@ -2,18 +2,16 @@
 
 Sys.info()["nodename"]
 
-#set working directory
-setwd("/Users/lfrench/Desktop/results/mri_transcriptomics_fresh/")
-
 #set figshare data folder
 figshare_data_folder = "./data/figshare data/"
 
 if(Sys.info()['nodename'] == "RES-C02RF0T2.local") {
   #set working directory
   setwd("/Users/lfrench/Desktop/results/mri_transcriptomics/")
-  filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.full_brain.gene_list.csv"
+  #filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/HCP.full_brain.gene_list.csv"
+  #filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/HCP.cortex_excluding_piriform_hippocampus.gene_list.csv"
+  #filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.full_brain.gene_list.csv"
   filename <-  "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_piriform_hippocampus.gene_list.csv"
-  
 } else {
   setwd("C:/Users/Jacob/mri_transcriptomics")
   filename <- "./results/T1T2Ratio.cortex_excluding_limbic_lobe.gene_list.csv"
@@ -42,18 +40,24 @@ library(metap)
 library(reshape2)
 library(xlsx)
 
-geneStatistics <- read_csv(filename) 
+geneStatistics <- read_csv(filename, guess_max = 25000) 
+cor(geneStatistics[,3:7])
+range(geneStatistics[,3:7])
 
-#convert to one sided
+#update gene symbols
+symbol_to_entrez <- geneStatistics %>% dplyr::select(ID, entrez_id) %>% filter(!is.nan(entrez_id)) %>% filter(!is.na(entrez_id)) %>% distinct()
+symbol_to_entrez %<>% mutate(new_symbol = getSYMBOL(as.character(entrez_id), data='org.Hs.eg')) 
+
 #melt into gene, brain
 correlationLongForm <- gather(dplyr::select(geneStatistics, ID, contains("Correlation.")), brain, correlation, -ID)
 (correlationLongForm %<>% mutate(brain = gsub("Correlation.", "", brain)))
 pvaluesLongForm <- gather(dplyr::select(geneStatistics, ID,  contains("PValue.")), brain, pvalue, -ID)
 (pvaluesLongForm %<>% mutate(brain = gsub("PValue.", "", brain)))
 longFormGeneStats <- inner_join(pvaluesLongForm, correlationLongForm)
-longFormGeneStats %<>% mutate(pvalue.pos = if_else(sign(correlation) > 0, pvalue, 1 - pvalue ))
+#note - these values are not cut in half, so it's kept as two sided - a more conservative approach then halving then doubling
+longFormGeneStats %<>% mutate(pvalue.pos = if_else(sign(correlation) > 0, pvalue, 1 - pvalue )) 
 longFormGeneStats %<>% mutate(pvalue.neg = if_else(sign(correlation) < 0, pvalue, 1 - pvalue ))
-(geneStatistics <- longFormGeneStats %>% group_by(ID ) %>% 
+(geneStatistics <- longFormGeneStats %>% group_by(ID) %>% 
     summarise(medianCorrelation = median(correlation), 
               directionSum = (sum(sign(correlation))/2 +3)/6, 
               metaP.pos = sumlog(pvalue.pos)$p, 
@@ -71,8 +75,12 @@ geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg))
 (geneStatistics %<>% arrange(metaP.pos))
 (geneStatistics %<>% arrange(metaP.neg))
 
+range(geneStatistics$medianCorrelation)
+
 sum(geneStatistics$metaP.pos.adj < 0.05)
 sum(geneStatistics$metaP.neg.adj < 0.05)
+sum(geneStatistics$metaP.neg.adj < 0.05 | geneStatistics$metaP.pos.adj < 0.05)
+
 geneStatistics %<>% dplyr::mutate(isSig = metaP.neg.adj < 0.05 | metaP.pos.adj < 0.05)
 
 geneStatistics %<>% mutate(pValueWithDirection = if_else(metaP.pos < metaP.neg, nrow(geneStatistics) - rank(metaP.pos), -1* nrow(geneStatistics) + rank(metaP.neg)))
@@ -94,10 +102,32 @@ dplyr::filter(geneStatistics, metaP.neg.adj < 0.05 & metaP.pos.adj < 0.05)
 paste("Genes with negative correlations:", dplyr::filter(geneStatistics, metaP.neg.adj < 0.05) %>% summarize(n = n()))
 paste("Genes with positive correlations:", dplyr::filter(geneStatistics, metaP.pos.adj < 0.05) %>% summarize(n = n()))
 
+
 #average expression for neg and positive
-geneStatistics %>% filter(isSig) %>% group_by(medianCorrelation > 0 ,isSig ) %>% summarize(n=n(), averageExpression = mean(averageExpression,na.rm=TRUE))
+geneStatistics %>% filter(isSig) %>% group_by(medianCorrelation > 0 ,isSig ) %>% summarize(n=n(), averageExpressionMean = mean(averageExpression,na.rm=TRUE), averageExpressionSD = sd(averageExpression,na.rm=TRUE))
 wilcox.test(filter(geneStatistics, isSig, medianCorrelation > 0)$averageExpression, filter(geneStatistics, isSig, medianCorrelation < 0)$averageExpression)
 
+geneStatistics %>% group_by( metaP.neg.adj > metaP.pos.adj) %>% filter(isSig) %>% summarize(n=n())
+#percent agree
+geneStatistics %>% filter(isSig) %>% summarize(n=n(), agreement = sum(directionSum %% 1 == 0 ), proportion = agreement/n)
+geneStatistics %>% group_by(metaP.neg.adj > metaP.pos.adj) %>% filter(isSig) %>% summarize(n=n(), agreement = sum(directionSum %% 1 == 0 ), proportion = agreement/n)
+
+#agree in 5 of 6
+geneStatistics %>% filter(isSig) %>% summarize(n=n(), agreement = sum(abs(directionSum -.5) > 0.33), proportion = agreement/n)
+
+#average agreement - used to judge probe strategy
+geneStatistics %>% summarize(n=n(), meanAgreement = sum(abs(directionSum -.5)), proportion = meanAgreement/n, donorCount = proportion*6+3)
+
+#average agreement - used to judge probe strategy
+geneStatistics %>% filter(isSig)%>% summarize(n=n(), meanAgreement = sum(abs(directionSum -.5)), proportion = meanAgreement/n, donorCount = proportion*6+3)
+
+#update symbols (needs to be done after merging freesufer info)
+geneStatistics <- left_join(geneStatistics, dplyr::rename(symbol_to_entrez, geneSymbol=ID))
+geneStatistics %<>% mutate(legacySymbol = geneSymbol) #save old symbol
+geneStatistics %<>% mutate(geneSymbol = if_else(is.na(new_symbol), geneSymbol, new_symbol)) %>% dplyr::select(geneSymbol, entrez_id,  everything(), -new_symbol)
+
+#add gene names
+geneStatistics %<>% mutate(name = unlist(lookUp(as.character(entrez_id), "org.Hs.eg", "GENENAME"))) %>% dplyr::select(geneSymbol, name, everything())
 
 #sort 
 geneStatistics <- arrange(geneStatistics, desc(pValueWithDirection))
@@ -143,27 +173,38 @@ if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume 
 }
 
 result <- tbl_df(tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T))
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% dplyr::select(-adj.P.Val) 
 result %<>% rowwise() %>% mutate(aspect = Ontology(ID))
-(result %<>% group_by(U, N1, AUC, P.Value,adj.P.Val) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), aspect= first(aspect), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
-result %<>% arrange(adj.P.Val)
+(result %<>% group_by(U, N1, AUC, P.Value) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), aspect= first(aspect), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
+result %<>% ungroup() %>% mutate(adj.P.Value=p.adjust(P.Value)) %>% arrange(P.Value) #adjust again
 result$rank <- 1:nrow(result)
-result %<>% ungroup() %>% dplyr::select(MainTitle, geneCount = N1, AUC, P.Value, adj.P.Value = adj.P.Val, everything(), -U) %>% arrange(adj.P.Value)
+result %<>% dplyr::select(MainTitle, geneCount = N1, AUC, P.Value, adj.P.Value, everything(), -U) 
+
+sum(result$adj.P.Value < 0.05)
+
+head(filter(result, AUC > 0.5),n=15)
 
 result$adj.P.Value <- signif(result$adj.P.Value, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
+result$P.Value <- signif(result$P.Value, digits=3)
 
 # Output tables for top ten positively and negatively enriched GO groups for paper
 (result.up <- head(filter(result, AUC > 0.5) %>% dplyr::select(-ID), n=10))
-(result.down <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID), n=10))
+(result.down <- head(filter(result, AUC < 0.5) %>% dplyr::select(-ID),n=15))
+
+#check one p-value to test TMOD
+setGO <- filter(geneStatistics, geneSymbol %in% geneSetsGO$MODULES2GENES$`GO:0006521`)
+setAll <- filter(geneStatistics, geneSymbol %in% unlist(geneSetsGO$MODULES2GENES)) %>% filter(!geneSymbol %in% setGO$geneSymbol)
+wilcox.test( setGO$pValueWithDirection, setAll$pValueWithDirection)
 
 write_csv( result,  paste(baseFilename,".GO.results.csv",sep=""))
-write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect),  paste0(baseFilename,".GO.up10.csv"))
-write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `Adjusted PValue` = adj.P.Value, aspect),  paste0(baseFilename,".GO.down10.csv"))
+write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `p` = P.Value, `pFDR` = adj.P.Value, aspect),  paste0(baseFilename,".GO.up10.csv"))
+write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `p` = P.Value, `pFDR` = adj.P.Value, aspect),  paste0(baseFilename,".GO.down15.csv"))
 
 
 ##### Look at what proportion of the results match certain categories
 
-cat(paste("Total number of GO groups tested",nrow(result)))
+cat(paste("Total number of GO groups tested (after removing dupes):",nrow(result)))
 
 cat(paste("Number of significant GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05))[1])))
 
@@ -171,79 +212,42 @@ cat(paste("Number of significant positively enriched GO groups",as.character(len
 
 cat(paste("Number of significant negatively enriched GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5))[1])))
 
-cat(paste("Number of significant negatively enriched CC GO groups",as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC"))[1])))
-
-cat(paste("Number of significant negatively enriched CC GO groups related to mitochondria",
-          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="CC", grepl("mitoc",MainTitle)))[1])))
-cat(paste("Mito groups tested: ", as.character(lengths(result %>% filter (aspect=="CC", grepl("mitoc",MainTitle)))[1])))
-
-cat(paste("Number of significant negatively enriched BP GO groups related to mitochondria",
-          as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="BP", grepl("mitoc",MainTitle)))[1])))
-cat(paste("ribos groups tested: ", as.character(lengths(result %>% filter (aspect=="BP", grepl("mitoc",MainTitle)))[1])))
-
 cat(paste("Number of significant negatively enriched BP GO groups related to synapse",
           as.character(lengths(result %>% filter (adj.P.Value < 0.05, AUC < 0.5,aspect=="BP", grepl("synap",MainTitle)))[1])))
 cat(paste("synapse groups tested: ", as.character(lengths(result %>% filter (aspect=="BP", grepl("synap",MainTitle)))[1])))
 
 source("./R Code/ROCPlots.R")
 
-dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "core promoter binding")$ID
+dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "detection of chemical stimulus involved in sensory perception")$ID
 dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "transcriptional repressor activity, RNA polymerase II transcription regulatory region sequence-specific binding")$ID
 
 #plots <- createPlots(sortedGenes, c("GO:0098798", "GO:1905368", "GO:0005882","GO:0031490","GO:0005814","GO:0033038","GO:0032452", "GO:0001227", "GO:0045178", "GO:0001047"), geneSetsGO)
 
-
-plots <- createPlots(sortedGenes, c("GO:0098798", "GO:1905368", "GO:0005882","GO:0031490","GO:0005814","GO:0033038","GO:0032452"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+plots <- createPlots(sortedGenes, c("GO:0050907", "GO:0098798", "GO:1905368", "GO:0033038","GO:0006521"), geneSetsGO)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.6),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
 #save as 11x11 PDF
 
-filter(result,grepl("myelin",MainTitle))
+#glycolysis
+filter(result,grepl("glycolysis",allNames))
+filter(result,grepl("pyruvate",allNames) | grepl("pyruvate",MainTitle))
+filter(result,grepl("lactate",allNames) | grepl("lactate",MainTitle))
+
+
+#filter(result,grepl("myelin",MainTitle))
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
 myelinResult$adj.P.Value <- p.adjust(myelinResult$P.Value, method="BH")
 myelinResult$adj.P.Value <- signif(myelinResult$adj.P.Value, digits=3)
 
 myelinResult
-
-write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Value, aspect, synonyms = allNames, rank),  
+length(intersect(geneSetsGO$MODULES2GENES$`GO:0007272`, geneSetsGO$MODULES2GENES$`GO:0042552`))
+write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Value, aspect, synonyms = allNames, rank),  
            paste0(baseFilename,".GO.myelin.results.csv"))
 
-plots <- createPlots(sortedGenes, c("GO:0008366","GO:0043209", "GO:0032288"), geneSetsGO)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95, labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
-#save as 11x8
+plots <- createPlots(sortedGenes, c("GO:0008366","GO:0043209", "GO:0043217"), geneSetsGO)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.6),scale = 0.95, labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+#save as 10x7
 
-#################################################################
-#################################################################
 
-loadPhenocarta <- function(taxon, geneBackground) {
-  #guess column types from the whole dataset, basically
-  phenocarta <- read_tsv(paste0(figshare_data_folder, "AllPhenocartaAnnotations.downloadedOct28.2016.tsv"), skip = 4, guess_max = 130000)
-  phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
-  phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
-  geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
-  distinct(geneLists)
-  namedLists <- geneLists$genes
-  names(namedLists) <- geneLists$ID
-  idToName <- data.frame(ID = geneLists$ID, Title = geneLists$name)
-  geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
-  geneSets
-}
-
-geneSetsPhenoCarta <- loadPhenocarta("human", sortedGenes)
-
-result <- tmodUtest(c(sortedGenes), mset=geneSetsPhenoCarta, qval = 1, filter = F)
-result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
-
-result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
-result$AUC <- signif(result$AUC, digits=3)
-
-write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val),  
-           paste0(baseFilename,".phenocarta.results.csv"))
-
-#plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
-#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
-
-#looking at one result - epilepsy
-#filter(geneStatistics, geneSymbol %in% geneSets["DOID_1932"]$GENES$ID)
 
 #################################################################
 #################################################################
@@ -259,7 +263,7 @@ for(geneListFilename in list.files(otherGeneListsFolder, pattern = ".*txt", full
   genesOfInterest$term <- shortName
   
   #already a human gene list
-  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "PH", geneListFilename) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
+  if (grepl(pattern = "Darmanis.", geneListFilename  ) | grepl(pattern = "Mistry", geneListFilename) | grepl(pattern = "HouseKeeping", geneListFilename  ) | grepl(pattern = "human", geneListFilename  )) {
     modules2genes[shortName] <- list(genesOfInterest$V1)
   } else { #needs conversion from mouse
     print(" converting from mouse to human")
@@ -272,7 +276,8 @@ geneSets <- makeTmod(modules = tmodNames, modules2genes = modules2genes)
 geneSetsCellType <- geneSets #for later reuse
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
-(result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))
+result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID)
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
 
 result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
@@ -287,25 +292,40 @@ writeTableWrapper <- function(prefixFilter, result) {
   subsetResult$Title <- gsub("ligo", "ligodendrocyte", subsetResult$Title)
   subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value)
   subsetResult$adj.P.Val <- signif(subsetResult$adj.P.Val, digits=3)
-  write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
+  write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
   subsetResult
 }
 
-zeiselResult <- writeTableWrapper("Zeisel", result)
-darmResult <- writeTableWrapper("Darmanis", result)
+(zeiselResult <- writeTableWrapper("Zeisel", result))
+(darmResult <- writeTableWrapper("Darmanis", result))
 writeTableWrapper("NeuroExpresso.Cortex", result)
-writeTableWrapper("Mistry", result)
+(mistryResult <- writeTableWrapper("Mistry", result))
+
+writeTableWrapper("Thakurela", result)
+writeTableWrapper("Hametner", result)
+writeTableWrapper("TEMP", result)
+
+intersect(head(sortedGenes,n=10),geneSetsCellType$MODULES2GENES$Thakurela.Myelin.cortexCompare)
+intersect(head(sortedGenes,n=10),geneSetsCellType$MODULES2GENES$Thakurela.Myelin.proteome)
+
+intersect(tail(sortedGenes,n=10),geneSetsCellType$MODULES2GENES$Thakurela.Myelin.cortexCompare)
+intersect(tail(sortedGenes,n=10),geneSetsCellType$MODULES2GENES$Thakurela.Myelin.proteome)
 
 
-plots <- createPlots(sortedGenes, as.character(zeiselResult$oldTitle), geneSets, customNames=zeiselResult$Title)
-(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+plots <- createPlots(sortedGenes, as.character(zeiselResult$oldTitle), geneSets, customNames=zeiselResult$Title, filter=F)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.9),scale = 0.95,labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
 #save as 11x11
 
 
-plots <- createPlots(sortedGenes, as.character(darmResult$oldTitle), geneSets, customNames=darmResult$Title)
+plots <- createPlots(sortedGenes, as.character(darmResult$oldTitle), geneSets, customNames=darmResult$Title, filter=F)
 (bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8), labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
 plots$rasterPlot #save as 10x4 pdf
 #filter(geneStatistics, geneSymbol %in% geneSets["Darmanis.Oligo"]$GENES$ID)
+
+#plot Mistry genes - for slides
+plots <- createPlots(sortedGenes, as.character(mistryResult$oldTitle), geneSets, customNames=mistryResult$Title, filter=F)
+(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+
 
 ##################
 # Zeng et al. 
@@ -359,11 +379,12 @@ mean(filter(geneStatistics, geneSymbol %in% sortedGenesInBackground)$medianCorre
 
 zeng_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 zeng_result <- tbl_df(zeng_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
+zeng_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
 zeng_result %<>% arrange(as.character(Title))
 
 filter(geneStatistics, geneSymbol %in% expandedZengTable$Gene.symbol)
 
-write_csv(dplyr::select(zeng_result, `Type` = Title,`Gene Count` = geneCount, AUROC = AUC,  `Adjusted PValue` = adj.P.Val), paste0(baseFilename,".ZengEtAl.csv")) 
+write_csv(dplyr::select(zeng_result, `Type` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".ZengEtAl.csv")) 
 
 zeng_result$Title <- factor(zeng_result$Title, levels=rev(sort(as.character(unique(zeng_result$Title)))))
 (barplot <- ggplot(zeng_result, aes(y=AUC-0.5, x=Title, fill=AUC > 0.5)) + geom_col() + 
@@ -380,10 +401,13 @@ ggsave(plot= barplot,paste0(baseFilename,".ZengEtAl.pdf" ), height=5, width=5)
 #    http://www.picb.ac.cn/Comparative/data_methods/data_layer_2017.html
 ################################################
 HeZPath <- "./other gene lists/HeEtAl/table_s2.xlsx"
-HeZTable <- read.xlsx(HeZPath, sheetName = "Sheet1", stringsAsFactors = F)
-(HeZTable <- tbl_df(HeZTable))
+if (exists("HeZTable") ) { #assume it's already loaded, very slow - maybe switch excel libraries
+} else {
+  HeZTable <- read.xlsx(HeZPath, sheetName = "Sheet1", stringsAsFactors = F)
+  (HeZTable <- tbl_df(HeZTable))
+  HeZTable %<>% dplyr::select(Gene.symbol, Layer.marker.in.human)
+}
 
-HeZTable %<>% dplyr::select(Gene.symbol, Layer.marker.in.human)
 backGroundGenes <- unique(HeZTable$Gene.symbol)
 
 tmodNames <- data.frame()
@@ -405,7 +429,12 @@ sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
 
 HeZ_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 HeZ_result <- tbl_df(HeZ_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
+HeZ_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
 HeZ_result %<>% arrange(as.character(Title))
+HeZ_result %<>% mutate(Title = gsub("L", "Layer ", Title))
+
+HeZ_result %>% filter(adj.P.Val < 0.05, AUC>0.5)
+HeZ_result %>% filter(adj.P.Val < 0.05, AUC<0.5)
 
 
 HeZ_result$Title <- factor(HeZ_result$Title, levels=rev(sort(as.character(unique(HeZ_result$Title)))))
@@ -417,25 +446,70 @@ barplot <- barplot + geom_text(data = filter(HeZ_result, adj.P.Val < 0.005), aes
 barplot
 ggsave(plot= barplot,paste0(baseFilename,".HeEtAl.pdf" ), height=5, width=5)
 
+HeZ_result$adj.P.Val <- signif(HeZ_result$adj.P.Val, digits=3)
+HeZ_result$AUC <- signif(HeZ_result$AUC, digits=3)
+
+write_csv(dplyr::select(HeZ_result, `Marker Set` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".HeZEtAl.csv")) 
+
+#################################################################
+#################################################################
+
+loadPhenocarta <- function(taxon, geneBackground) {
+  #guess column types from the whole dataset, basically
+  phenocarta <- read_tsv(paste0(figshare_data_folder, "AllPhenocartaAnnotations.downloadedOct28.2016.tsv"), skip = 4, guess_max = 130000)
+  phenocarta$ID <- gsub("http://purl.obolibrary.org/obo/", "", phenocarta$`Phenotype URIs`)
+  phenocarta <- dplyr::filter(phenocarta, Taxon == taxon) %>% dplyr::select(symbol = `Gene Symbol`, name = `Phenotype Names`, ID) %>% filter(symbol %in% geneBackground) %>% distinct()
+  geneLists <- group_by(phenocarta, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
+  distinct(geneLists)
+  namedLists <- geneLists$genes
+  names(namedLists) <- geneLists$ID
+  idToName <- data.frame(ID = geneLists$ID, Title = geneLists$name)
+  geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
+  geneSets
+}
+
+geneSetsPhenoCarta <- loadPhenocarta("human", sortedGenes)
+
+result <- tmodUtest(c(sortedGenes), mset=geneSetsPhenoCarta, qval = 1, filter = F)
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
+
+result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
+result$AUC <- signif(result$AUC, digits=3)
+result
+write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC, pvalue = P.Value, `pFDR` = adj.P.Val),  
+           paste0(baseFilename,".phenocarta.results.csv"))
+
+#plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
+#(bothPlots <- plot_grid(plots$AUCPlot, plots$rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.8),scale = 0.95)) #add labels = c("A", "B"), for manuscript
+
+#looking at one result - epilepsy
+#filter(geneStatistics, geneSymbol %in% geneSetsPhenoCarta["DOID_1932"]$GENES$ID)
 
 ################
-#DisGeNET (not currently used in manuscript)
+#DisGeNET - inspired by Burt et al. usage (not currently used in manuscript)
 ###############
 
 disgenet <- read_tsv("./other gene lists/DisGeNET/curated_gene_disease_associations.tsv.gz")
 disgenet %<>% dplyr::select(symbol = geneSymbol, name = diseaseName, ID = diseaseId)
   
-
 geneLists <- group_by(disgenet, ID) %>% dplyr::summarise(name = paste(unique(name), collapse = ","), genes = unique(list(symbol)), size = n()) %>% filter(size > 5 & size < 200) 
 distinct(geneLists)
 namedLists <- geneLists$genes
 names(namedLists) <- geneLists$ID
 idToName <- data.frame(ID = geneLists$ID, Title = geneLists$name)
 geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
-geneSets
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
-(result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID))
+result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID)
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+
+
+result %>% filter(adj.P.Val < 0.05, AUC>0.5)
+result %>% filter(adj.P.Val < 0.05, AUC<0.5)
+result
+write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val),  
+           paste0(baseFilename,".disgenet.results.csv"))
 
 
 ################
@@ -452,4 +526,11 @@ idToName <- data.frame(ID = geneLists$cellType, Title = geneLists$cellType)
 geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
 
 Spaethling_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
-(Spaethling_result <- tbl_df(Spaethling_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID))
+Spaethling_result <- tbl_df(Spaethling_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
+Spaethling_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+
+Spaethling_result$adj.P.Val <- signif(Spaethling_result$adj.P.Val, digits=3)
+Spaethling_result$AUC <- signif(Spaethling_result$AUC, digits=3)
+Spaethling_result
+write_csv( dplyr::select(Spaethling_result, CellType = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val),  
+           paste0(baseFilename,".Spaethling.results.csv"))

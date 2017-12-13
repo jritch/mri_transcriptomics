@@ -7,13 +7,15 @@ import config
 import os
 from openpyxl import load_workbook
 import sys
+import xlrd
 from numpy.testing import assert_approx_equal
 from os import listdir
 from os.path import isfile, join
-from StdSuites.Type_Names_Suite import null
 
 num_runs = 0
 probe_processed_filename = os.path.join(config.microarrayFolder, "Probes.enhanced.csv")
+sums_processed_filename = os.path.join(config.processedOutputLocation , "PA_sums.csv")
+
 
 def sort_columns(dataframe):
   """
@@ -21,13 +23,16 @@ def sort_columns(dataframe):
   """
   return dataframe.reindex_axis(sorted(dataframe.columns), axis=1)
 
-def average_group(x):
+def average_group(x, do_mean):
   global num_runs
   num_runs += 1
 
   if num_runs % 5000 == 0:
     print "GROUP NUMBER:", num_runs
-  return np.mean(x[range(1, x.columns[-1] + 1)])
+  if do_mean:
+    return np.mean(x[range(1, x.columns[-1] + 1)])
+  else:
+    return np.sum(x[range(1, x.columns[-1] + 1)])
 
 def average_probes(probes, exp_data, probe_strategy):
   merged_table = pandas.merge(probes, exp_data, left_on="probe_id", right_on=0)  # .iloc[0:1]
@@ -36,18 +41,34 @@ def average_probes(probes, exp_data, probe_strategy):
   print("Probes before filtering: " + str(merged_table.shape[0]))
   if probe_strategy is "all":
     None
+  elif probe_strategy is "scale":
+    #filter for nonNA
+    merged_table = merged_table[merged_table.is_qc_pass == True] 
+
+    #multiply and add b
+    merged_table.m = merged_table.m.astype(float)
+    merged_table.b = merged_table.b.astype(float)
+    merged_table = merged_table[np.logical_not(pandas.isnull(merged_table['m']))]
+
+    g=merged_table.columns.to_series().groupby(merged_table.dtypes).groups
+
+    #remove m and b columns
+    g[np.dtype('float64')] = g[np.dtype('float64')].difference(('m', 'b'))
+    #only do it on select columns
+    merged_table[g[np.dtype('float64')]] = merged_table[g[np.dtype('float64')]].apply(lambda x: merged_table.m * x + merged_table.b)
+    #drop m and b columns
+    merged_table = merged_table.drop(['m', 'b'], axis=1)
   elif probe_strategy is "highSTD":
     merged_table = merged_table[merged_table.is_most_variable == True]
   elif probe_strategy is "passQC":
     merged_table = merged_table[merged_table.is_qc_pass != False] #count NA values as passing
   print("Probes after filtering: " + str(merged_table.shape[0]))
- #my exit()
 
   gb = merged_table.groupby("gene_symbol")
 
   print ("THERE ARE " + str(len(gb)) + " GROUPS")
   start_time = time.time()
-  averaged_table = gb.apply(average_group)
+  averaged_table = gb.apply(average_group, do_mean = probe_strategy is not "scale")
 
   print "TOOK", time.time() - start_time, "SECONDS"
 
@@ -109,7 +130,6 @@ def spot_check_values(filename, output_filename):
   my_df_value = my_df[my_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]
   validation_df_value = validation_df[validation_df['Unnamed: 0'] == "SLC17A7"]["RegionID:4284|LOC:(80,85,62)"]
   assert(my_df_value == validation_df_value)
-  sys.exit()
 
 
 def check_all_values(filename, output_filename):
@@ -138,7 +158,7 @@ def process_file(probe_filename, annotation_filename, expression_data_filename, 
 
   probes = pandas.read_csv(probe_filename)
   annotations = pandas.read_csv(annotation_filename)
-  exp_data = pandas.read_csv(expression_data_filename, header=None)
+  exp_data = pandas.read_csv(expression_data_filename, header=None)#, nrows=1000)
 
   data = average_probes(probes, exp_data, probe_strategy)
   if use_mni_coordinates:
@@ -165,7 +185,6 @@ def process_file(probe_filename, annotation_filename, expression_data_filename, 
 
   
 def write_probe_information():
-  OUTPUT_FOLDER = config.processedOutputLocation   
   donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
   
   result_probe_info = None
@@ -185,7 +204,7 @@ def write_probe_information():
     if result_probe_info is None: 
         result_probe_info = probes.copy()
     
-    exp_data = pandas.read_csv(expression_data_filename, header=None) #, nrows=100)
+    exp_data = pandas.read_csv(expression_data_filename, header=None) #, nrows=200)
     merged_table = pandas.merge(probes[['probe_id', 'probe_name']], exp_data, left_on="probe_id", right_on=0) 
 
     merged_table = merged_table.drop(0, axis=1)
@@ -207,20 +226,28 @@ def write_probe_information():
   #merge in xlsx data
   
 
-  print("Loading Miller et al. probe information (xlsx)")  
-  miller_probe_info = load_workbook(os.path.join(config.scriptLocation, "data",  "Miller et al. doi.org_10.1186_1471-2164-15-154 12864_2013_7016_MOESM8_ESM.xlsx"))
-
-  sheet = miller_probe_info.get_sheet_by_name("Table")
-  probe_col = sheet['A']
-  qc_col = sheet['H']
-
-  probe_col = probe_col[2:]
-  qc_col = qc_col[2:]
+  print("Loading Miller et al. probe information (xlsx)")
   
-  probe_col = [cell.value for cell in probe_col]
-  qc_col = [cell.value for cell in qc_col]
+  qc_table = pandas.read_excel(os.path.join(config.scriptLocation, "data",  "Miller et al. doi.org_10.1186_1471-2164-15-154 12864_2013_7016_MOESM8_ESM.xlsx"))
+  qc_table = qc_table.iloc[:, [0, 1, 2, 3, 7]].drop(0)  # .rename(columns=[col_names])
+  col_names = ['probe_name', 'gene_symbol', 'm', 'b', 'is_qc_pass']
+  qc_table.columns = col_names
+  qc_table = qc_table.drop('gene_symbol', axis=1)
+  print(qc_table.head())
+    
+  #miller_probe_info = load_workbook(os.path.join(config.scriptLocation, "data",  "Miller et al. doi.org_10.1186_1471-2164-15-154 12864_2013_7016_MOESM8_ESM.xlsx"))
+
+  #sheet = miller_probe_info.get_sheet_by_name("Table")
+  #probe_col = sheet['A']
+  #qc_col = sheet['H']
+
+  #probe_col = probe_col[2:]
+  #qc_col = qc_col[2:]
   
-  qc_table = pandas.DataFrame(data={'probe_name' : probe_col, 'is_qc_pass' : qc_col})
+  #probe_col = [cell.value for cell in probe_col]
+  #qc_col = [cell.value for cell in qc_col]
+  
+  #qc_table = pandas.DataFrame(data={'probe_name' : probe_col, 'is_qc_pass' : qc_col})
   
   result_probe_info = pandas.merge(result_probe_info, qc_table, on = 'probe_name')
   
@@ -239,12 +266,45 @@ def write_probe_information():
    
   print("Writing enhanced probe information to " + probe_processed_filename)
   result_probe_info.to_csv(probe_processed_filename, index=False)
-  exit()
-
     
+def write_PA_call_sums():
+  #calculate information on present/absent calls
+
+  donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
+  combined_sums = pandas.DataFrame()
+  brain_sd_col_list = []
+  for donorFolder in donorFolders:
+    brain_number = donorFolder.split("_donor")[1]
+    brain_number = "Donor " + str(brain_number)
+    brain_sd_col_list.append(brain_number)
+
+    print ("PROCESSING present/absent calls for " + donorFolder)
+    annotation_filename = os.path.join(config.microarrayFolder, donorFolder, "SampleAnnot.csv")
+    pa_data_filename = os.path.join(config.microarrayFolder, donorFolder, "PACall.csv")
+    
+    annotations = pandas.read_csv(annotation_filename)
+    pa_data = pandas.read_csv(pa_data_filename, header=None)
+    pa_data = pa_data.sum(axis=0)
+    pa_data = pa_data.drop(0).reset_index()
+
+    #get annotation names
+    header = annotations.apply(get_header, axis=1)
+    merged = pandas.concat([header, pa_data], axis=1, ignore_index=True)
+    merged.drop(1, axis=1, inplace=True)
+    merged.columns = ['label', 'present_calls']
+    merged['donor'] = brain_number
+    #merge
+    combined_sums = pandas.concat([combined_sums, merged], axis=0)
+    print("Result shape so far:" + str(combined_sums.shape))
+    
+
+  #write out as single file
+  print("Writing PA sums to " + sums_processed_filename)
+  combined_sums.to_csv(sums_processed_filename, index=False)
 
 
 def main():
+    
   OUTPUT_FOLDER = config.processedOutputLocation
 
   if not os.path.isfile(probe_processed_filename): 
@@ -253,12 +313,14 @@ def main():
   donorFolders = [f for f in listdir(config.microarrayFolder) if 'normalized_microarray_donor' in f]
 
   use_mni_coordinates = True
+  
   #probe_strategy = "all"
   #probe_strategy = "highSTD"
   probe_strategy = "passQC"
+  #probe_strategy = "scale" #scale method is not fully setup - the range of values varies 
 
-  print("Probe filter strategy: " + probe_strategy)
-  print("Using MNI coordinates? " + use_mni_coordinates)
+  print("Probe filter strategy: " + str(probe_strategy))
+  print("Using MNI coordinates? " + str(use_mni_coordinates))
 
   for donorFolder in donorFolders:
     brain_number = donorFolder.split("_donor")[1]

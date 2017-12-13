@@ -12,7 +12,7 @@ import scipy
 
 f, ax = plt.subplots(3);
 
-files = config.expression_filenames
+files = get_expression_filenames(use_MNI=False)
 brain_ids = [f.split(".")[0] for f in files]
 
 brain_to_use = brain_ids[0]
