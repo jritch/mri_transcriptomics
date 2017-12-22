@@ -69,8 +69,8 @@ geneStatistics %<>% dplyr::rename(geneSymbol = ID)
 geneStatistics <- geneStatistics %>% filter(!grepl("A_", geneSymbol)) %>% filter(!grepl("CUST_", geneSymbol)) 
 
 #adjust p-values
-geneStatistics %<>% mutate(metaP.pos.adj = p.adjust(metaP.pos))
-geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg))
+geneStatistics %<>% mutate(metaP.pos.adj = p.adjust(metaP.pos, method="holm"))
+geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg, method="holm"))
 
 (geneStatistics %<>% arrange(metaP.pos))
 (geneStatistics %<>% arrange(metaP.neg))
@@ -176,7 +176,7 @@ result <- tbl_df(tmodUtest(c(sortedGenes), mset=geneSetsGO, qval = 1, filter = T
 result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% dplyr::select(-adj.P.Val) 
 result %<>% rowwise() %>% mutate(aspect = Ontology(ID))
 (result %<>% group_by(U, N1, AUC, P.Value) %>% summarize(MainTitle = first(Title),  ID=paste(ID, collapse=","), aspect= first(aspect), allNames = if_else(n() > 1, paste(Title[2:length(Title)], collapse=","), "")))
-result %<>% ungroup() %>% mutate(adj.P.Value=p.adjust(P.Value)) %>% arrange(P.Value) #adjust again
+result %<>% ungroup() %>% mutate(adj.P.Value=p.adjust(P.Value, method = "holm")) %>% arrange(P.Value) #adjust again
 result$rank <- 1:nrow(result)
 result %<>% dplyr::select(MainTitle, geneCount = N1, AUC, P.Value, adj.P.Value, everything(), -U) 
 
@@ -277,7 +277,7 @@ geneSetsCellType <- geneSets #for later reuse
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID)
-result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 
 result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
@@ -290,7 +290,7 @@ writeTableWrapper <- function(prefixFilter, result) {
   subsetResult$Title <- gsub("[_]", " ", subsetResult$Title)
   subsetResult$Title <- gsub("Neuron interneuron", "Interneuron", subsetResult$Title)
   subsetResult$Title <- gsub("ligo", "ligodendrocyte", subsetResult$Title)
-  subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value)
+  subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value, method="holm")
   subsetResult$adj.P.Val <- signif(subsetResult$adj.P.Val, digits=3)
   write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
   subsetResult
@@ -379,7 +379,7 @@ mean(filter(geneStatistics, geneSymbol %in% sortedGenesInBackground)$medianCorre
 
 zeng_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 zeng_result <- tbl_df(zeng_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
-zeng_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+zeng_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 zeng_result %<>% arrange(as.character(Title))
 
 filter(geneStatistics, geneSymbol %in% expandedZengTable$Gene.symbol)
@@ -429,7 +429,7 @@ sortedGenesInBackground <- sortedGenes[sortedGenes %in% backGroundGenes]
 
 HeZ_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 HeZ_result <- tbl_df(HeZ_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
-HeZ_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+HeZ_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 HeZ_result %<>% arrange(as.character(Title))
 HeZ_result %<>% mutate(Title = gsub("L", "Layer ", Title))
 
@@ -471,7 +471,7 @@ loadPhenocarta <- function(taxon, geneBackground) {
 geneSetsPhenoCarta <- loadPhenocarta("human", sortedGenes)
 
 result <- tmodUtest(c(sortedGenes), mset=geneSetsPhenoCarta, qval = 1, filter = F)
-result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Value, adj.P.Val)
 
 result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
@@ -502,7 +502,7 @@ geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
 
 result <- tmodUtest(sortedGenes, mset=geneSets, qval = 1, filter = F)
 result <- tbl_df(result) %>% dplyr::select(Title, geneCount =N1,AUC,  P.Value, adj.P.Val, -ID)
-result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 
 
 result %>% filter(adj.P.Val < 0.05, AUC>0.5)
@@ -527,7 +527,7 @@ geneSets <- makeTmod(modules = idToName, modules2genes = namedLists)
 
 Spaethling_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter = F)
 Spaethling_result <- tbl_df(Spaethling_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
-Spaethling_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value)) #tmod runs one-sided tests
+Spaethling_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 
 Spaethling_result$adj.P.Val <- signif(Spaethling_result$adj.P.Val, digits=3)
 Spaethling_result$AUC <- signif(Spaethling_result$AUC, digits=3)
