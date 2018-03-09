@@ -5,7 +5,7 @@ T1T2Ratio <- read_csv("/Users/lfrench/Desktop/results/mri_transcriptomics/result
 
 joined <- inner_join(T1, T2, by='Name', suffix = c(".T1", ".T2")) %>% dplyr::select(Name, rank.T1, rank.T2, `T1 AUROC`= AUROC.T1, `T2 AUROC` = AUROC.T2)
 joined <- inner_join(T1T2Ratio, joined, by='Name')
-joined %<>% dplyr::select(Name, `Gene Count`, pFDR, AUROC, rank, rank.T1, rank.T2) #, `T1 AUROC`, `T2 AUROC`)
+joined %<>% dplyr::select(Name, `Gene Count`, p, pFDR, AUROC, rank, rank.T1, rank.T2) #, `T1 AUROC`, `T2 AUROC`)
 joined
 write_csv(joined, "/Users/lfrench/Desktop/results/mri_transcriptomics/results/T1T2Ratio.cortex_excluding_piriform_hippocampus.gene_list.GO.myelin.results.addedT1T2.csv")
 

@@ -3,10 +3,9 @@ library(ggplot2)
 library(tidyr)
 library(plotROC)
 
-
 #input 
 #sorted genes, gene ID names, tmod object for getting genes <-> group
-createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL, filter = T) {
+createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL, filter = T, useGroupGivenOrder=F) {
   
   ranking <- tbl_df(data.frame(gene_symbol = rev(sortedGenes), rank = 1: length(sortedGenes), stringsAsFactors = F))
   geneToClass <- NULL
@@ -27,9 +26,16 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL, filte
   forOrder <- tmodUtest(c(sortedGenes), mset=tmodSets, qval = 1, filter = filter)
   forOrder <- tbl_df(forOrder)
   forOrder %<>% filter(ID %in% groupIDs ) %>% arrange(desc(AUC))
-  #forOrder %<>% filter(ID %in% groupIDs ) %>% arrange(desc(sign(AUC-0.5)* P.Value))
-  geneToClassAUC$group <- factor(geneToClassAUC$group, levels= as.character(forOrder$Title))
-  
+
+  if (useGroupGivenOrder) {
+    geneToClassAUC$group <- factor(geneToClassAUC$group, levels= levels(groupIDs))
+    forOrder$Title <- factor(forOrder$Title, levels=levels(groupIDs))
+  } else{
+    geneToClassAUC$group <- factor(geneToClassAUC$group, levels= as.character(forOrder$Title))
+    forOrder$Title <- factor(forOrder$Title, levels=forOrder$Title)
+  }
+  print(levels(geneToClassAUC$group))
+  print(levels(forOrder$Title))
   throwawayAUC <-geneToClassAUC 
   
   if (length(customNames) > 0){
@@ -46,12 +52,13 @@ createPlots <- function(sortedGenes, groupIDs, tmodSets, customNames=NULL, filte
     theme(strip.background = element_blank(), strip.placement = "inside", strip.text = element_blank()) )
   
   #geneToClassAUC$group <- save
-
+  forOrder %<>% arrange(Title) #maintain order
+  levels(forOrder$Title)
   forOrder$labelWithAUC <- paste0(tmodSets$MODULES[groupID,]$Title, " (AUROC=", signif(forOrder[groupID, "AUC"],digits=2), ")")
 
   
   forOrder %<>% mutate(labelWithAUC = paste0(Title, " (AUROC=", signif(AUC,digits=2), ")")) %>% dplyr::select(ID,AUC,group = Title, labelWithAUC)
-  
+
   if (length(customNames > 0)) {
     forOrder <- forOrder %>% left_join(names_df)
     forOrder <- forOrder %>% mutate(labelWithAUC = paste0(customNames, " (AUROC=", signif(AUC,digits=2), ")")) 

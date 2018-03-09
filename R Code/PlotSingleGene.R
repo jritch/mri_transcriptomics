@@ -1,3 +1,4 @@
+library(scam)
 library(magrittr)
 library(ggplot2)
 library(readr)
@@ -73,13 +74,58 @@ allDonors %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
 correlationSummary %<>% left_join(donor_id_mapping,by=c("donor" = "old_id"))
 
 plot(1) #to clear plot area
-ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
+basePlot <- ggplot(allDonors, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + 
   ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="Cortical Division") + 
   geom_text(data = correlationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) +
   facet_wrap(~ new_id, scales="free")+ theme_bw()
+basePlot + geom_smooth(method = 'loess') 
 #11x6 inch pdf
 
+##############################
+#plot with monotonic curves
+######################################
 
+knots <- 10
+if (median(correlationSummary$cor) < 0) {
+  splineType <- "mpd" #Monotone decreasing P-splines
+} else {
+  splineType <- "mpi" #Monotone increasing P-splines
+}
+
+#function that takes in a model and gives predictions for plotting
+getPredictions <- function(x, constrained_additive_model) {
+  newdf = data.frame(MRI_Intensity = x)
+  pred <- predict(constrained_additive_model, newdf)  
+  pred
+}
+
+monotonicPlot <- basePlot
+for(donorID in unique(allDonors$donor)) {
+   donorData <- filter(allDonors, donor == donorID)
+   constrained_additive_model <- scam(Expression ~ s(MRI_Intensity, k = knots, bs = splineType), data = donorData)
+   monotonicPlot <- monotonicPlot + stat_function(fun = getPredictions, args = list(constrained_additive_model), data=donorData)
+}
+plot(monotonicPlot)
+#save as 11x6 inch pdf
+################################
+### Lines for each division
+###############################
+monotonicPlot <- basePlot
+for(donorID in unique(allDonors$donor)) {
+  donorData <- filter(allDonors, donor == donorID)
+  constrained_additive_model <- scam(Expression ~ s(MRI_Intensity, k = knots, bs = splineType), data = donorData)
+  monotonicPlot <- monotonicPlot + stat_function(fun = getPredictions, args = list(constrained_additive_model), data=donorData)
+  for(cort_division in unique(allDonors$cortical_division)) {
+    donorData <- filter(allDonors, donor == donorID, cortical_division == cort_division)
+    if (nrow(donorData) <= knots) { next }
+    constrained_additive_model <- scam(Expression ~ s(MRI_Intensity, k = knots, bs = splineType), data = donorData)
+    monotonicPlot <- monotonicPlot + stat_function(fun = getPredictions, args = list(constrained_additive_model), data=donorData, aes(color=cortical_division))
+  }
+}
+plot(monotonicPlot)
+
+
+################################
 
 
 #for single donor/figures
@@ -97,10 +143,12 @@ if (singleCorrelationSummary$p == 0) {
 }
 vjustLegend
 #plot single
-ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + geom_smooth(method = 'loess')  +
+constrained_additive_model <- scam(Expression ~ s(MRI_Intensity, k = knots, bs = splineType), data = singleDonor)
+ggplot(singleDonor, aes(x=MRI_Intensity, y = Expression)) + geom_point(alpha=0.6, aes(color = cortical_division)) + #geom_smooth(method = 'loess')  +
   ylab(paste(geneOfInterest, "Expression")) + xlab(xLabel) + labs(color="") + 
   geom_text(data = singleCorrelationSummary, aes(label=label), x=-Inf, y=yLegend, hjust=0, vjust=vjustLegend, size = 3.5) + theme_bw() +
-  theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) + guides(color=FALSE) + theme(aspect.ratio=1) 
+  theme(legend.position="bottom") +guides(color=guide_legend(nrow=1,byrow=TRUE)) + guides(color=FALSE) + theme(aspect.ratio=1) +
+  stat_function(fun = getPredictions, args = list(constrained_additive_model))
 #use 3.5 inches pdf for figure 1, import into keynote as pdf
 
 #for figure/poster raster bar

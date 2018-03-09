@@ -11,7 +11,6 @@ targetGO <- "histone demethylase activity"
 
 
 
-
 #write out all positive
 for (targetGO in result.up$MainTitle) {
   targetGOID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == targetGO)$ID

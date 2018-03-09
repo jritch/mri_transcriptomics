@@ -39,7 +39,6 @@ setdiff(genesOfInterest, colnames(all_genes))
 cor(all_genes[, genesOfInterest])
 mean(abs(cor(all_genes[, genesOfInterest])))
 
-
 all_genes %>% group_by(donor) %>% do(glance(summary(lm(MRI_Intensity ~ VAMP1+SYT2+ESRRG+AGPAT9+RHBDL3+PCDH20+FRMPD2+KIAA1644+RBP4+SCARA5, data=.))))
 
 range((all_genes %>% group_by(donor) %>% do(glance(summary(lm(MRI_Intensity ~ VAMP1+SYT2+ESRRG+AGPAT9+RHBDL3+PCDH20+FRMPD2+KIAA1644+RBP4+SCARA5, data=.)))) )$adj.r.squared )

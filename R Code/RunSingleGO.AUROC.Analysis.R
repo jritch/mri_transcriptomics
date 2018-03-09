@@ -26,7 +26,6 @@ otherGeneListsFolder <- "./other gene lists/"
 library(ggsignif)
 library(cowplot)
 library(readr)
-library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(magrittr)
@@ -39,6 +38,7 @@ library(tmod)
 library(metap)
 library(reshape2)
 library(xlsx)
+library(dplyr)
 
 geneStatistics <- read_csv(filename, guess_max = 25000) 
 cor(geneStatistics[,3:7])
@@ -198,8 +198,8 @@ setAll <- filter(geneStatistics, geneSymbol %in% unlist(geneSetsGO$MODULES2GENES
 wilcox.test( setGO$pValueWithDirection, setAll$pValueWithDirection)
 
 write_csv( result,  paste(baseFilename,".GO.results.csv",sep=""))
-write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `p` = P.Value, `pFDR` = adj.P.Value, aspect),  paste0(baseFilename,".GO.up10.csv"))
-write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `p` = P.Value, `pFDR` = adj.P.Value, aspect),  paste0(baseFilename,".GO.down15.csv"))
+write_csv( dplyr::select(result.up, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `p` = P.Value, `pFWER` = adj.P.Value, aspect),  paste0(baseFilename,".GO.up10.csv"))
+write_csv( dplyr::select(result.down, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC, `p` = P.Value, `pFWER` = adj.P.Value, aspect),  paste0(baseFilename,".GO.down15.csv"))
 
 
 ##### Look at what proportion of the results match certain categories
@@ -235,12 +235,12 @@ filter(result,grepl("lactate",allNames) | grepl("lactate",MainTitle))
 
 #filter(result,grepl("myelin",MainTitle))
 myelinResult <- filter(result, grepl("myelin|ensheathment",MainTitle),!grepl("peripheral|sphingomyelin",MainTitle))
-myelinResult$adj.P.Value <- p.adjust(myelinResult$P.Value, method="BH")
+myelinResult$adj.P.Value <- p.adjust(myelinResult$P.Value, method="fdr")
 myelinResult$adj.P.Value <- signif(myelinResult$adj.P.Value, digits=3)
 
 myelinResult
 length(intersect(geneSetsGO$MODULES2GENES$`GO:0007272`, geneSetsGO$MODULES2GENES$`GO:0042552`))
-write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Value, aspect, synonyms = allNames, rank),  
+write_csv( dplyr::select(myelinResult, Name = MainTitle,`Gene Count` = geneCount, AUROC = AUC,  p=P.Value, `pFDR` = adj.P.Value, aspect, synonyms = allNames, rank),  
            paste0(baseFilename,".GO.myelin.results.csv"))
 
 plots <- createPlots(sortedGenes, c("GO:0008366","GO:0043209", "GO:0043217"), geneSetsGO)
@@ -250,6 +250,7 @@ plots <- createPlots(sortedGenes, c("GO:0008366","GO:0043209", "GO:0043217"), ge
 
 
 #################################################################
+# cell type gene lists and other lists
 #################################################################
 tmodNames <- data.frame()
 modules2genes <- list()
@@ -292,7 +293,8 @@ writeTableWrapper <- function(prefixFilter, result) {
   subsetResult$Title <- gsub("ligo", "ligodendrocyte", subsetResult$Title)
   subsetResult$adj.P.Val <- p.adjust(subsetResult$P.Value, method="holm")
   subsetResult$adj.P.Val <- signif(subsetResult$adj.P.Val, digits=3)
-  write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
+  subsetResult$P.Value <- signif(subsetResult$P.Value, digits=3)
+  write_csv(dplyr::select(subsetResult, `Cell-type or class` = Title,`Gene Count` = geneCount, AUROC = AUC, p = P.Value, `pFWER` = adj.P.Val), paste0(baseFilename,".", prefixFilter,".csv")) 
   subsetResult
 }
 
@@ -384,7 +386,7 @@ zeng_result %<>% arrange(as.character(Title))
 
 filter(geneStatistics, geneSymbol %in% expandedZengTable$Gene.symbol)
 
-write_csv(dplyr::select(zeng_result, `Type` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".ZengEtAl.csv")) 
+write_csv(dplyr::select(zeng_result, `Type` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFWER` = adj.P.Val), paste0(baseFilename,".ZengEtAl.csv")) 
 
 zeng_result$Title <- factor(zeng_result$Title, levels=rev(sort(as.character(unique(zeng_result$Title)))))
 (barplot <- ggplot(zeng_result, aes(y=AUC-0.5, x=Title, fill=AUC > 0.5)) + geom_col() + 
@@ -419,6 +421,7 @@ for(geneSetName in unique(HeZTable$Layer.marker.in.human)) {
   
   genesOfInterest <- filter(HeZTable, Layer.marker.in.human == geneSetName) %>% .$Gene.symbol
   shortName <- geneSetName
+  shortName <- gsub("L", "Layer ", shortName)
   
   modules2genes[shortName] <- list(genesOfInterest)
   
@@ -431,7 +434,6 @@ HeZ_result <- tmodUtest(sortedGenesInBackground, mset=geneSets, qval = 1, filter
 HeZ_result <- tbl_df(HeZ_result) %>% dplyr::select(Title, geneCount = N1, AUC, P.Value, adj.P.Val, ID)
 HeZ_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate(adj.P.Val=p.adjust(P.Value, method="holm")) #tmod runs one-sided tests
 HeZ_result %<>% arrange(as.character(Title))
-HeZ_result %<>% mutate(Title = gsub("L", "Layer ", Title))
 
 HeZ_result %>% filter(adj.P.Val < 0.05, AUC>0.5)
 HeZ_result %>% filter(adj.P.Val < 0.05, AUC<0.5)
@@ -446,10 +448,14 @@ barplot <- barplot + geom_text(data = filter(HeZ_result, adj.P.Val < 0.005), aes
 barplot
 ggsave(plot= barplot,paste0(baseFilename,".HeEtAl.pdf" ), height=5, width=5)
 
+plots <- createPlots(sortedGenesInBackground, HeZ_result$Title, geneSets, filter=F, useGroupGivenOrder = T)
+plots$AUCPlot
+plots$rasterPlot
+
 HeZ_result$adj.P.Val <- signif(HeZ_result$adj.P.Val, digits=3)
 HeZ_result$AUC <- signif(HeZ_result$AUC, digits=3)
 
-write_csv(dplyr::select(HeZ_result, `Marker Set` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val), paste0(baseFilename,".HeZEtAl.csv")) 
+write_csv(dplyr::select(HeZ_result, `Marker Set` = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFWER` = adj.P.Val), paste0(baseFilename,".HeZEtAl.csv")) 
 
 #################################################################
 #################################################################
@@ -477,7 +483,7 @@ result <- tbl_df(result) %>% dplyr::select(ID, Title, geneCount =N1,AUC,  P.Valu
 result$adj.P.Val <- signif(result$adj.P.Val, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
 result
-write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC, pvalue = P.Value, `pFDR` = adj.P.Val),  
+write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC, pvalue = P.Value, `pFWER` = adj.P.Val),  
            paste0(baseFilename,".phenocarta.results.csv"))
 
 #plots <- createPlots(sortedGenes, c("DOID_9008", "DOID_3213", "DOID_4233", "DOID_9975"), geneSets)
@@ -508,7 +514,7 @@ result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup() %>% mutate
 result %>% filter(adj.P.Val < 0.05, AUC>0.5)
 result %>% filter(adj.P.Val < 0.05, AUC<0.5)
 result
-write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val),  
+write_csv( dplyr::select(result, Disease = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFWER` = adj.P.Val),  
            paste0(baseFilename,".disgenet.results.csv"))
 
 
@@ -532,5 +538,5 @@ Spaethling_result %<>% rowwise() %>% mutate(P.Value = P.Value * 2) %>% ungroup()
 Spaethling_result$adj.P.Val <- signif(Spaethling_result$adj.P.Val, digits=3)
 Spaethling_result$AUC <- signif(Spaethling_result$AUC, digits=3)
 Spaethling_result
-write_csv( dplyr::select(Spaethling_result, CellType = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFDR` = adj.P.Val),  
+write_csv( dplyr::select(Spaethling_result, CellType = Title,`Gene Count` = geneCount, AUROC = AUC,  `pFWER` = adj.P.Val),  
            paste0(baseFilename,".Spaethling.results.csv"))

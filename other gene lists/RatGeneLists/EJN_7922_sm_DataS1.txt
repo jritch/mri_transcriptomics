@@ -1,0 +1,1497 @@
+GenBank gi	Locus	Fold	Gene Name and/or Information
+1377434_at	BG374415	30.73	Similar to membrane-type frizzled-related protein (LOC315597), mRNA
+1368606_at	NM_030838	24.95	solute carrier organic anion transporter family, member 1a5
+1388037_at	J05087	17.9	ATPase, Ca++ transporting, plasma membrane 3
+1379281_at	AA892798	16.06	uterine sensitization-associated gene 1 protein
+1369625_at	L07268	14.65	aquaporin 1
+1376980_at	BF285539	12.88	Transcribed sequences
+1375933_at	BM392116	12.87	UI-R-DO1-ckp-o-07-0-UI.s1 UI-R-DO1 Rattus norvegicus cDNA clone UI-R-DO1-ckp-o-07-0-UI 3', mRNA sequence.
+1397185_at	BE102060	12.73	Transcribed sequences
+1390532_at	AI013778	12.7	Transcribed sequence with weak  similarity to protein prf:2211222A (H.sapiens) 2211222A Na dicarboxylate cotransporter [Homo sapiens]
+1379107_at	BF416861	11.35	Transcribed sequence with moderate similarity to protein ref:NP_003750.1 (H.sapiens)  solute carrier family 4, sodium bicarbonate cotransporter, member 4; sodium bicarbonate cotransporter 1
+1374320_at	AI717113	11.05	coagulation factor 5
+1367851_at	J04488	10.18	prostaglandin D2 synthase
+1371922_at	AI169140	9.881	Transcribed sequences
+1375823_at	BF392130	9.253	Transcribed sequences
+1380168_at	BE102969	9.176	Similar to PEA3 (LOC360635), mRNA
+1374122_at	BM386808	9.15	Similar to Myosin Vc (Myosin 5C) (LOC363101), mRNA
+1384707_at	AI600020	9.118	Transcribed sequences
+1386770_x_at	AW920063	8.929	Transcribed sequences
+1389583_at	BF282712	8.869	Transcribed sequences
+1392948_at	BI290737	8.6	Transcribed sequence with weak  similarity to protein ref:NP_058625.1 (H.sapiens)  chloride intracellular channel 5 [Homo sapiens]
+1369020_at	NM_052983	8.519	solute carrier family 5, member 5
+1387065_at	NM_080688	7.708	phospholipase C, delta 4
+1381621_at	BF386153	7.351	UI-R-CA1-bba-f-02-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bba-f-02-0-UI 3', mRNA sequence.
+1387179_at	NM_017142	7.242	adenylyl cyclase 8
+1379855_at	BF413298	6.94	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1384870_at	AW529061	6.605	Transcribed sequences
+1375777_at	BF402633	6.436	Transcribed sequences
+1370652_at	M55293	6.361	neurotrophic tyrosine kinase, receptor, type 2
+1374172_at	AI010883	6.255	Transcribed sequences
+1373790_at	AI045400	6.238	Transcribed sequence with moderate similarity to protein ref:NP_036245.1 (H.sapiens)  carbonic anhydrase XIV precursor; carbonic dehydratase [Homo sapiens]
+1381010_at	BF412543	6.093	Transcribed sequences
+1368981_at	NM_012825	6.022	aquaporin 4
+1395070_at	AI136959	5.915	Transcribed sequences
+1375465_at	BG374268	5.864	Similar to orthodenticle 2 isoform b; homeobox protein OTX2 (LOC305858), mRNA
+1387791_at	AF201331	5.805	angiotensin 1 converting enzyme 1
+1387476_at	NM_031730	5.784	potassium voltage gated channel, Shal-related family, member 2
+1374930_at	BG378606	5.779	Transcribed sequences
+1372095_at	BF281867	5.54	Similar to KIAA1161 protein (LOC366360), mRNA
+1369772_at	M95413	5.519	glycine transporter 1
+1397453_at	BM390792	5.498	UI-R-CN1-cjo-b-24-0-UI.s1 UI-R-CN1 Rattus norvegicus cDNA clone UI-R-CN1-cjo-b-24-0-UI 3', mRNA sequence.
+1371910_at	BF397823	5.44	Transcribed sequences
+1398739_at	BF400127	5.428	Transcribed sequences
+1389193_at	BM388083	5.42	Transcribed sequences
+1381665_at	BF410498	5.405	Transcribed sequences
+1368459_at	NM_024375	5.384	prepro bone inducing protein
+1368467_at	NM_019623	5.261	cytochrome P450, subfamily IVF, polypeptide 14 (leukotriene B4 omega hydroxylase)
+1387811_at	NM_134432	5.223	angiotensinogen
+1390331_at	BF391128	5.199	Transcribed sequences
+1390585_at	AI169829	5.109	mannose-binding protein associated serine protease-1
+1393886_at	BI301345	5.105	UI-R-DL0-cio-n-03-0-UI.s1 UI-R-DL0 Rattus norvegicus cDNA clone UI-R-DL0-cio-n-03-0-UI 3', mRNA sequence.
+1374363_at	AI232693	5.086	Similar to hypothetical protein FLJ30473 (LOC303786), mRNA
+1376562_at	BI291396	4.998	Similar to misshapen/NIK-related kinase isoform 2; GCK family kinase MINK; serine/threonine protein kinase (LOC294917), mRNA
+1396442_at	BE111933	4.964	Transcribed sequences
+1388189_at	AW522430	4.901	Transcribed sequence with strong similarity to protein sp:Q14832 (H.sapiens) MGR3_HUMAN Metabotropic glutamate receptor 3 precursor
+1381133_at	BF409213	4.895	Transcribed sequences
+1380041_at	BF396849	4.871	Transcribed sequences
+1370115_at	NM_053726	4.823	solute carrier family 7, (cationic amino acid transporter, y+ system) member 10
+1376531_at	BF416276	4.763	Transcribed sequences
+1380747_at	BE098757	4.743	Transcribed sequences
+1372920_at	AI411345	4.683	Similar to proline dehydrogenase; PRODH (LOC287950), mRNA
+1396957_at	BF404490	4.678	Transcribed sequences
+1378062_at	BF398677	4.609	Transcribed sequences
+1376105_at	AI599143	4.608	Similar to collagen type XIV (LOC314981), mRNA
+1377508_at	BI298836	4.577	Transcribed sequences
+1393560_at	BF416676	4.547	Similar to cDNA sequence BC024139 (LOC362940), mRNA
+1396559_at	BF396566	4.535	UI-R-BS2-bdz-f-03-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-bdz-f-03-0-UI 3', mRNA sequence.
+1373787_at	AA943735	4.487	glycine transporter 1
+1377305_at	BE097699	4.439	Transcribed sequences
+1369093_at	NM_080394	4.418	reelin
+1377308_a_at	BF398408	4.409	Transcribed sequences
+1378458_at	BI281745	4.384	Transcribed sequences
+1389986_at	AI008409	4.381	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1381750_at	AW251098	4.376	UI-R-BJ0-adi-c-11-0-UI.s1 UI-R-BJ0 Rattus norvegicus cDNA clone UI-R-BJ0-adi-c-11-0-UI 3', mRNA sequence.
+1384770_at	AI112057	4.372	Transcribed sequences
+1376667_at	BE105541	4.357	cytochrome P450, family 26, subfamily b, polypeptide 1
+1396870_at	BF419761	4.344	Transcribed sequences
+1379711_at	BE107458	4.327	Transcribed sequences
+1387052_at	NM_031039	4.325	glutamic-pyruvate transaminase (alanine aminotransferase)
+1376438_at	BF416513	4.323	Transcribed sequences
+1388592_at	BI298958	4.319	UI-R-CV2-chp-e-07-0-UI.s1 UI-R-CV2 Rattus norvegicus cDNA clone UI-R-CV2-chp-e-07-0-UI 3', mRNA sequence.
+1368255_at	NM_017354	4.307	neurotrimin
+1389951_at	BF399415	4.301	Transcribed sequences
+1370937_a_at	X74293	4.28	integrin alpha 7
+1378899_at	BE108523	4.273	Transcribed sequences
+1387372_at	NM_133623	4.266	solute carrier family 6 (neurotransmitter transporter, GABA), member 13
+1379747_at	AA866443	4.243	Transcribed sequences
+1390376_at	BF406135	4.233	Transcribed sequences
+1368329_at	NM_017224	4.228	solute carrier family 22, member 6
+1374159_at	BM388029	4.197	Transcribed sequences
+1394578_at	BI299761	4.175	Transcribed sequences
+1398497_at	BF391243	4.171	Transcribed sequence with weak  similarity to protein sp:P04280 (H.sapiens) PRP1_HUMAN Salivary proline-rich protein precursor
+1367887_at	NM_017024	4.168	lecithin cholesterol acyltransferase
+1384247_at	AI070365	4.158	Transcribed sequences
+1369756_a_at	AF210250	4.155	solute carrier family 4, member 4
+1368306_at	U08259	4.15	glutamate receptor, ionotropic, NMDA2C
+1393335_at	BF418373	4.137	Similar to hypothetical protein (LOC317470), mRNA
+1370594_at	AF322217	4.125	immunoglobulin superfamily, member 1
+1397217_at	BF408757	4.102	Transcribed sequences
+1385788_at	AW534949	4.099	UI-R-BS0-any-d-05-0-UI.s1 UI-R-BS0 Rattus norvegicus cDNA clone UI-R-BS0-any-d-05-0-UI 3', mRNA sequence.
+1378548_at	BF409866	4.081	Transcribed sequences
+1368378_at	NM_022547	4.052	10-formyltetrahydrofolate dehydrogenase
+1381733_at	BF404543	4.008	Transcribed sequences
+1381681_at	BE110205	4.007	Transcribed sequences
+1393665_at	AW526330	3.985	UI-R-BO1-aja-g-07-0-UI.s1 UI-R-BO1 Rattus norvegicus cDNA clone UI-R-BO1-aja-g-07-0-UI 3', mRNA sequence.
+1380400_at	BF402498	3.968	Transcribed sequences
+1377375_at	AA944898	3.967	Similar to aminoadipate-semialdehyde synthase (LOC296925), mRNA
+1373915_at	AI044427	3.962	Similar to myotonic dystrophy protein kinase (LOC308405), mRNA
+1398565_at	AW534457	3.933	Transcribed sequences
+1368561_at	NM_033352	3.928	ATP-binding cassette, sub-family D (ALD), member 2
+1378721_at	AI547942	3.928	Transcribed sequences
+1398304_at	L02530	3.926	frizzled homolog 2 (Drosophila)
+1381290_at	AI101288	3.923	EST210577 Normalized rat brain, Bento Soares Rattus sp. cDNA clone RBRBK81 3' end, mRNA sequence.
+1384741_at	BE105438	3.921	Transcribed sequences
+1396310_at	BF545380	3.909	UI-R-C0-jf-b-09-0-UI.r1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-jf-b-09-0-UI 5', mRNA sequence.
+1386884_at	NM_031721	3.903	protease, serine, 11
+1372492_at	AI412937	3.898	Similar to claudin-10 (LOC290485), mRNA
+1383468_at	BM958512	3.89	Transcribed sequences
+1378365_at	AW529483	3.877	Transcribed sequences
+1387973_at	U39206	3.876	cytochrome P450 4F4
+1373807_at	AI175732	3.865	vascular endothelial growth factor
+1396494_at	BF410352	3.833	Transcribed sequences
+1385849_at	AI146262	3.831	Transcribed sequences
+1383852_at	AI071395	3.817	UI-R-C2-mw-h-03-0-UI.s1 UI-R-C2 Rattus norvegicus cDNA clone UI-R-C2-mw-h-03-0-UI 3', mRNA sequence.
+1391061_at	BI293100	3.816	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1368398_at	NM_031601	3.811	calcium channel, voltage-dependent, T type, alpha 1G subunit
+1388902_at	AI599031	3.805	Similar to Loxl protein (LOC315714), mRNA
+1367700_at	NM_080698	3.8	fibromodulin
+1392932_at	BI279191	3.797	Hypothetical LOC292596 (LOC292596), mRNA
+1386268_at	AI177589	3.794	Similar to gp250 precursor (LOC300652), mRNA
+1391992_at	AI639517	3.79	Transcribed sequences
+1387383_at	NM_031802	3.787	G protein-coupled receptor 51
+1396983_at	BF405930	3.785	UI-R-CA1-bii-f-11-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bii-f-11-0-UI 3', mRNA sequence.
+1367571_a_at	NM_031511	3.762	insulin-like growth factor 2
+1390345_at	BG375523	3.755	Similar to U1 small nuclear ribonucleoprotein 70 kDa (U1 snRNP 70 kDa) (snRNP70) (U1-70K) (LOC361574), mRNA
+1377001_at	AI406747	3.722	Transcribed sequences
+1381160_at	AW522852	3.722	Transcribed sequences
+1375175_at	BE101876	3.705	UI-R-BT1-aqi-a-04-0-UI.s1 UI-R-BT1 Rattus norvegicus cDNA clone UI-R-BT1-aqi-a-04-0-UI 3', mRNA sequence.
+1370517_at	U18772	3.699	neurotensin receptor 2
+1368249_at	NM_053536	3.697	Kruppel-like factor 15
+1375653_at	BE109405	3.696	Transcribed sequences
+1385177_at	BF390449	3.696	Transcribed sequences
+1382034_at	AA901075	3.693	Similar to RIKEN cDNA 2310005E10 (LOC296972), mRNA
+1374020_at	BF281893	3.675	Transcribed sequences
+1398131_at	BE096035	3.669	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1383600_at	BG381311	3.656	sodium-coupled citrate transporter
+1395121_at	BF394559	3.643	Transcribed sequences
+1379586_at	BF564116	3.638	Transcribed sequences
+1384013_at	BF524215	3.636	UI-R-Y0-va-d-06-0-UI.r1 UI-R-Y0 Rattus norvegicus cDNA clone UI-R-Y0-va-d-06-0-UI 5', mRNA sequence.
+1370989_at	AI639318	3.634	ret proto-oncogene
+1368536_at	NM_057104	3.63	ectonucleotide pyrophosphatase/phosphodiesterase 2
+1386056_at	AI229321	3.63	Transcribed sequences
+1380804_at	BM391896	3.611	Transcribed sequences
+1377455_at	BE106526	3.607	solute carrier family 6 (neurotransmitter transporter, GABA), member 11
+1374475_at	AI105131	3.583	Similar to alpha/beta hydrolase-1 (LOC313917), mRNA
+1393706_at	BE109939	3.567	Similar to six transmembrane epithelial antigen of the prostate (LOC297738), mRNA
+1368182_at	NM_130739	3.563	fatty acid Coenzyme A ligase, long chain 6
+1387171_at	NM_017261	3.556	glutamate receptor, ionotropic,  2
+1381374_at	AI058424	3.554	leucine-rich repeat LGI family, member 4
+1378930_a_at	BG371548	3.548	Transcribed sequences
+1383169_at	BF563716	3.532	Transcribed sequences
+1380874_at	AW521752	3.53	Transcribed sequences
+1380698_at	BE108305	3.527	UI-R-BS1-ayx-g-04-0-UI.s1 UI-R-BS1 Rattus norvegicus cDNA clone UI-R-BS1-ayx-g-04-0-UI 3', mRNA sequence.
+1367648_at	AI104234	3.517	Similar to Low-density lipoprotein receptor-related protein 10 (LOC305880), mRNA
+1392034_at	BE099812	3.51	Transcribed sequences
+1384655_at	AW142820	3.507	Transcribed sequences
+1390299_at	BF405880	3.5	Transcribed sequences
+1391559_at	AW525904	3.5	Similar to RIKEN cDNA 0610030G03 (LOC287472), mRNA
+1374263_at	BF396108	3.496	Transcribed sequences
+1374298_at	BG373455	3.49	Transcribed sequences
+1371036_at	BG671431	3.488	neuron-glia-CAM-related cell adhesion molecule
+1392734_at	AI145667	3.477	Transcribed sequences
+1389095_at	BE110539	3.471	Transcribed sequence with weak  similarity to protein ref:NP_150279.1 (H.sapiens)  brother of CDO [Homo sapiens]
+1367794_at	NM_012488	3.47	alpha-2-macroglobulin
+1385584_at	AI111406	3.47	Transcribed sequences
+1377966_at	BI275560	3.462	Transcribed sequences
+1380712_at	AI406475	3.461	Transcribed sequences
+1369955_at	NM_134452	3.448	collagen, type V, alpha 1
+1392359_at	BE120205	3.442	Transcribed sequence with moderate similarity to protein pir:S68176 (H.sapiens) S68176 TOG protein - human
+1372583_at	AI009094	3.441	Transcribed sequences
+1373326_at	AI716512	3.434	Transcribed sequences
+1368373_at	NM_019343	3.432	regulator of G-protein signaling 7
+1374652_at	BF285372	3.423	Similar to RIKEN cDNA 4930433D19 (LOC362403), mRNA
+1377929_at	BF550844	3.418	Transcribed sequence with weak  similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1389697_at	AW529759	3.418	Transcribed sequences
+1377632_at	AW251195	3.417	UI-R-BJ0-adf-c-08-0-UI.s1 UI-R-BJ0 Rattus norvegicus cDNA clone UI-R-BJ0-adf-c-08-0-UI 3', mRNA sequence.
+1391179_at	BF390958	3.414	Transcribed sequences
+1392795_at	AA963069	3.4	Transcribed sequences
+1383234_at	BF405850	3.396	UI-R-CA1-bje-c-16-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bje-c-16-0-UI 3', mRNA sequence.
+1396887_at	AW527935	3.387	Transcribed sequences
+1388569_at	AI179984	3.385	serine (or cysteine) proteinase inhibitor, clade F), member 1
+1386953_at	NM_017080	3.38	hydroxysteroid 11-beta dehydrogenase 1
+1394778_at	BE116111	3.38	Transcribed sequences
+1377392_at	BF389722	3.377	Similar to dishevelled-associated activator of morphogenesis 1 (LOC316201), mRNA
+1387178_a_at	NM_012522	3.371	cystathionine beta synthase
+1389725_at	BM390364	3.366	Similar to Delta(14)-sterol reductase (C-14 sterol reductase) (Sterol C14-reductase) (Delta14-SR) (Transmembrane 7 superfamily member 2) (Another new gene 1) (Putative sterol reductase SR-1) (LOC293688), mRNA
+1369128_at	NM_017262	3.36	glutamate receptor, ionotropic, kainate 5
+1385205_at	BF409092	3.358	UI-R-BT1-bkl-h-06-0-UI.s1 UI-R-BT1 Rattus norvegicus cDNA clone UI-R-BT1-bkl-h-06-0-UI 3', mRNA sequence.
+1370355_at	J02585	3.353	stearoyl-Coenzyme A desaturase 1
+1387395_at	NM_017161	3.35	adenosine A2B receptor
+1378628_at	BF411451	3.343	Transcribed sequences
+1385008_at	AA925373	3.343	Transcribed sequences
+1381732_at	BF398558	3.341	fatty acid binding protein 7
+1382911_at	BE105150	3.337	UI-R-BX0-arz-a-10-0-UI.s1 UI-R-BX0 Rattus norvegicus cDNA clone UI-R-BX0-arz-a-10-0-UI 3', mRNA sequence.
+1370845_at	BI288690	3.331	Transcribed sequence with weak  similarity to protein sp:Q9Y5L3 (H.sapiens) ENP2_HUMAN Ectonucleoside triphosphate diphosphohydrolase 2
+1373642_at	AI145380	3.32	Similar to hypothetical protein (LOC310628), mRNA
+1370830_at	M37394	3.297	epidermal growth factor receptor
+1390518_at	AW915157	3.293	Transcribed sequence with strong similarity to protein ref:NP_542162.1 (M.musculus)  Emu1 protein [Mus musculus]
+1398115_at	BF393962	3.292	Transcribed sequences
+1379594_at	AW524408	3.291	Transcribed sequences
+1391304_at	BM388658	3.288	Similar to MGC36320 protein (LOC363190), mRNA
+1397286_at	AW435211	3.278	transcription factor 4
+1377086_at	AI233530	3.277	Transcribed sequences
+1374724_at	BG378232	3.275	UI-R-CV1-bvp-f-01-0-UI.s1 UI-R-CV1 Rattus norvegicus cDNA clone UI-R-CV1-bvp-f-01-0-UI 3', mRNA sequence.
+1376481_at	BF416285	3.274	Similar to a disintegrin-like and metalloprotease with thrombospondin type 1 motifs 9B (LOC312566), mRNA
+1392347_at	AW527765	3.274	UI-R-BO1-ajk-d-01-0-UI.s1 UI-R-BO1 Rattus norvegicus cDNA clone UI-R-BO1-ajk-d-01-0-UI 3', mRNA sequence.
+1375795_at	BI301062	3.273	Transcribed sequences
+1386269_x_at	AI177589	3.27	Similar to gp250 precursor (LOC300652), mRNA
+1377374_at	AI146055	3.268	Transcribed sequences
+1390398_at	AI179372	3.268	bone morphogenetic protein receptor, type 1A
+1373386_at	AI179953	3.262	Transcribed sequence with moderate similarity to protein pir:A43424 (H.sapiens) A43424 gap junction protein Cx26 - human
+1395776_at	BF396580	3.254	Transcribed sequences
+1367784_a_at	AF314657	3.25	clusterin
+1384392_at	BF397093	3.249	UI-R-BS2-bei-b-04-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-bei-b-04-0-UI 3', mRNA sequence.
+1380317_at	BF402765	3.248	cadherin 10
+1392177_at	BF400937	3.234	Transcribed sequences
+1386310_at	AI412779	3.219	Transcribed sequence with moderate similarity to protein pir:S12207 (M.musculus) S12207 hypothetical protein
+1390366_at	BI291884	3.218	Similar to PC-LKC gene product (LOC291002), mRNA
+1373749_at	BF395599	3.211	Similar to Snta1 protein (LOC362242), mRNA
+1392720_at	BG376949	3.207	Transcribed sequence with moderate similarity to protein pir:A46661 (H.sapiens) A46661 leukotriene B4 omega-hydroxylase
+1369404_a_at	NM_021767	3.206	neurexin 1
+1389966_at	AI176126	3.204	Transcribed sequence with weak  similarity to protein ref:NP_004360.1 (H.sapiens)  alpha 3 type VI collagen, isoform 1 precursor; collagen VI, alpha-3 polypeptide [Homo sapiens]
+1376504_at	AI145685	3.203	Similar to Brain-specific angiogenesis inhibitor 1 precursor (LOC362931), mRNA
+1377421_at	BF562337	3.202	Transcribed sequences
+1397112_at	BF415784	3.198	Transcribed sequences
+1390710_x_at	AA850618	3.195	Similar to gp250 precursor (LOC300652), mRNA
+1373178_at	AA945183	3.192	Transcribed sequences
+1389436_at	AI236615	3.191	Hypothetical LOC289904 (LOC289904), mRNA
+1386679_at	BF562962	3.172	Transcribed sequences
+1379143_at	BF409564	3.165	Transcribed sequences
+1373957_at	BF281544	3.16	reelin
+1380784_at	BE115838	3.157	Similar to KLHL5 protein (LOC305351), mRNA
+1380940_at	BF402603	3.153	Transcribed sequences
+1390014_at	BF399576	3.147	UI-R-CA0-bht-d-05-0-UI.s2 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bht-d-05-0-UI 3', mRNA sequence.
+1369831_at	NM_012916	3.142	brevican
+1372747_at	AI409899	3.141	solute carrier family 20, member 2
+1396852_at	AW532366	3.138	Transcribed sequences
+1396746_at	BF405991	3.12	UI-R-CA1-bje-h-17-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bje-h-17-0-UI 3', mRNA sequence.
+1367860_a_at	X83537	3.113	matrix metalloproteinase 14, membrane-inserted
+1368401_at	NM_017261	3.103	glutamate receptor, ionotropic,  2
+1375781_at	BF419844	3.101	Transcribed sequences
+1374191_at	AA956764	3.097	Similar to Rhbdf1 protein (LOC303008), mRNA
+1370384_a_at	M57668	3.092	prolactin receptor
+1367944_at	NM_080397	3.091	carbohydrate sulfotransferase 10
+1367598_at	NM_012681	3.079	transthyretin
+1374444_at	BI288540	3.076	Similar to plexinB1 (LOC316009), mRNA
+1370410_at	AF322216	3.074	immunoglobulin superfamily, member 1
+1381648_at	BF397798	3.07	UI-R-BS2-bee-g-06-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-bee-g-06-0-UI 3', mRNA sequence.
+1391809_at	BE106814	3.063	Transcribed sequences
+1368139_s_at	Y00714	3.062	alkaline phosphatase, tissue-nonspecific
+1388240_a_at	X74294	3.06	integrin alpha 7
+1377555_at	BF387432	3.059	Transcribed sequences
+1374786_at	BI298817	3.058	Transcribed sequences
+1377457_a_at	AA850618	3.058	Similar to gp250 precursor (LOC300652), mRNA
+1394097_at	AA849706	3.056	Transcribed sequences
+1381753_at	BF416214	3.052	Transcribed sequences
+1375839_at	BF393490	3.043	Similar to CP2B (LOC301038), mRNA
+1376707_at	AW918311	3.043	Similar to C1q and tumor necrosis factor related protein 4; complement-c1q tumor necrosis factor-related protein 4 (LOC311184), mRNA
+1369144_a_at	U75448	3.042	potassium voltage gated channel, Shal-related family, member 3
+1370824_at	AF273025	3.038	solute carrier family 38, member 3
+1380253_at	BE102139	3.038	Transcribed sequences
+1394562_at	AW530585	3.035	Transcribed sequences
+1379863_at	AW528891	3.033	potassium voltage gated channel, Shal-related family, member 2
+1375004_at	BF409055	3.031	Similar to hypothetical protein MGC18079 (LOC361647), mRNA
+1368425_at	NM_080690	3.029	cask-interacting protein 1
+1367838_at	NM_017074	3.027	CTL target antigen
+1393512_at	AA957880	3.026	Transcribed sequences
+1378720_at	BF397780	3.015	GLI-Kruppel family member GLI
+1376251_at	BE107622	3.006	Transcribed sequences
+1378367_at	BF389087	3.004	Transcribed sequences
+1374870_at	BF286402	3.002	collagen, type XXVII, alpha 1
+1388054_a_at	AF072892	3	chondroitin sulfate proteoglycan 2 (versican)
+1388004_at	AF087947	2.999	Osteotesticular phosphatase
+1397615_at	BG375528	2.998	UI-R-CV1-btc-d-03-0-UI.s1 UI-R-CV1 Rattus norvegicus cDNA clone UI-R-CV1-btc-d-03-0-UI 3', mRNA sequence.
+1390092_at	BF410328	2.996	Transcribed sequences
+1376944_at	AI407163	2.995	Transcribed sequences
+1393995_at	AW534561	2.994	glutamate receptor, ionotropic,  2
+1375708_at	BF392901	2.986	collagen, type XXVII, alpha 1
+1373631_at	BF284067	2.972	Similar to Rap1 GTPase-activating protein 1 (Rap1GAP) (LOC313644), mRNA
+1398645_at	BE106388	2.972	Transcribed sequence with strong similarity to protein sp:O00755 (H.sapiens) WN7A_HUMAN WNT-7A protein precursor
+1367953_at	NM_017092	2.967	TYRO3 protein tyrosine kinase 3
+1392480_at	BE100901	2.952	poly(A) binding protein, nuclear 1
+1376011_at	AI411359	2.945	Similar to mitogen-activated protein kinase kinase kinase 13; leucine zipper-bearing kinase (LOC363848), mRNA
+1393097_at	AI709802	2.939	Similar to hypothetical protein MGC36325 (LOC291736), mRNA
+1382294_at	AI576111	2.934	activated leukocyte cell adhesion molecule
+1387363_at	AF040256	2.934	folate hydrolase
+1394767_at	BF396817	2.931	UI-R-BS2-bev-e-02-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-bev-e-02-0-UI 3', mRNA sequence.
+1381775_at	BF391321	2.918	Transcribed sequences
+1392846_at	AA944574	2.91	Transcribed sequences
+1376203_at	BF285996	2.907	Similar to Rho guanine nucleotide exchange factor 4 isoform a; APC-stimulated guanine nucleotide exchange factor (LOC301336), mRNA
+1376619_at	AI412803	2.907	Similar to protein tyrosine phosphatase, receptor type, D isoform 3 precursor; protein tyrosine phosphatase, receptor type, delta polypeptide; protein tyrosine phosphatase delta (LOC313278), mRNA
+1387934_at	U37142	2.901	brevican
+1390643_at	BF403311	2.9	Transcribed sequences
+1398255_at	NM_031672	2.896	solute carrier family 15, member 2
+1368453_at	NM_031344	2.893	fatty acid desaturase 2
+1371052_at	AA859752	2.892	noggin
+1375513_at	BG376846	2.891	Transcribed sequences
+1370125_at	NM_019189	2.889	cartilage link protein 1
+1377008_at	BI296868	2.887	Transcribed sequence with weak  similarity to protein prf:2208351A (H.sapiens) 2208351A syntrophin:ISOTYPE=alpha1 [Homo sapiens]
+1379620_at	AW529639	2.887	Transcribed sequences
+1379404_at	AI598327	2.886	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1375658_at	AI412317	2.885	Transcribed sequences
+1376765_at	BF283408	2.885	Similar to B29 protein (LOC361348), mRNA
+1385355_at	BF391308	2.885	UI-R-CA1-bcv-h-02-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bcv-h-02-0-UI 3', mRNA sequence.
+1373401_at	AI176034	2.881	EST219610 Normalized rat ovary, Bento Soares Rattus sp. cDNA clone ROVBJ66 3' end, mRNA sequence.
+1378038_at	BF393884	2.881	UI-R-CA0-bgw-b-06-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bgw-b-06-0-UI 3', mRNA sequence.
+1395023_at	BF417891	2.876	Transcribed sequences
+1375264_at	BF416264	2.87	Transcribed sequences
+1389424_at	BI289475	2.869	Transcribed sequences
+1388039_a_at	AF283276	2.867	gamma-aminobutyric acid (GABA) B receptor, 1
+1391770_at	BE108244	2.867	Transcribed sequences
+1390668_at	BG378312	2.862	UI-R-CV1-bvq-f-04-0-UI.s1 UI-R-CV1 Rattus norvegicus cDNA clone UI-R-CV1-bvq-f-04-0-UI 3', mRNA sequence.
+1367682_at	NM_030859	2.861	midkine
+1394689_at	BE117217	2.857	Transcribed sequences
+1390878_at	BI296047	2.852	Similar to Thbs3 protein (LOC295242), mRNA
+1385729_at	BE108687	2.845	UI-R-CA0-axh-c-03-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-axh-c-03-0-UI 3', mRNA sequence.
+1367749_at	NM_031050	2.84	lumican
+1387889_at	AI233882	2.824	folate receptor 1 (adult)
+1380897_at	BE105590	2.823	Transcribed sequences
+1390743_at	BF405616	2.822	Transcribed sequences
+1376170_at	BI290821	2.817	Similar to collagen type XIV (LOC314981), mRNA
+1381210_at	AI639521	2.814	Transcribed sequences
+1376092_at	BF396614	2.813	Transcribed sequence with weak  similarity to protein sp:O00401 (H.sapiens) WASL_HUMAN Neural Wiskott-Aldrich syndrome protein
+1380833_at	AI045802	2.807	glycosylphosphatidylinositol specific phospholipase D1
+1384822_at	AW521721	2.807	Transcribed sequences
+1368600_at	NM_022287	2.803	solute carrier family 26 (sulfate transporter), member 1
+1374655_at	BG378095	2.803	UI-R-CT0-bvn-h-04-0-UI.s1 UI-R-CT0 Rattus norvegicus cDNA clone UI-R-CT0-bvn-h-04-0-UI 3', mRNA sequence.
+1376744_at	BI289572	2.798	Transcribed sequences
+1387291_at	NM_017351	2.792	pre-alpha-inhibitor, heavy chain 3
+1387146_a_at	X57764	2.789	endothelin receptor type B
+1381448_at	AW535305	2.787	Similar to CG6796-PA (LOC293128), mRNA
+1384320_at	BE121330	2.787	Similar to Brain-specific angiogenesis inhibitor 3 precursor (LOC301309), mRNA
+1389533_at	AA944398	2.774	fibulin 2
+1383418_at	BG377805	2.759	Transcribed sequences
+1392368_at	BE117273	2.759	Transcribed sequences
+1370599_a_at	L19933	2.755	protein tyrosine phosphatase, receptor type, D
+1388459_at	AI101782	2.755	collagen, type XVIII, alpha 1
+1374861_at	AI175907	2.754	Similar to groucho-related protein (LOC299636), mRNA
+1369705_at	AI169634	2.751	X transporter protein 3
+1379049_a_at	AW532022	2.751	Transcribed sequences
+1378913_at	BF419415	2.747	UI-R-CA1-bnr-d-08-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bnr-d-08-0-UI 3', mRNA sequence.
+1385519_at	BE105678	2.745	Similar to homologue oh human CBFA2T1 gene (LOC362489), mRNA
+1375217_at	BI296680	2.743	Transcribed sequences
+1371696_at	AI412938	2.742	G protein-coupled receptor 56
+1369677_at	NM_012784	2.732	cannabinoid receptor 1
+1368125_at	NM_019229	2.73	solute carrier family 12, member 4
+1382221_at	AI176944	2.73	Transcribed sequences
+1385821_at	BF392004	2.73	Transcribed sequences
+1396157_at	BF548958	2.729	Transcribed sequences
+1376425_at	BF420705	2.728	transforming growth factor, beta 2
+1374383_at	BE121006	2.727	Transcribed sequences
+1394756_at	AA955494	2.725	Transcribed sequences
+1374765_at	BI288055	2.723	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1389712_at	BE117335	2.719	Transcribed sequences
+1386739_at	BF545627	2.715	Similar to PEA3 (LOC360635), mRNA
+1377693_at	BG374988	2.714	Hypothetical LOC313244 (LOC313244), mRNA
+1391843_at	BF393134	2.714	Transcribed sequences
+1387172_a_at	NM_031131	2.71	transforming growth factor, beta 2
+1391736_at	BG376666	2.709	Similar to lipocalin-interacting membrane receptor (LOC300215), mRNA
+1378694_at	BI294858	2.707	Similar to plexinB1 (LOC316009), mRNA
+1391067_at	BF389648	2.706	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1368036_at	M60103	2.702	protein tyrosine phosphatase, receptor type, F
+1374329_at	BI286364	2.701	Transcribed sequence with moderate similarity to protein sp:O15068 (H.sapiens) DBS_HUMAN Guanine nucleotide exchange factor DBS
+1392567_at	AI556652	2.701	UI-R-C2p-ri-h-05-0-UI.s1 UI-R-C2p Rattus norvegicus cDNA clone UI-R-C2p-ri-h-05-0-UI 3', mRNA sequence.
+1377878_at	AA800782	2.699	Transcribed sequences
+1393135_at	BM390238	2.695	Transcribed sequences
+1393048_at	BF561277	2.693	UI-R-C0-hl-c-03-0-UI.r1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-hl-c-03-0-UI 5', mRNA sequence.
+1389700_at	H31078	2.692	Transcribed sequences
+1387325_at	NM_024143	2.689	bile acid CoA ligase
+1369993_at	NM_133605	2.688	calcium/calmodulin-dependent protein kinase (CaM kinase) II gamma
+1396556_at	BF413366	2.685	Transcribed sequences
+1374106_at	AI412389	2.68	Similar to RIKEN cDNA 3110007P09 (LOC313413), mRNA
+1375815_at	BF391129	2.68	Transcribed sequences
+1383858_at	BF548326	2.68	Transcribed sequence with strong similarity to protein ref:NP_065710.1 (H.sapiens)  tweety homolog 1
+1395198_at	BE099956	2.679	Similar to zinc-finger protein ZFP313 (LOC362277), mRNA
+1389754_at	AI555295	2.678	Transcribed sequence with weak  similarity to protein ref:NP_005798.1 (H.sapiens)  proteoglycan 4; megakaryocyte stimulating factor; proteoglycan 4,
+1369904_at	NM_012956	2.676	gamma-aminobutyric acid receptor, subunit beta 1
+1386860_at	NM_012811	2.676	milk fat globule-EGF factor 8 protein
+1384056_at	BF410980	2.674	fibroblast growth factor receptor 3
+1373510_at	BF281373	2.657	vesicle-associated membrane protein 1
+1369371_a_at	Y10369	2.654	gamma-aminobutyric acid (GABA) B receptor, 1
+1388038_at	AB038388	2.653	attractin
+1388924_at	AA818262	2.653	Transcribed sequence with strong similarity to protein ref:NP_065606.1 (M.musculus)  fibrinogen/angiopoietin-related protein; major histocompatibility complex region NG27 [Mus musculus]
+1383546_at	BE097393	2.651	UI-R-BO1-apq-h-12-0-UI.s1 UI-R-BO1 Rattus norvegicus cDNA clone UI-R-BO1-apq-h-12-0-UI 3', mRNA sequence.
+1371018_at	BF411765	2.65	cadherin EGF LAG seven-pass G-type receptor 2
+1374591_at	AI409042	2.65	Similar to protein tyrosine phosphatase, receptor type, D isoform 3 precursor; protein tyrosine phosphatase, receptor type, delta polypeptide; protein tyrosine phosphatase delta (LOC313278), mRNA
+1395249_at	BF400750	2.644	LOC362256 (LOC362256), mRNA
+1372012_at	BF417479	2.642	Similar to 24-dehydrocholesterol reductase (LOC298298), mRNA
+1367978_at	NM_031007	2.641	adenylyl cyclase 2
+1381207_at	BE120425	2.641	Transcribed sequences
+1374432_at	BE118251	2.636	activated leukocyte cell adhesion molecule
+1378471_at	BE111819	2.635	Similar to hypothetical protein FLJ10770 (LOC362551), mRNA
+1389959_at	BF413628	2.634	Transcribed sequences
+1368772_at	NM_017049	2.632	solute carrier family 4, member 3
+1390616_at	BI296731	2.632	Transcribed sequences
+1370605_s_at	U53144	2.628	leptin receptor
+1377218_at	BF414000	2.628	UI-R-BJ2-bol-c-06-0-UI.s1 UI-R-BJ2 Rattus norvegicus cDNA clone UI-R-BJ2-bol-c-06-0-UI 3', mRNA sequence.
+1390483_at	BF555120	2.627	Similar to chromosome 14 open reading frame 69 (LOC314441), mRNA
+1385164_at	BE108640	2.625	UI-R-CA0-axg-f-10-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-axg-f-10-0-UI 3', mRNA sequence.
+1395598_at	BF408769	2.625	LOC362059 (LOC362059), mRNA
+1382825_at	AI060128	2.619	Transcribed sequence with weak  similarity to protein ref:NP_033014.1 (M.musculus)  putative neuronal cell adhesion molecule [Mus musculus]
+1395359_at	BF559566	2.619	Transcribed sequences
+1372929_at	AI010839	2.618	potassium large conductance calcium-activated channel, subfamily M, alpha member 1
+1381175_at	BE114469	2.618	Similar to modulator of estrogen induced transcription (LOC315792), mRNA
+1389221_at	BI296275	2.618	Similar to monocyte-to-macrophage differentiation factor 2 (LOC304301), mRNA
+1396581_at	BE103137	2.616	UI-R-BT1-aqx-a-04-0-UI.s1 UI-R-BT1 Rattus norvegicus cDNA clone UI-R-BT1-aqx-a-04-0-UI 3', mRNA sequence.
+1387286_at	NM_017011	2.614	glutamate receptor, metabotropic 1
+1368692_a_at	AW140851	2.611	choline kinase
+1387013_at	NM_020976	2.606	kidney-specific membrane protein
+1392650_at	AI059349	2.603	casein kinase II, alpha 1 polypeptide
+1393933_at	AW144823	2.601	Similar to gp250 precursor (LOC300652), mRNA
+1391964_at	BI300993	2.599	Similar to helicase-like protein NHL isoform 2 (LOC296475), mRNA
+1370259_a_at	BE101119	2.595	parathyroid hormone receptor 1
+1375531_at	BI300956	2.594	Similar to hypothetical protein FLJ90440 (LOC299830), mRNA
+1389403_at	AI013715	2.594	bone morphogenetic protein 7
+1395351_at	BF543381	2.592	Transcribed sequences
+1379575_at	BF412271	2.591	Transcribed sequences
+1390358_at	BF405996	2.588	calcium channel, voltage dependent, alpha2/delta subunit 3
+1367673_at	NM_080892	2.578	selenium binding protein 2
+1397398_at	BG376725	2.578	Transcribed sequences
+1369693_a_at	AY069978	2.577	solute carrier family 1, member 2
+1392055_at	BF397988	2.577	Transcribed sequences
+1378614_at	BI274329	2.574	Transcribed sequences
+1387942_at	AF182714	2.573	putative phosphate-phosphoenolpyruvate translocator
+1396896_at	AW524895	2.571	Similar to KIAA1061 protein (LOC303130), mRNA
+1398862_at	J04024	2.57	ATPase, Ca++ transporting, cardiac muscle, slow twitch 2
+1381590_at	BI295719	2.567	Transcribed sequences
+1375577_at	BF400031	2.566	Transcribed sequences
+1372695_at	AI172165	2.558	peroxisomal protein
+1383794_at	AI575277	2.558	Similar to RIKEN cDNA A930038C07 (LOC312401), mRNA
+1390404_at	BF556962	2.558	Similar to laminin-2 alpha2 chain precursor (LOC309368), mRNA
+1397165_at	BF547582	2.558	Similar to SWI/SNF-related matrix-associated actin-dependent regulator of chromatin a2 isoform a; SNF2-like 2; SNF2-alpha; SNF2/SWI2-like protein 2; sucrose nonfermenting 2-like protein 2; global transcription activator homologous s ...
+1376405_at	BF404837	2.556	Transcribed sequences
+1375983_at	AI234287	2.553	Similar to 1200015L10Rik protein (LOC309410), mRNA
+1378745_at	BG374483	2.553	period homolog 3 (Drosophila)
+1368302_at	NM_031059	2.552	homeo box, msh-like 1
+1368353_at	NM_017009	2.552	glial fibrillary acidic protein
+1372760_at	AI176579	2.55	EST220167 Normalized rat ovary, Bento Soares Rattus sp. cDNA clone ROVBU12 3' end, mRNA sequence.
+1374452_at	BF399743	2.55	phosphodiesterase 9A
+1370043_at	NM_031753	2.549	activated leukocyte cell adhesion molecule
+1370601_a_at	AF073379	2.549	glutamate receptor, ionotropic, N-methyl-D-aspartate 3A
+1384806_at	AI502875	2.549	Transcribed sequences
+1383164_at	AW524366	2.545	UI-R-BO0-ahj-e-02-0-UI.s1 UI-R-BO0 Rattus norvegicus cDNA clone UI-R-BO0-ahj-e-02-0-UI 3', mRNA sequence.
+1385713_at	BF392577	2.545	Similar to NAKAP95 (LOC299569), mRNA
+1373102_at	BI282750	2.543	Transcribed sequences
+1396660_at	BE108561	2.543	Transcribed sequences
+1370950_at	Y07783	2.542	ER transmembrane protein Dri 42
+1389836_a_at	AI599265	2.541	Transcribed sequence with strong similarity to protein ref:NP_000353.1 (H.sapiens)  tissue inhibitor of metalloproteinase 3 precursor; Tissue inhibitor of metalloproteinase-3 [Homo sapiens]
+1375008_at	BF410389	2.538	Similar to serine/threonine kinase AIE1 (LOC292554), mRNA
+1368322_at	NM_012880	2.535	superoxide dismutase 3
+1374496_at	BG380570	2.533	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1392214_at	AW532375	2.533	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1374308_at	AI575603	2.527	Transcribed sequences
+1398318_at	BI274326	2.527	mucin 1
+1371491_at	BM390614	2.521	Notch gene homolog 1, (Drosophila)
+1378313_at	BI299600	2.52	Transcribed sequence with weak  similarity to protein sp:O08816 (R.norvegicus) WASL_RAT Neural Wiskott-Aldrich syndrome protein
+1368080_at	NM_054008	2.519	Response gene to complement 32
+1395467_at	AI145705	2.519	Similar to N-copine (LOC290220), mRNA
+1378197_at	AW433953	2.516	KIFC2 protein
+1387916_at	U39208	2.511	cytochrome P450 4F6
+1375562_at	BF408460	2.51	Transcribed sequences
+1367979_s_at	BG664123	2.509	cytochrome P450, subfamily 51
+1393163_at	AI112184	2.505	UI-R-Y0-ml-f-07-0-UI.s1 UI-R-Y0 Rattus norvegicus cDNA clone UI-R-Y0-ml-f-07-0-UI 3', mRNA sequence.
+1377793_at	BF407551	2.498	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1380964_at	BF396607	2.497	Similar to Dystrobrevin alpha (Alpha-dystrobrevin) (LOC307548), mRNA
+1372479_at	AI175666	2.496	Transcribed sequences
+1391502_at	AI170453	2.496	Transcribed sequences
+1385038_at	BF390009	2.495	Transcribed sequences
+1371855_at	BM390254	2.494	Transcribed sequences
+1382267_at	BF390450	2.493	Similar to four jointed box 1 (LOC366140), mRNA
+1377321_at	BF415831	2.491	Transcribed sequences
+1389048_at	BI278614	2.491	Transcribed sequence with moderate similarity to protein sp:P13497 (H.sapiens) BMP1_HUMAN Bone morphogenetic protein 1 precursor
+1368035_a_at	X83505	2.488	protein tyrosine phosphatase, receptor type, F
+1368472_at	NM_031320	2.486	cadherin EGF LAG seven-pass G-type receptor 3
+1368620_at	NM_031792	2.486	sperm antigen 4
+1371369_at	BI287851	2.486	Similar to procollagen, type VI, alpha 2 (LOC361821), mRNA
+1378262_at	BG377362	2.486	Transcribed sequences
+1385506_at	AW530507	2.482	Transcribed sequences
+1377773_at	AW522872	2.48	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1390505_a_at	BF419854	2.48	Transcribed sequence with weak  similarity to protein ref:NP_078785.1 (H.sapiens)  hypothetical protein MGC2656 [Homo sapiens]
+1387886_at	AI011747	2.478	proline arginine-rich end leucine-rich repeat protein
+1373561_at	AI012498	2.477	Similar to chondroitin polymerizing factor; chondroitin sulfate synthase 2 (LOC316533), mRNA
+1392374_at	BF389797	2.474	Transcribed sequences
+1374726_at	AI411941	2.473	Similar to KIAA1866 protein (LOC308099), mRNA
+1398440_at	BI292166	2.473	Similar to SR rich protein (LOC297942), mRNA
+1392926_at	BI281952	2.472	Similar to laminin alpha-1 chain precursor - mouse (LOC316758), mRNA
+1394597_at	AI101356	2.472	Similar to RIKEN cDNA 4921528E07 (LOC305816), mRNA
+1394786_at	AW526631	2.472	Transcribed sequences
+1373487_at	AI030552	2.469	Transcribed sequences
+1383971_at	AA818159	2.467	Transcribed sequences
+1387913_at	U48220	2.466	cytochrome P450 2d18
+1387926_at	AB052846	2.465	sterol-C5-desaturase (fungal ERG3, delta-5-desaturase)-like
+1390659_at	BI302830	2.465	CD44 antigen
+1368082_at	NM_017048	2.459	solute carrier family 4, member 2
+1374417_at	BE113111	2.458	Similar to nuclear receptor binding protein; HLS7-interacting protein kinase (LOC315090), mRNA
+1384183_at	AA996869	2.457	myosin VIIA and Rab interacting protein
+1387099_at	NM_053838	2.457	natriuretic peptide receptor 2
+1370068_at	NM_017174	2.456	phospholipase A2, group 5
+1381262_at	BG374101	2.452	Transcribed sequences
+1398197_at	BF390021	2.451	Transcribed sequences
+1368189_at	NM_022389	2.45	7-dehydrocholesterol reductase
+1397449_at	AI059353	2.447	UI-R-C1-ld-a-07-0-UI.s1 UI-R-C1 Rattus norvegicus cDNA clone UI-R-C1-ld-a-07-0-UI 3', mRNA sequence.
+1372335_at	BE114641	2.442	UI-R-BJ1-awn-e-06-0-UI.s1 UI-R-BJ1 Rattus norvegicus cDNA clone UI-R-BJ1-awn-e-06-0-UI 3', mRNA sequence.
+1368381_at	NM_134401	2.441	W307 protein
+1374098_at	AW530272	2.44	Transcribed sequence with moderate similarity to protein ref:NP_085155.1 (H.sapiens)  NG3 protein [Homo sapiens]
+1381491_at	BE097634	2.44	Transcribed sequences
+1373750_at	BF406832	2.435	Similar to leprecan-like protein 2 (LOC297595), mRNA
+1368120_at	NM_031069	2.434	protein kinase C-binding protein NELL1
+1374546_at	AW918040	2.434	Transcribed sequences
+1391534_at	BG666735	2.431	Similar to SSC2 (LOC361231), mRNA
+1375944_at	AA849497	2.428	Similar to Acetyl-coenzyme A synthetase, cytoplasmic (Acetate--CoA ligase) (Acyl-activating enzyme) (Acetyl-CoA synthetase) (ACS) (AceCS) (LOC311569), mRNA
+1367789_at	NM_053580	2.426	fatty acid transport protein
+1385782_at	AW524067	2.425	UI-R-BO0-ahr-b-06-0-UI.s1 UI-R-BO0 Rattus norvegicus cDNA clone UI-R-BO0-ahr-b-06-0-UI 3', mRNA sequence.
+1392182_at	BG380589	2.425	UI-R-CT0-btz-b-01-0-UI.s1 UI-R-CT0 Rattus norvegicus cDNA clone UI-R-CT0-btz-b-01-0-UI 3', mRNA sequence.
+1397443_at	BF398770	2.423	Transcribed sequences
+1379035_at	BF413511	2.422	UI-R-CA0-bof-b-02-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bof-b-02-0-UI 3', mRNA sequence.
+1377807_a_at	BF389856	2.421	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1390735_at	BG375163	2.419	UI-R-CV1-bsx-h-03-0-UI.s1 UI-R-CV1 Rattus norvegicus cDNA clone UI-R-CV1-bsx-h-03-0-UI 3', mRNA sequence.
+1397854_at	BI275309	2.415	Transcribed sequences
+1368577_at	NM_053388	2.414	gap junction protein, beta 6 (connexin 30)
+1369425_at	NM_138889	2.414	cadherin 13
+1368582_at	NM_017217	2.413	solute carrier family 7, member 3
+1380958_at	BG671935	2.413	Transcribed sequence with strong similarity to protein sp:O00755 (H.sapiens) WN7A_HUMAN WNT-7A protein precursor
+1368698_at	NM_012508	2.41	ATPase, Ca++ transporting, plasma membrane 2
+1385876_at	AA817826	2.41	Similar to Gpc6 protein (LOC306163), mRNA
+1377631_at	BM389001	2.408	Similar to alpha-3 type IX collagen (LOC362285), mRNA
+1377084_at	BE106598	2.406	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1381097_at	AI030890	2.405	UI-R-C0-jf-a-09-0-UI.s1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-jf-a-09-0-UI 3', mRNA sequence.
+1391039_at	BE115243	2.405	UI-R-CA0-axr-a-04-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-axr-a-04-0-UI 3', mRNA sequence.
+1393469_at	BE102340	2.405	UI-R-BT1-aql-d-09-0-UI.s1 UI-R-BT1 Rattus norvegicus cDNA clone UI-R-BT1-aql-d-09-0-UI 3', mRNA sequence.
+1375404_at	BF415963	2.403	Transcribed sequences
+1392049_at	BF411767	2.398	Transcribed sequences
+1395047_at	BF397243	2.396	Similar to tankyrase, TRF1-interacting ankyrin-related ADP-ribose polymerase 2; tankyrase 2 (LOC309512), mRNA
+1380693_at	BF415976	2.395	UI-R-CA0-bkp-e-10-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bkp-e-10-0-UI 3', mRNA sequence.
+1381821_at	AI454542	2.395	MAM domain containing glycosylphosphatidylinositol anchor 2
+1393743_at	AI453930	2.392	Transcribed sequences
+1394585_at	BE116089	2.392	Transcribed sequence with weak  similarity to protein sp:P04280 (H.sapiens) PRP1_HUMAN Salivary proline-rich protein precursor
+1376322_at	BF405165	2.389	Transcribed sequences
+1377778_at	BE107282	2.389	ischemia related factor vof-16
+1393406_at	AI576602	2.389	Transcribed sequences
+1394645_at	BF287691	2.388	Transcribed sequences
+1377418_at	AI411724	2.387	Transcribed sequences
+1390375_at	BF414692	2.387	Similar to NAKAP95 (LOC299569), mRNA
+1384444_at	BF415780	2.386	Similar to RIKEN cDNA A830041P22 gene (LOC361521), mRNA
+1373699_at	BM391164	2.384	Similar to RIKEN cDNA 1810059A23 (LOC363289), mRNA
+1376434_at	AI101016	2.384	Transcribed sequences
+1389543_at	BE111083	2.383	mannose-binding protein associated serine protease-1
+1395922_at	BF412539	2.383	Transcribed sequences
+1376601_at	BF397526	2.381	Similar to semaphorin 6A1; semaphorin 6A-1 (LOC361324), mRNA
+1390544_at	BF388507	2.381	Similar to E2a-Pbx1-associated protein; putative 47 kDa protein (LOC362869), mRNA
+1374543_at	AA858791	2.378	Transcribed sequences
+1380202_at	AI070003	2.378	Transcribed sequences
+1376265_at	AI411542	2.377	Similar to six transmembrane epithelial antigen of prostate 2; six transmembrane prostate protein; prostate cancer associated gene 1; prostate cancer associated protein 1 (LOC312052), mRNA
+1378871_at	AA924656	2.377	Similar to brain-specific angiogenesis inhibitor 2 (LOC313058), mRNA
+1374610_at	AI599365	2.376	Transcribed sequences
+1383214_at	AI555989	2.376	Transcribed sequences
+1377138_at	AI709547	2.369	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1370099_at	NM_022272	2.368	F-box protein FBL2
+1374013_at	BI278078	2.367	Similar to complement-c1q tumor necrosis factor-related protein (LOC315598), mRNA
+1377029_at	AI235414	2.364	Transcribed sequences
+1393608_at	AW522185	2.361	Transcribed sequences
+1389079_at	AI639268	2.359	Similar to DKFZP566O084 protein (LOC287411), mRNA
+1373829_at	AI412658	2.353	fibroblast growth factor receptor 2
+1390393_at	BF388422	2.352	Transcribed sequences
+1380464_at	AI145031	2.351	Similar to DEAD/H (Asp-Glu-Ala-Asp/His) box polypeptide 26; RNA helicase HDB; deleted in cancer 1; RNA helicase HDB/DICE1; DEAD box protein (LOC361057), mRNA
+1377792_at	AW524891	2.345	Transcribed sequences
+1383775_at	BF386414	2.345	Transcribed sequences
+1392317_at	BI288026	2.345	Transcribed sequences
+1393325_at	BG378917	2.344	Similar to Pseudoautosomal GTP-binding protein-like protein (LOC363931), mRNA
+1386102_at	AA851046	2.341	Transcribed sequences
+1378434_at	BF400808	2.34	Transcribed sequences
+1390530_at	AI169239	2.34	Transcribed sequences
+1374908_at	BE113272	2.338	Transcribed sequence with weak  similarity to protein ref:NP_079268.1 (H.sapiens)  hypothetical protein FLJ12547 [Homo sapiens]
+1375729_at	BF411904	2.337	Transcribed sequence with weak  similarity to protein pir:RGECDW (E. coli) RGECDW transcription activator of D-serine dehydratase - Escherichia coli
+1385229_at	AW524146	2.337	UI-R-BO0-aii-a-07-0-UI.s1 UI-R-BO0 Rattus norvegicus cDNA clone UI-R-BO0-aii-a-07-0-UI 3', mRNA sequence.
+1371775_at	AI172057	2.336	Transcribed sequences
+1377458_at	AA850618	2.336	Similar to gp250 precursor (LOC300652), mRNA
+1378621_at	BE121126	2.333	Transcribed sequences
+1378806_at	BF392451	2.333	Transcribed sequences
+1391346_at	BG373537	2.332	Similar to FKSG26 protein (LOC292082), mRNA
+1394807_at	AW522357	2.324	UI-R-BO0-ahw-b-05-0-UI.s1 UI-R-BO0 Rattus norvegicus cDNA clone UI-R-BO0-ahw-b-05-0-UI 3', mRNA sequence.
+1375621_at	AI575254	2.323	sideroflexin 5
+1387384_at	NM_033299	2.321	phospholipase D2
+1370053_at	NM_022946	2.319	guanylate kinase associated protein
+1370329_at	U48220	2.319	cytochrome P450 2d18
+1384897_at	AA858696	2.318	Transcribed sequences
+1389447_at	AA955470	2.317	Similar to prolyl-4-hydroxylase-alpha NE2 CG9720-PA (LOC301008), mRNA
+1371232_a_at	AF084544	2.316	chondroitin sulfate proteoglycan 2 (versican)
+1372895_at	AI169367	2.316	Similar to RIKEN cDNA 5730469M10 (LOC361118), mRNA
+1395101_at	BF396757	2.316	Transcribed sequences
+1389681_at	BI296388	2.315	Similar to poliovirus receptor homolog (LOC308417), mRNA
+1375138_at	AA893169	2.314	Transcribed sequence with strong similarity to protein ref:NP_000353.1 (H.sapiens)  tissue inhibitor of metalloproteinase 3 precursor; Tissue inhibitor of metalloproteinase-3 [Homo sapiens]
+1369633_at	AF189724	2.313	chemokine (C-X-C motif) ligand 12
+1372823_at	BE117126	2.313	Similar to RIKEN cDNA 2310005N03 (LOC289278), mRNA
+1378065_at	BI274450	2.312	Transcribed sequence with weak  similarity to protein ref:NP_509066.1 (C.elegans)  C03B1.10.p [Caenorhabditis elegans]
+1393075_at	BF386199	2.312	UI-R-CA1-bbb-g-03-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bbb-g-03-0-UI 3', mRNA sequence.
+1377232_at	BF406608	2.308	Similar to hypothetical protein (LOC305332), mRNA
+1381668_at	AW528482	2.307	Transcribed sequences
+1382375_at	AI639128	2.306	Transcribed sequence with moderate similarity to protein pir:RGECDW (E. coli) RGECDW transcription activator of D-serine dehydratase - Escherichia coli
+1387233_at	NM_017235	2.306	hydroxysteroid dehydrogenase 17 beta, type 7
+1391601_at	AA964579	2.305	Similar to Glioma amplified on chromosome 1 protein precursor (LOC289020), mRNA
+1372518_at	AI176918	2.299	Similar to Fbln1 protein (LOC315191), mRNA
+1373469_at	BF408841	2.297	Transcribed sequences
+1375849_at	BE110095	2.297	Transcribed sequences
+1379092_at	AI712997	2.295	Transcribed sequences
+1369960_at	NM_031648	2.294	FXYD domain-containing ion transport regulator 1
+1385082_at	BE120904	2.293	UI-R-BS1-azt-h-02-0-UI.s1 UI-R-BS1 Rattus norvegicus cDNA clone UI-R-BS1-azt-h-02-0-UI 3', mRNA sequence.
+1386728_at	BF545849	2.292	Transcribed sequences
+1380111_at	AI578095	2.29	Transcribed sequences
+1374678_at	BE109578	2.287	Similar to Semaphorin 4B (Semaphorin C) (Sema C) (LOC293042), mRNA
+1388527_at	BI283685	2.287	Transcribed sequences
+1391447_at	BI299229	2.287	Transcribed sequence with moderate similarity to protein pir:I60307 (E. coli) I60307 beta-galactosidase, alpha peptide - Escherichia coli
+1368001_at	NM_012905	2.286	 
+1374448_at	AW523759	2.278	Similar to metastasis and invasion (LOC313488), mRNA
+1382130_at	AA997710	2.277	Similar to bA99E24.1.1 (protocadherin 19 (KIAA1313) protein) (LOC317183), mRNA
+1375771_at	BF399598	2.276	Similar to hypothetical protein FLJ20174 (LOC288109), mRNA
+1373839_at	BG372386	2.274	Transcribed sequences
+1393579_at	BF406384	2.267	UI-R-CA1-bjf-f-16-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bjf-f-16-0-UI 3', mRNA sequence.
+1377018_at	BF284124	2.266	Similar to E430002G05Rik protein (LOC311252), mRNA
+1368153_a_at	AJ293698	2.265	nasal embryonic LHRH factor
+1375206_at	BI275257	2.265	Hypothetical LOC287466 (LOC287466), mRNA
+1370438_at	AF037071	2.264	C-terminal PDZ domain ligand of neuronal nitric oxide synthase
+1367996_a_at	AF111099	2.263	CL1BA protein
+1369628_at	BG672437	2.26	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1391211_at	AI144936	2.257	UI-R-BT0-pp-f-09-0-UI.s1 UI-R-BT0 Rattus norvegicus cDNA clone UI-R-BT0-pp-f-09-0-UI 3', mRNA sequence.
+1368261_at	NM_053817	2.254	neurexin 3
+1380250_at	AI013978	2.254	Transcribed sequences
+1368325_at	NM_012842	2.253	epidermal growth factor
+1369008_a_at	NM_053573	2.253	olfactomedin related ER localized protein
+1374803_at	BG374219	2.253	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1376992_a_at	AI058900	2.253	Transcribed sequence with weak  similarity to protein ref:NP_194220.1 (A.thaliana)  hypothetical protein [Arabidopsis thaliana]
+1367893_a_at	NM_133414	2.251	Mid-1-related chloride channel 1
+1371007_at	BF416432	2.25	eck-like sequence 1
+1383783_at	AW521192	2.25	Transcribed sequences
+1386913_at	NM_019358	2.25	glycoprotein 38
+1387059_at	NM_019362	2.25	serine threonine kinase 39 (STE20/SPS1 homolog, yeast)
+1373057_at	AI229142	2.246	ProSAPiP1 protein
+1368887_at	NM_019161	2.245	cadherin 22
+1375049_at	AI711132	2.245	latent transforming growth factor beta binding protein 3
+1373783_at	AA943917	2.244	EST199416 Normalized rat brain, Bento Soares Rattus sp. cDNA clone RBRAR31 3' end, mRNA sequence.
+1370550_at	U31554	2.241	limbic system-associated membrane protein
+1372905_at	AW433888	2.24	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1384533_at	AW527248	2.24	UI-R-BO1-ajs-b-09-0-UI.s1 UI-R-BO1 Rattus norvegicus cDNA clone UI-R-BO1-ajs-b-09-0-UI 3', mRNA sequence.
+1390795_at	AI029455	2.238	tocopherol (alpha) transfer protein
+1396270_at	BI290209	2.237	UI-R-DK0-cft-e-04-0-UI.s1 UI-R-DK0 Rattus norvegicus cDNA clone UI-R-DK0-cft-e-04-0-UI 3', mRNA sequence.
+1378888_at	BF397954	2.236	Transcribed sequences
+1370312_at	M88469	2.234	f-spondin
+1373196_at	BF404514	2.234	Similar to CG4662-PB (LOC364601), mRNA
+1397030_at	AI406451	2.231	Transcribed sequences
+1398362_at	AI011448	2.231	notch gene homolog 2, (Drosophila)
+1383409_at	BM383714	2.23	UI-R-DM1-ckb-i-05-0-UI.s1 UI-R-DM1 Rattus norvegicus cDNA clone UI-R-DM1-ckb-i-05-0-UI 3', mRNA sequence.
+1370864_at	BI285575	2.226	collagen, type 1, alpha 1
+1371923_at	BG380281	2.224	Similar to hypothetical protein FLJ20481 (LOC361467), mRNA
+1379520_at	BE103550	2.224	Transcribed sequences
+1372820_at	BE109102	2.22	Transcribed sequences
+1375033_at	AI406826	2.219	Similar to carnitine palmitoyltransferase I (LOC308579), mRNA
+1375392_at	BF405277	2.219	Transcribed sequences
+1379719_at	AI408386	2.219	Transcribed sequences
+1374849_at	BF285745	2.216	Similar to a disintegrin and metalloprotease with thrombospondin motifs-7 preproprotein (LOC315879), mRNA
+1388111_at	J04035	2.214	elastin
+1368704_a_at	AF292102	2.213	chondroitin sulfate proteoglycan 5
+1388426_at	BF398848	2.213	sterol regulatory element binding factor 1
+1374572_at	BI294229	2.209	Similar to opposite strand transcription unit to Stag3; Gats protein (LOC360969), mRNA
+1389999_at	BI289392	2.209	eukaryotic elongation factor-2 kinase
+1368954_at	NM_033299	2.208	phospholipase D2
+1378927_at	BE329364	2.207	Transcribed sequences
+1368275_at	NM_080886	2.204	sterol-C4-methyl oxidase-like
+1382952_at	C06972	2.204	Similar to ELAV (embryonic lethal, abnormal vision, Drosophila)-like 1 (Hu antigen R) (LOC363854), mRNA
+1368474_at	NM_012889	2.203	vascular cell adhesion molecule 1
+1377934_at	BF387289	2.203	Transcribed sequences
+1398394_at	BE108058	2.202	Transcribed sequences
+1377628_at	AW523327	2.199	Transcribed sequence with weak  similarity to protein pir:S16864 (M.musculus) S16864 gene E161 protein - mouse
+1394047_at	BE107848	2.199	Transcribed sequences
+1368170_at	NM_024371	2.198	GABA transporter protein
+1379868_at	BI287855	2.198	Similar to RIKEN cDNA 4732463H20 (LOC310644), mRNA
+1384062_at	AI072443	2.198	Transcribed sequences
+1396529_at	BF415512	2.198	Transcribed sequences
+1381145_at	BE112469	2.197	Transcribed sequences
+1376183_at	AI101484	2.193	dipeptidylpeptidase 6
+1382096_at	AI705040	2.193	UI-R-G0-uj-b-03-0-UI.s2 UI-R-G0 Rattus norvegicus cDNA clone UI-R-G0-uj-b-03-0-UI 3', mRNA sequence.
+1383593_at	BE113211	2.193	Transcribed sequences
+1368047_at	NM_022866	2.191	solute carrier family 13 (sodium-dependent dicarboxylate transporter), member 3
+1388890_at	BM390316	2.191	Transcribed sequences
+1389307_at	AW435479	2.189	Transcribed sequence with strong similarity to protein ref:NP_005157.1 (H.sapiens)  amyloid beta
+1372110_at	BE113148	2.188	Similar to hypothetical protein (LOC305332), mRNA
+1376524_at	BG378747	2.187	hypothetical protein
+1372276_at	BG378613	2.186	Transcribed sequences
+1377121_at	AW520410	2.186	Transcribed sequence with moderate similarity to protein pir:I60307 (E. coli) I60307 beta-galactosidase, alpha peptide - Escherichia coli
+1381253_at	BF398826	2.186	Transcribed sequences
+1390273_at	BE108849	2.185	Transcribed sequences
+1379164_at	BE117672	2.184	Transcribed sequences
+1386872_at	BI296290	2.183	insulin-like growth factor 2 receptor
+1373788_at	BE097533	2.182	UI-R-BO1-apy-f-04-0-UI.s1 UI-R-BO1 Rattus norvegicus cDNA clone UI-R-BO1-apy-f-04-0-UI 3', mRNA sequence.
+1376809_at	BI288660	2.182	Similar to autism susceptibility candidate 2; autism-related protein 1 (LOC304572), mRNA
+1377011_at	BF415061	2.182	Similar to hypothetical protein CG003 (LOC304244), mRNA
+1385826_at	AA860047	2.181	Transcribed sequences
+1373991_at	AI411366	2.18	potassium inwardly-rectifying channel, subfamily J, member 16
+1374643_at	BF288461	2.18	Transcribed sequences
+1383314_at	BE110098	2.18	UI-R-BJ1-avf-a-08-0-UI.s1 UI-R-BJ1 Rattus norvegicus cDNA clone UI-R-BJ1-avf-a-08-0-UI 3', mRNA sequence.
+1378623_at	BE095875	2.177	Transcribed sequences
+1372515_at	BI281177	2.175	Transcribed sequences
+1369036_at	NM_019309	2.174	glutamate receptor, ionotropic, kainate 2
+1376179_at	BM386051	2.174	Transcribed sequences
+1384692_at	AI172110	2.173	Transcribed sequences
+1398393_at	BF414412	2.171	Transcribed sequences
+1389306_at	BM387419	2.169	Transcribed sequence with moderate similarity to protein pir:T46488 (H.sapiens) T46488 hypothetical protein DKFZp434J065.1 - human
+1380070_at	BG377244	2.166	Transcribed sequences
+1370870_at	M30596	2.163	malic enzyme 1
+1388932_at	BI274917	2.162	laminin, alpha 5
+1372973_at	BM390574	2.157	2,3-oxidosqualene: lanosterol cyclase
+1374015_at	BF281697	2.157	Transcribed sequences
+1377473_at	BE349749	2.157	Similar to SWI/SNF-related matrix-associated actin-dependent regulator of chromatin d3; Rsc6p; mammalian chromatin remodeling complex BRG1-associated factor 60C; Swp73-like protein; chromatin remodeling complex BAF60C subunit; SWI/S ...
+1369680_at	NM_133611	2.155	solute carrier family 2 (facilitated glucose transporter), member 13
+1387184_at	NM_024355	2.155	axin2
+1370995_at	AW528459	2.153	POU domain, class 2, transcription factor 1
+1368656_at	NM_053856	2.152	secretogranin III
+1373062_at	BM388650	2.151	sulfatase FP
+1368383_at	NM_022586	2.15	neuropeptide FF-amide peptide precursor
+1379785_at	BI275894	2.15	Transcribed sequences
+1381153_at	BF405492	2.15	Similar to anaphase-promoting complex subunit 4 (LOC305420), mRNA
+1373407_at	BM386604	2.148	Transcribed sequences
+1391788_at	BF406814	2.147	Transcribed sequences
+1368344_at	NM_017007	2.146	glutamate decarboxylase 1
+1383366_at	BE107954	2.146	Transcribed sequences
+1390846_at	BG380309	2.146	UI-R-CS0-btv-e-12-0-UI.s1 UI-R-CS0 Rattus norvegicus cDNA clone UI-R-CS0-btv-e-12-0-UI 3', mRNA sequence.
+1381576_at	BE105801	2.144	Similar to phosphoinositide-3-kinase, class 2, beta polypeptide; PI3K-C2beta; phosphatidylinositol 3-kinase C2 domain-containing beta polypeptide; PTDINS-3-kinase C2 beta (LOC289021), mRNA
+1378413_at	BG379394	2.141	Transcribed sequences
+1380982_at	BF412273	2.141	Transcribed sequence with weak  similarity to protein ref:NP_505524.1 (C.elegans)  F46B6.5.p [Caenorhabditis elegans]
+1390306_at	AW531909	2.141	Transcribed sequences
+1380644_at	AI178542	2.14	Transcribed sequences
+1389470_at	AI639117	2.139	B-factor, properdin
+1380750_at	BF398240	2.137	UI-R-BS2-bfb-b-12-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-bfb-b-12-0-UI 3', mRNA sequence.
+1370391_at	U23407	2.136	cellular retinoic acid binding protein 2
+1368484_at	NM_022238	2.134	TAP-like ABC transporter
+1386968_at	NM_022676	2.133	protein phosphatase 1, regulatory (inhibitor) subunit 1A
+1369065_a_at	NM_017290	2.131	ATPase, Ca++ transporting, cardiac muscle, slow twitch 2
+1377142_at	AW531487	2.13	Transcribed sequences
+1381197_at	BF409085	2.127	Similar to dJ756G23.1 (novel Leucine Rich Protein) (LOC362964), mRNA
+1387923_at	AF054586	2.127	germinal histone H4 gene
+1370307_at	M64780	2.126	Agrin
+1373534_at	BE107209	2.125	Similar to SR rich protein (LOC297942), mRNA
+1388657_at	AW253923	2.124	Similar to protocadherin 16 precursor; protocadherin 16; fibroblast cadherin FIB1; fibroblast cadherin 1; dachsous homologue (LOC308912), mRNA
+1393437_at	AW142608	2.123	Transcribed sequences
+1368395_at	NM_012774	2.122	glypican 3
+1382749_at	BI293987	2.12	Transcribed sequence with strong similarity to protein sp:P52756 (H.sapiens) RBM5_HUMAN RNA-binding protein 5
+1381381_at	BF416088	2.119	UI-R-CA0-bkq-b-03-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bkq-b-03-0-UI 3', mRNA sequence.
+1397436_at	BF409822	2.119	Transcribed sequences
+1388751_at	AW433787	2.117	Transcribed sequence with strong similarity to protein ref:NP_057339.1 (H.sapiens)  Autosomal Highly Conserved Protein [Homo sapiens]
+1393878_at	BF416495	2.117	UI-R-CA0-bkk-c-08-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-bkk-c-08-0-UI 3', mRNA sequence.
+1374971_at	AA818954	2.115	Transcribed sequences
+1383680_at	BG376339	2.115	UI-R-CT0-buo-d-03-0-UI.s1 UI-R-CT0 Rattus norvegicus cDNA clone UI-R-CT0-buo-d-03-0-UI 3', mRNA sequence.
+1384225_at	BI289963	2.113	Transcribed sequences
+1394234_x_at	AA848540	2.113	Similar to PC326 protein (LOC289181), mRNA
+1382340_at	AA924048	2.111	Similar to Dmx-like 1 (LOC307429), mRNA
+1371429_at	AW251326	2.11	dystroglycan 1
+1374918_at	BM392219	2.11	Similar to splicing factor Prp8 (LOC287530), mRNA
+1377391_at	BF390552	2.109	Transcribed sequences
+1397779_at	BF562254	2.109	UI-R-BS0-aoa-g-01-0-UI.r1 UI-R-BS0 Rattus norvegicus cDNA clone UI-R-BS0-aoa-g-01-0-UI 5', mRNA sequence.
+1379693_at	AI409154	2.107	Transcribed sequences
+1374681_at	AW914967	2.105	Transcribed sequences
+1390172_at	AI409946	2.104	Similar to KIAA1630 protein (LOC361272), mRNA
+1374817_at	BE103235	2.103	Transcribed sequences
+1377535_at	BE101698	2.103	Transcribed sequences
+1383493_at	BE102202	2.103	UI-R-BT1-aqf-f-11-0-UI.s1 UI-R-BT1 Rattus norvegicus cDNA clone UI-R-BT1-aqf-f-11-0-UI 3', mRNA sequence.
+1378682_at	BF390772	2.102	Transcribed sequences
+1381108_at	BF387399	2.102	Similar to hypothetical protein FLJ20436 (LOC302332), mRNA
+1387813_at	NM_017003	2.102	v-erb-b2 erythroblastic leukemia viral oncogene homolog 2
+1389491_at	BE102814	2.102	sideroflexin 5
+1370331_at	AF347936	2.1	interleukin 11 receptor, alpha chain 1
+1389420_at	BI279446	2.1	Similar to Signal-transducing adaptor protein-2 (LOC363334), mRNA
+1372041_at	BI290059	2.099	discs, large homolog 3 (Drosophila)
+1379663_at	AI010254	2.099	Transcribed sequences
+1390561_at	BF282191	2.098	Transcribed sequences
+1393359_at	AW534487	2.096	Similar to Adapter-related protein complex 3 beta 2 subunit (Beta-adaptin 3B) (AP-3 complex beta-3B subunit) (Beta-3B-adaptin) (Neuron-specific vesicle coat protein beta-NAP) (LOC308777), mRNA
+1381697_at	AW530378	2.092	potassium voltage-gated channel, shaker-related subfamily, member 1
+1385956_at	BF289086	2.088	Transcribed sequences
+1377970_at	BE105494	2.087	Similar to Hypothetical protein D13Ertd275e (LOC294762), mRNA
+1377506_at	BI289525	2.086	Similar to GDF-1 embryonic growth factor - mouse (LOC306351), mRNA
+1372998_at	BG381555	2.085	Transcribed sequences
+1390347_at	AW535909	2.084	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1397749_at	AI715712	2.083	Transcribed sequences
+1374567_at	AI408443	2.081	Transcribed sequences
+1375905_at	AI412746	2.081	Similar to leukocyte receptor cluster (LRC) member 8 (LOC361506), mRNA
+1388579_at	AI176841	2.078	Similar to CG4241-PA (LOC290662), mRNA
+1390277_at	BF399451	2.074	Transcribed sequences
+1397785_at	BE102056	2.074	Similar to FLJ00375 protein (LOC362801), mRNA
+1374131_at	AI411971	2.073	Transcribed sequences
+1379091_at	BF551427	2.073	Transcribed sequences
+1389467_at	BM391248	2.072	Transcribed sequence with moderate similarity to protein ref:NP_060756.1 (H.sapiens)  hypothetical protein FLJ10970 [Homo sapiens]
+1380557_at	BE119497	2.071	branched chain keto acid dehydrogenase subunit E1, alpha polypeptide
+1370301_at	U65656	2.07	matrix metalloproteinase 2 (72 KDa type IV collagenase)
+1374622_at	BE107309	2.069	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1387020_at	BG664123	2.069	cytochrome P450, subfamily 51
+1372190_at	AI235942	2.068	Transcribed sequences
+1372452_at	BG666882	2.068	Transcribed sequences
+1386917_at	NM_012744	2.068	Pyruvate carboxylase
+1390323_at	AW527815	2.068	Transcribed sequences
+1379361_at	BI273703	2.063	peroxisomal membrane protein Pmp26p (Peroxin-11)
+1388485_at	BG380414	2.062	UI-R-CT0-btx-a-02-0-UI.s1 UI-R-CT0 Rattus norvegicus cDNA clone UI-R-CT0-btx-a-02-0-UI 3', mRNA sequence.
+1390495_at	BI294144	2.062	Transcribed sequences
+1384178_at	BF546934	2.059	UI-R-C1-kh-e-08-0-UI.r1 UI-R-C1 Rattus norvegicus cDNA clone UI-R-C1-kh-e-08-0-UI 5', mRNA sequence.
+1393897_at	BF419648	2.058	Similar to cadherin 7 precursor (LOC363948), mRNA
+1375069_at	BG380530	2.057	Similar to RIKEN cDNA A630054L15; hypothetical protein MGC38041 (LOC362983), mRNA
+1383842_at	BG380618	2.054	Similar to hypothetical protein FLJ10415 (LOC363255), mRNA
+1380858_at	BE120316	2.053	Transcribed sequences
+1391428_at	AI639162	2.052	Transcribed sequences
+1371889_at	AW915448	2.051	solute carrier family 22 (organic cation transporter), member 17
+1378407_at	BF401415	2.05	Transcribed sequences
+1381089_at	BE114458	2.05	Transcribed sequences
+1387259_at	AF097593	2.05	cadherin 2
+1389605_at	AI101952	2.05	Similar to hypothetical protein FLJ31564 (LOC305434), mRNA
+1375865_at	BF408844	2.049	Similar to RIKEN cDNA 0610041D19 (LOC316233), mRNA
+1376165_at	BE098153	2.049	Transcribed sequences
+1391345_at	BI293047	2.048	Transcribed sequences
+1392677_at	AA924705	2.047	Transcribed sequence with moderate similarity to protein prf:2018199A (E. coli) 2018199A beta lactamase IRT-4 [Escherichia coli]
+1398022_at	BF404957	2.045	UI-R-CA1-bij-g-01-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bij-g-01-0-UI 3', mRNA sequence.
+1380088_at	AW533021	2.04	Transcribed sequences
+1368086_a_at	D45252	2.039	2,3-oxidosqualene: lanosterol cyclase
+1374825_at	BG380338	2.038	Transcribed sequence with weak  similarity to protein ref:NP_036542.1 (H.sapiens)  type I transmembrane receptor
+1374043_at	AI317841	2.037	Similar to RIKEN cDNA 9130427A09 (LOC307288), mRNA
+1380406_at	BE115630	2.037	Transcribed sequence with weak  similarity to protein ref:NP_570953.1 (M.musculus)  CAMP [Mus musculus]
+1390374_at	BM390970	2.037	fibroblast growth factor receptor-like 1
+1370982_at	BI275633	2.036	muscle glycogen phosphorylase
+1368254_a_at	AB049572	2.035	sphingosine kinase 1
+1369182_at	NM_013057	2.035	coagulation factor 3
+1382138_at	BG380221	2.035	Similar to smooth muscle myosin phosphatase regulatory subunit homolog family member, Maternal Effect Lethal MEL-11 (110.6 kD) (mel-11) (LOC366002), mRNA
+1390491_at	BM390772	2.035	Similar to Polymerase (RNA) II (DNA directed) polypeptide C (LOC361365), mRNA
+1373540_at	AA848306	2.034	Similar to heterogeneous nuclear ribonucleoprotein A2/B1 (LOC362361), mRNA
+1376749_at	AA945955	2.033	Transcribed sequence with moderate similarity to protein pir:B35272 (H.sapiens) B35272 osteoinductive factor - human
+1384542_at	BE103021	2.033	Transcribed sequences
+1392604_at	AA997187	2.031	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1374527_at	AI172274	2.03	Similar to hypothetical protein D4Ertd765e (LOC298381), mRNA
+1384311_at	BE113314	2.03	Similar to RIKEN cDNA 4432417F03 (LOC362380), mRNA
+1367857_at	NM_053445	2.029	fatty acid desaturase 1
+1377205_at	BE107410	2.029	Similar to KIAA0892 protein (LOC290668), mRNA
+1368564_at	NM_053427	2.028	differentation-associated Na-dependent inorganic phosphate cotransporter
+1373419_at	AI556884	2.028	protein tyrosine phosphatase, receptor type, G
+1371518_at	AI235948	2.027	nidogen (entactin)
+1379906_at	BM385311	2.026	Transcribed sequences
+1377365_at	BG372342	2.025	Similar to hypothetical protein DKFZp434H2010 (LOC298694), mRNA
+1379738_at	AI007726	2.025	Transcribed sequences
+1380601_at	AI136567	2.025	Transcribed sequences
+1390450_a_at	AA945955	2.025	Transcribed sequence with moderate similarity to protein pir:B35272 (H.sapiens) B35272 osteoinductive factor - human
+1396645_at	BE109893	2.025	Transcribed sequences
+1367707_at	AI179334	2.022	fatty acid synthase
+1389770_at	BF405468	2.021	Transcribed sequences
+1375690_at	AI138004	2.02	Transcribed sequences
+1374921_at	BI274548	2.018	Similar to helicase-like protein NHL isoform 2 (LOC362288), mRNA
+1389180_at	AI175035	2.018	phosphorylase kinase, beta
+1390325_at	BI289418	2.016	CD38 antigen
+1390233_at	BE107321	2.015	Transcribed sequences
+1378037_at	BM390078	2.013	Similar to RIKEN cDNA 0610009J22 (LOC305478), mRNA
+1379710_at	BE108372	2.013	Transcribed sequences
+1372161_at	BE112719	2.012	Transcribed sequences
+1378111_at	AI576002	2.012	Transcribed sequences
+1392943_at	BG665934	2.011	Similar to 2810049G06Rik protein (LOC313997), mRNA
+1379189_at	BF391396	2.009	Transcribed sequences
+1391373_at	BF391714	2.009	Transcribed sequences
+1398428_at	BF410381	2.009	Transcribed sequences
+1381363_at	BF388580	2.008	Similar to low density lipoprotein receptor-related protein 6; low density lipoprotein-related protein 6 (LOC312781), mRNA
+1379761_at	BE104517	2.007	Transcribed sequences
+1383983_at	BF399458	2.006	Transcribed sequence with weak  similarity to protein ref:NP_061720.1 (H.sapiens)  axonemal dynein heavy chain 7 [Homo sapiens]
+1368100_at	NM_053568	2.005	phosphate cytidylyltransferase 2, ethanolamine
+1376830_at	AW520496	2.005	Similar to RIKEN cDNA E430013E20 gene (LOC291961), mRNA
+1372085_at	AI237657	2.004	Transcribed sequences
+1378291_at	BF549558	2.004	Transcribed sequences
+1377368_at	AW529710	2.002	Transcribed sequences
+1397713_at	AW917120	2.001	Transcribed sequences
+1390420_at	AI577849	2	Similar to Carboxypeptidase X 1 (M14 family) (LOC296156), mRNA
+1373077_at	BI285902	0.5	Similar to hypothetical protein D11Ertd497e (LOC287278), mRNA
+1375630_at	AA859366	0.5	Similar to NHP2-like protein 1 (High mobility group-like nuclear protein 2 homolog 1) ([U4/U6.U5] tri-snRNP 15.5 kDa protein) (OTK27) (LOC300092), mRNA
+1397750_at	AI145087	0.5	UI-R-BT0-px-a-01-0-UI.s1 UI-R-BT0 Rattus norvegicus cDNA clone UI-R-BT0-px-a-01-0-UI 3', mRNA sequence.
+1370345_at	X64589	0.499	cyclin B1
+1385601_at	BE115019	0.499	Similar to FSHD region gene 1 (LOC304454), mRNA
+1392638_at	AI599308	0.499	Similar to hypothetical protein FLJ23468 (LOC306464), mRNA
+1374221_at	BM385468	0.498	solute carrier family 29 (nucleoside transporters), member 3
+1375059_at	AI178854	0.498	Transcribed sequence with weak  similarity to protein ref:NP_055712.1 (H.sapiens)  KIAA0924 protein [Homo sapiens]
+1377964_at	BM390539	0.498	Transcribed sequence with strong similarity to protein ref:NP_064526.1 (H.sapiens)  protein x 013 [Homo sapiens]
+1382010_at	AI711537	0.498	Similar to RIKEN cDNA 1110004B13 (LOC287421), mRNA
+1398801_at	NM_134415	0.498	CDK105 protein
+1367945_at	NM_053359	0.497	ATX1 (antioxidant protein 1) homolog 1 (yeast)
+1370613_s_at	AF461738	0.497	UDP glycosyltransferase 1 family, polypeptide A6
+1371576_at	AW142276	0.497	Similar to RIKEN cDNA 1110018B13 (LOC294696), mRNA
+1372533_at	AI175790	0.497	Alpha-mannosidase-like protein mRNA, 3' UTR
+1373513_at	AI012419	0.497	GTP cyclohydrolase 1
+1388780_at	BF395792	0.497	Transcribed sequence with moderate similarity to protein ref:NP_061848.1 (H.sapiens)  TRF2-interacting telomeric RAP1 protein [Homo sapiens]
+1390623_at	BI279799	0.497	Transcribed sequence with weak  similarity to protein prf:2113200B (H.sapiens) 2113200B ribosomal protein L21 [Homo sapiens]
+1371544_at	BE109666	0.496	Similar to Enhancer of rudimentary homolog (LOC299175), mRNA
+1371982_at	AI411960	0.496	AIP1
+1373115_at	BI281909	0.496	Transcribed sequences
+1373473_a_at	BM386384	0.496	nucleosome assembly protein 1-like 1
+1375339_at	BI296679	0.496	Similar to enthoprotin; epsin 4; clathrin interacting protein localized in the trans-Golgi region (LOC317516), mRNA
+1379982_at	BE117278	0.496	Transcribed sequences
+1382861_at	AA997486	0.496	Transcribed sequence with strong similarity to protein pir:S17361 (H.sapiens) S17361 transcription elongation factor IIS
+1383245_at	AI454309	0.496	UI-R-E0-cg-f-07-0-UI.s1 UI-R-E0 Rattus norvegicus cDNA clone UI-R-E0-cg-f-07-0-UI 3', mRNA sequence.
+1383287_at	BE329232	0.496	hq38f09.x1 NCI_CGAP_Pr35 Rattus norvegicus cDNA clone IMAGE:3121673 3' similar to TR:Q12828 Q12828 FUSE BINDING PROTEIN. ;, mRNA sequence.
+1386344_at	BG662519	0.496	progressive ankylosis
+1388460_at	BM384693	0.496	Similar to Capg protein (LOC297339), mRNA
+1392610_at	AI176588	0.496	Similar to p53-binding protein-3 (LOC362501), mRNA
+1368482_at	NM_133416	0.495	BCL2-related protein A1
+1378925_at	AW529408	0.495	cAMP responsive element modulator
+1388528_at	AW433875	0.495	Similar to fibrillarin (LOC292747), mRNA
+1396267_at	N55607	0.495	p21 (CDKN1A)-activated kinase 2
+1367495_at	AI412457	0.494	EST240756 Normalized rat brain, Bento Soares Rattus sp. cDNA clone RBRDO40 3' end, mRNA sequence.
+1370008_at	NM_134458	0.494	nuclear receptor coactivator GT198
+1372620_at	AI008642	0.494	Similar to acidic (leucine-rich) nuclear phosphoprotein 32 family, member E; leucine-rich acidic nuclear protein like (LOC361999), mRNA
+1382303_at	AA996943	0.494	Similar to Q9H4T4 like (LOC306844), mRNA
+1388784_at	BI285793	0.494	Similar to Macrophage colony stimulating factor I receptor precursor (CSF-1-R) (Fms proto-oncogene) (c-fms) (LOC307403), mRNA
+1392991_at	AA859535	0.494	UI-R-E0-br-c-07-0-UI.s1 UI-R-E0 Rattus norvegicus cDNA clone UI-R-E0-br-c-07-0-UI 3' similar to gb|U57693|HSU57693 Human TFIID subunits TAF20 and TAF15 mRNA, complete cds, mRNA sequence.
+1399033_at	AA945869	0.494	PEBP2 beta mRNA, 3' UTR
+1367723_a_at	NM_031621	0.493	linker of T-cell receptor pathways
+1374897_at	AI406842	0.493	Similar to ALY (LOC287878), mRNA
+1376094_at	AA925490	0.493	histidine triad nucleotide binding protein 4
+1381592_at	AA926244	0.493	Transcribed sequences
+1393131_at	AI112338	0.493	Similar to Flt3 interacting zinc finger protein 1 (LOC292584), mRNA
+1380236_at	BM390141	0.492	Similar to integrin alpha 9 protein (LOC316055), mRNA
+1381612_at	BF407802	0.492	Transcribed sequences
+1384280_at	AA964152	0.492	Similar to nucleolar protein ANKT (LOC311336), mRNA
+1392527_at	AI137840	0.492	Transcribed sequence with weak  similarity to protein ref:NP_037370.1 (H.sapiens)  DNAJ domain-containing [Homo sapiens]
+1398495_at	BE121436	0.492	Transcribed sequences
+1398615_at	BG379594	0.492	Transcribed sequences
+1367802_at	NM_019232	0.491	serum/glucocorticoid regulated kinase
+1368073_at	NM_012591	0.491	interferon regulatory factor 1
+1368896_at	AW521447	0.491	MAD homolog 7 (Drosophila)
+1369285_at	NM_031082	0.491	geranylgeranyltransferase type I (GGTase-I)
+1372478_at	AI137605	0.491	UI-R-C0-ho-g-12-0-UI.s1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-ho-g-12-0-UI 3', mRNA sequence.
+1377644_at	BF284809	0.491	Similar to RIKEN cDNA 4921524J17 (LOC291925), mRNA
+1378856_at	BE097672	0.491	Similar to t-complex 11 (LOC308656), mRNA
+1386882_at	NM_031318	0.491	t-complex testis expressed 1
+1393276_at	BF418487	0.491	Similar to CGI-125 protein (LOC287475), mRNA
+1368124_at	NM_133578	0.49	MAP-kinase phosphatase (cpg21)
+1381972_at	BG673626	0.49	Similar to cDNA sequence AF229032; novel lethal gene (LOC297498), mRNA
+1367523_at	AI409145	0.489	Similar to hypothetical protein, 2-6 (LOC292074), mRNA
+1367541_at	BE113965	0.489	Transcribed sequence with moderate similarity to protein ref:NP_054887.1 (H.sapiens)  HSPC133 protein [Homo sapiens]
+1392454_at	BI296999	0.489	Similar to hypothetical protein FLJ20729 (LOC292160), mRNA
+1393249_at	BF407924	0.489	Similar to retrovirus integration site (LOC315532), mRNA
+1391463_at	AI575264	0.488	Similar to DEAD/H (Asp-Glu-Ala-Asp/His) box polypeptide RIG-I; RNA helicase (LOC297989), mRNA
+1385553_at	AI136699	0.487	Similar to KIAA2010 protein (LOC314388), mRNA
+1370459_at	AY007690	0.486	A5D3 protein
+1372066_at	AI170703	0.486	Similar to RIKEN cDNA 2610204K14 (LOC293058), mRNA
+1373200_at	AI600237	0.486	Similar to eukaryotic translation elongation factor 1 epsilon 1 (LOC291057), mRNA
+1376151_a_at	AI407953	0.486	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1382451_at	BM385477	0.486	Similar to SOUL protein (LOC308632), mRNA
+1383097_at	BG668881	0.486	Similar to RIKEN cDNA 2010012O05 (LOC294012), mRNA
+1383673_at	BI288925	0.486	Similar to Nap1l2 (LOC317247), mRNA
+1389482_at	BI279701	0.486	Similar to EST AA792894 (LOC312437), mRNA
+1397704_at	BF407449	0.486	UI-R-BJ2-bqs-d-04-0-UI.s1 UI-R-BJ2 Rattus norvegicus cDNA clone UI-R-BJ2-bqs-d-04-0-UI 3', mRNA sequence.
+1367936_at	NM_019206	0.485	serine/threonine kinase 10
+1374399_at	AA801107	0.485	pincher
+1376200_at	BM385898	0.485	Unknown (protein for MGC:72974)
+1391422_at	BE100486	0.485	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1378179_a_at	AW524864	0.484	Transcribed sequences
+1381333_at	BI294382	0.484	Transcribed sequences
+1397556_at	BF563329	0.484	UI-R-BJ0p-ais-c-05-0-UI.r1 UI-R-BJ0p Rattus norvegicus cDNA clone UI-R-BJ0p-ais-c-05-0-UI 5', mRNA sequence.
+1367975_at	NM_012823	0.483	Annexin III (Lipocortin III)
+1368186_a_at	U21683	0.483	spleen tyrosine kinase
+1379476_at	AA963457	0.483	Similar to CG6540-PA (LOC295692), mRNA
+1381149_at	BI293484	0.483	Transcribed sequences
+1384296_at	AI136388	0.483	Transcribed sequence with weak  similarity to protein pir:S10889 (H.sapiens) S10889 proline-rich protein - human
+1387072_at	NM_053794	0.483	protein kinase, lysine deficient 1
+1389181_at	BM389650	0.483	Similar to Rap1 guanine nucleotide-exchange factor PDZ-GEF2B (LOC303141), mRNA
+1387786_at	AI711244	0.482	myotrophin
+1389210_at	BE109711	0.482	Similar to lymphocyte cytosolic protein 1 (LOC306071), mRNA
+1369025_at	NM_019295	0.481	CD5 antigen
+1378028_at	BM384425	0.481	Similar to spindle assembly checkpoint protein (LOC297176), mRNA
+1383658_at	BF406601	0.481	lysosomal-associated protein transmembrane 5
+1384029_at	BF554085	0.481	Similar to DNA excision repair gene (LOC298074), mRNA
+1391387_s_at	AI072956	0.481	Transcribed sequences
+1392541_at	AW919608	0.481	Similar to RIKEN cDNA A030007L17; EST AA673177 (LOC362370), mRNA
+1367467_at	BG380638	0.48	Similar to nitrogen fixation cluster-like (LOC288740), mRNA
+1374200_at	BM392280	0.48	RAS protein-specific guanine nucleotide-releasing factor 2
+1380416_at	BF284504	0.48	zinc finger protein 191
+1383327_at	AI576297	0.48	Transcribed sequence with moderate similarity to protein pir:JC5193 (H.sapiens) JC5193 nuclear protein H731 - human
+1383578_at	AI071227	0.48	Transcribed sequences
+1389479_at	AI233750	0.48	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1392385_at	BF398583	0.48	nuclear receptor coactivator 3
+1398508_at	BF546374	0.48	Similar to polyglutamine-containing protein (LOC314329), mRNA
+1367974_at	NM_012823	0.479	Annexin III (Lipocortin III)
+1368650_at	NM_031135	0.479	TGFB inducible early growth response
+1393346_at	BI279863	0.479	Transcribed sequences
+1377826_at	AI176721	0.478	Transcribed sequence with weak  similarity to protein pir:I52726 (H.sapiens) I52726 microtubule-associated protein EB1 [imported] - human
+1387201_at	NM_053588	0.478	ring finger protein 138
+1390294_at	BE100986	0.477	Transcribed sequences
+1399143_at	BI294702	0.477	ubiquitin-conjugating enzyme E2N (homologous to yeast UBC13)
+1371365_at	BI279788	0.476	Similar to RIKEN cDNA 6720465F12 (LOC292588), mRNA
+1378973_at	BF396260	0.476	Transcribed sequences
+1380243_at	BE098614	0.476	Similar to CG14803-PA (LOC313108), mRNA
+1388344_at	BI283112	0.476	Similar to RIKEN cDNA 1110005A23 (LOC362819), mRNA
+1372513_at	AI103616	0.475	ras-related C3 botulinum toxin substrate 1 (rho family, small GTP binding protein Rac1)
+1379074_at	BE329032	0.475	Transcribed sequences
+1384187_at	BF551686	0.475	UI-R-C1-kk-e-12-0-UI.r1 UI-R-C1 Rattus norvegicus cDNA clone UI-R-C1-kk-e-12-0-UI 5', mRNA sequence.
+1387872_at	BF396270	0.475	heterogeneous nuclear ribonucleoprotein A1
+1389153_at	BI296087	0.475	hypothetical RNA binding protein RDA288
+1393369_at	BI300502	0.475	Similar to RIKEN cDNA 4921511I16 (LOC306455), mRNA
+1398608_at	BG371578	0.475	Similar to hypothetical gene supported by BC007071 (LOC289150), mRNA
+1374633_at	BF284700	0.474	Transcribed sequences
+1374743_at	BE115056	0.474	Transcribed sequence with moderate similarity to protein ref:NP_031730.1 (M.musculus)  channel-interacting PDZ domain protein [Mus musculus]
+1375346_at	BI290002	0.474	Transcribed sequence with weak  similarity to protein ref:NP_061894.1 (H.sapiens)  hypothetical protein FLJ20010 [Homo sapiens]
+1375676_at	AA956897	0.474	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1373397_at	AI180161	0.472	microtubule-associated protein, RP/EB family, member 1
+1379500_at	AA860044	0.472	Transcribed sequence with weak  similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1390891_at	BE116384	0.472	kinesin-like 1
+1376039_at	AA996882	0.471	serine/threonine kinase 6
+1393550_at	BF564195	0.471	Transcribed sequence with weak  similarity to protein ref:NP_005798.1 (H.sapiens)  proteoglycan 4; megakaryocyte stimulating factor; proteoglycan 4,
+1367820_at	NM_053631	0.47	Breakpoint cluster region protein, uterine leiomyoma, 1; barrier to autointegration factor
+1392618_at	BG379597	0.47	Transcribed sequence with weak  similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1369063_at	NM_012903	0.469	acidic nuclear phosphoprotein 32 family, member A
+1372034_at	BF284106	0.469	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1373846_at	BF408064	0.469	Similar to RIKEN cDNA 5730434I03 gene (LOC305284), mRNA
+1375956_at	AI104569	0.469	menage a trois 1
+1371131_a_at	U30789	0.468	upregulated by 1,25-dihydroxyvitamin D-3
+1382776_at	AI716936	0.468	Transcribed sequence with weak  similarity to protein ref:NP_502091.1 (C.elegans)  C08F8.4.p [Caenorhabditis elegans]
+1383328_x_at	AI576297	0.468	Transcribed sequence with moderate similarity to protein pir:JC5193 (H.sapiens) JC5193 nuclear protein H731 - human
+1384387_at	BE110061	0.468	Transcribed sequences
+1391898_at	AW524135	0.468	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1398590_at	AA965286	0.468	UI-R-C0-hd-d-10-0-UI.s1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-hd-d-10-0-UI 3', mRNA sequence.
+1382275_at	AI236989	0.467	Transcribed sequence with moderate similarity to protein ref:NP_060376.1 (H.sapiens)  hypothetical protein FLJ20624 [Homo sapiens]
+1388772_at	AI177016	0.467	Similar to U6 snRNA-associated Sm-like protein LSm8 (LOC296913), mRNA
+1368296_at	AF169410	0.466	solute carrier family 21 (organic anion transporter), member 9
+1371735_at	AI105202	0.466	Transcribed sequences
+1371779_at	AI408852	0.466	Similar to sorting nexin 6 (LOC362738), mRNA
+1391145_at	BE112120	0.466	Transcribed sequences
+1383912_at	BM390524	0.465	Similar to headcase homolog; hHDC for homolog of Drosophila headcase (LOC308624), mRNA
+1387968_at	L22022	0.465	orphan transporter v7-3
+1398848_at	BG377057	0.465	Transcribed sequence with weak  similarity to protein sp:P50502 (H.sapiens) ST13_HUMAN Hsc70-interacting protein
+1370340_x_at	BI295970	0.464	tropomyosin isoform 6
+1373777_at	BF391820	0.464	Transcribed sequences
+1381243_at	BE102374	0.464	Transcribed sequences
+1394785_at	BE329290	0.464	Transcribed sequences
+1368799_at	NM_022274	0.462	baculoviral IAP repeat-containing 5 (survivin)
+1373421_at	BM392224	0.462	Similar to oriLyt TD-element binding protein 7 (LOC366994), mRNA
+1376231_at	BF389244	0.462	Transcribed sequence with strong similarity to protein ref:NP_066545.1 (H.sapiens)  KIAA0186 gene product [Homo sapiens]
+1384762_at	BE103873	0.462	UI-R-BX0-arh-h-02-0-UI.s1 UI-R-BX0 Rattus norvegicus cDNA clone UI-R-BX0-arh-h-02-0-UI 3', mRNA sequence.
+1370265_at	BF285345	0.461	arrestin, beta 2
+1386059_at	BF284475	0.461	Transcribed sequences
+1386985_at	M28241	0.461	glutathione S-transferase, mu 1
+1387857_at	AI406531	0.461	syntaxin 7
+1388598_at	BI281230	0.461	Similar to death effector filament-forming Ced-4-like apoptosis protein isoform 2; caspase recruitment domain protein 7; NAC-alpha/beta/gamma/delta (LOC360556), mRNA
+1389011_at	BG374333	0.461	Similar to RIKEN cDNA 1110014D18 (LOC299957), mRNA
+1389202_at	AA944520	0.461	Similar to CG18437-PA (LOC316460), mRNA
+1370699_a_at	AF187818	0.46	epidermal growth factor receptor
+1373262_at	AI102745	0.46	Transcribed sequences
+1377102_at	BI288335	0.46	Transcribed sequences
+1387074_at	AY043246	0.46	regulator of G-protein signaling protein 2
+1389355_at	BF285187	0.46	RM5 mRNA for ler5, partial sequence
+1371932_at	AI232287	0.459	Similar to hypothetical protein FLJ38482 (LOC361137), mRNA
+1373035_at	AI031032	0.459	UI-R-C0-jp-b-12-0-UI.s1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-jp-b-12-0-UI 3', mRNA sequence.
+1398706_at	BI294633	0.459	UI-R-DK0-cem-h-10-0-UI.s1 UI-R-DK0 Rattus norvegicus cDNA clone UI-R-DK0-cem-h-10-0-UI 3', mRNA sequence.
+1371970_at	AA799328	0.458	Transcribed sequence with weak  similarity to protein ref:NP_071357.1 (H.sapiens)  hypothetical protein FLJ22794; KIAA1895 protein [Homo sapiens]
+1372365_at	BM392293	0.458	Transcribed sequences
+1372764_at	BI276261	0.458	Similar to density-regulated protein (LOC360806), mRNA
+1373903_at	AI011920	0.458	Transcribed sequences
+1379313_at	BE108519	0.458	Transcribed sequences
+1382534_at	BF284898	0.458	Transcribed sequence with weak  similarity to protein ref:NP_570953.1 (M.musculus)  CAMP [Mus musculus]
+1384981_at	BM384254	0.458	CD6 antigen
+1367734_at	NM_012498	0.457	synonyms: Alr, ALDRED, Akr1b1, Akr1b3, ALR-P-I; RATALDRED; aldo-keto reductase family 1 member B1; aldo-keto reductase family 1 member B1 (aldose reductase); aldo-keto reductase family 1, member B1 (aldose reductase); Rattus norvegicus Aldehyde reductase
+1368032_at	BI290791	0.457	nucleolar phosphoprotein p130
+1372404_at	AI010476	0.457	Similar to EN-7 protein (LOC366957), mRNA
+1372726_at	AI176792	0.457	Similar to germinal histone H4 gene (LOC306963), mRNA
+1377676_at	AI599187	0.457	nuclear ubiquitous casein kinase 2
+1377759_at	BG666928	0.457	Transcribed sequence with weak  similarity to protein pir:S12207 (M.musculus) S12207 hypothetical protein
+1387871_at	BM389673	0.457	cofilin 1
+1395532_at	AI137456	0.457	Similar to zinc finger protein 106 (LOC366171), mRNA
+1388484_at	BI296084	0.456	Similar to ubiquitin-conjugating enzyme E2C; DNA segment, Chr 2, ERATO Doi 695, expressed (LOC296368), mRNA
+1390529_at	AI412355	0.456	Similar to CD83 antigen (LOC361226), mRNA
+1372332_at	AI170687	0.455	Transcribed sequences
+1379832_at	BF544977	0.455	Similar to RIKEN cDNA 2610028L19 (LOC364834), mRNA
+1389440_at	AI178476	0.455	Transcribed sequences
+1385921_at	BF550329	0.454	Similar to Ierepo4-pending protein (LOC304839), mRNA
+1373982_at	BM385377	0.453	UI-R-CN1-clv-o-10-0-UI.s1 UI-R-CN1 Rattus norvegicus cDNA clone UI-R-CN1-clv-o-10-0-UI 3', mRNA sequence.
+1374137_at	AA818055	0.453	E74-like factor 1 (ets domain transcription factor)
+1382283_at	BF283711	0.453	Wiskott-Aldrich syndrome protein interacting protein
+1391415_at	AI043694	0.453	putatative 28 kDa protein
+1391466_at	AI170347	0.453	EST216273 Normalized rat lung, Bento Soares Rattus sp. cDNA clone RLUCH21 3' end, mRNA sequence.
+1385214_at	BF391513	0.452	Similar to RNA helicase (LOC317335), mRNA
+1388663_at	AI100783	0.452	EST210072 Normalized rat brain, Bento Soares Rattus sp. cDNA clone RBRBA24 3' end, mRNA sequence.
+1372214_at	AI104277	0.451	Similar to ganglioside-induced differentiation associated protein 3 (LOC296995), mRNA
+1383071_at	BG667380	0.451	myotrophin
+1385208_at	BF391430	0.451	Similar to RIKEN cDNA 2310057M21 (LOC309029), mRNA
+1389742_at	AW520758	0.451	Transcribed sequences
+1393652_at	BF398438	0.451	UI-R-BS2-beo-h-03-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-beo-h-03-0-UI 3', mRNA sequence.
+1368134_a_at	NM_133380	0.45	interleukin 4 receptor
+1370290_at	BI285440	0.45	tubulin, beta 5
+1372801_at	AI171256	0.45	Similar to RIKEN cDNA 2310003A05 (LOC361323), mRNA
+1373666_at	AI102560	0.45	Guanine nucleotide exchange factor (Mrgef) mRNA, complete cds
+1389371_at	AI104077	0.45	Transcribed sequence with moderate similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1397164_at	AI175779	0.45	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1370381_at	BF409210	0.449	proline rich 2
+1390159_at	AA819332	0.449	Similar to RAS guanyl releasing protein 3 (calcium and DAG-regulated); guanine nucleotide exchange factor for Rap1 (LOC313874), mRNA
+1373025_at	AI411618	0.448	Similar to C1q C chain (LOC362634), mRNA
+1374401_at	AI549249	0.448	Similar to sorting nexin 2 (LOC291464), mRNA
+1374128_at	BI278569	0.447	Transcribed sequence with strong similarity to protein pir:T34556 (H.sapiens) T34556 hypothetical protein DKFZp434N0735.1 - human
+1389425_at	AI408674	0.447	Similar to 5(3)-deoxyribonucleotidase (LOC363706), mRNA
+1390434_at	BM386846	0.447	TNFRSF1A-associated via death domain
+1383684_at	BI288761	0.446	Similar to ASF1 anti-silencing function 1 homolog B (LOC304648), mRNA
+1393008_at	BI290317	0.446	cyclic AMP phosphoprotein, 19 kDa
+1373612_at	BM391810	0.445	Transcribed sequences
+1384231_at	BE108276	0.445	UI-R-BS1-ayx-d-07-0-UI.s1 UI-R-BS1 Rattus norvegicus cDNA clone UI-R-BS1-ayx-d-07-0-UI 3', mRNA sequence.
+1395654_at	BI278299	0.445	Transcribed sequences
+1373761_at	AI176129	0.444	EST219709 Normalized rat ovary, Bento Soares Rattus sp. cDNA clone ROVBL08 3' end, mRNA sequence.
+1382874_at	BI289407	0.444	Transcribed sequences
+1386065_at	AI169118	0.444	Transcribed sequences
+1391330_at	BE119385	0.444	Similar to axonemal dynein heavy chain 7 (LOC306232), mRNA
+1370141_at	NM_021846	0.443	myeloid cell leukemia sequence 1
+1375336_at	AI237389	0.443	Similar to heat shock protein 84 - mouse (LOC301252), mRNA
+1376282_at	BM392087	0.443	Transcribed sequences
+1377596_a_at	AI008698	0.443	Similar to TRAP/Mediator complex component TRAP25 (LOC299905), mRNA
+1398602_at	AW143296	0.443	Transcribed sequence with moderate similarity to protein sp:Q13257 (H.sapiens) MD21_HUMAN Mitotic spindle assembly checkpoint protein MAD2A
+1370948_a_at	BE111706	0.442	Rat mRNA
+1373955_at	BI280339	0.442	Similar to karyopherin beta 3; Ran_GTP binding protein 5; importin beta-3 subunit (LOC306182), mRNA
+1389135_at	AW140637	0.442	Transcribed sequence with moderate similarity to protein ref:NP_062831.1 (H.sapiens)  CTP synthase II; CTP synthetase type 2 [Homo sapiens]
+1391802_at	BE107950	0.442	Transcribed sequences
+1394509_at	BE114001	0.442	Similar to RIKEN cDNA 2900006B13 (LOC363590), mRNA
+1370844_at	BM387425	0.441	ribonucleoprotein F
+1379356_at	AI574991	0.441	Transcribed sequences
+1382680_at	BG673602	0.441	adipose differentiation-related protein
+1387808_at	AF200684	0.441	solute carrier family 7 (cationic amino acid transporter, y+system), member 7
+1391978_at	AW531885	0.441	Transcribed sequences
+1395349_at	BF561061	0.441	Transcribed sequences
+1397892_at	BI301150	0.441	Similar to eIF-1A (LOC317163), mRNA
+1398819_at	NM_022934	0.441	DnaJ-like protein
+1368885_at	AI009808	0.44	ectonucleoside triphosphate diphosphohydrolase 1
+1371782_at	BF283798	0.44	Similar to NIPSNAP-related protein (LOC313211), mRNA
+1374165_at	AA818264	0.44	Similar to Ca2+-promoted Ras inactivator; GTPase activating protein-like; calcium-promoted Ras inactivator (LOC288589), mRNA
+1374903_at	AI234819	0.44	I-branching beta-1,6-acetylglucosaminyltransferase
+1382379_at	AW529177	0.44	ring finger protein 138
+1389066_at	BI274408	0.44	Transcribed sequences
+1392964_at	BF559822	0.44	Similar to KIAA0794 protein (LOC303878), mRNA
+1372001_at	BF554893	0.439	Similar to Hypothetical protein CGI-128 homolog (LOC291818), mRNA
+1384124_at	AW534915	0.439	Transcribed sequences
+1385070_at	BE111420	0.439	Transcribed sequences
+1385592_at	BI289386	0.439	Similar to BCL-6 corepressor isoform a (LOC317346), mRNA
+1392655_at	AA997266	0.439	Similar to Nuclear autoantigen Sp-100 (Speckled 100 kDa) (Nuclear dot-associated Sp100 protein) (LOC363269), mRNA
+1370118_at	NM_057151	0.438	small inducible cytokine subfamily A (Cys-Cys), member 17
+1380303_at	BF398611	0.438	UI-R-BS2-beq-h-01-0-UI.s1 UI-R-BS2 Rattus norvegicus cDNA clone UI-R-BS2-beq-h-01-0-UI 3', mRNA sequence.
+1376766_at	BF416786	0.437	Similar to formin-like protein (LOC287746), mRNA
+1377961_at	AI072467	0.437	Similar to AT motif-binding factor (LOC307829), mRNA
+1385243_at	AI180340	0.437	Transcribed sequences
+1368385_a_at	X62853	0.436	growth factor receptor bound protein 2
+1382463_at	AI175104	0.436	Transcribed sequences
+1368488_at	NM_053727	0.435	nuclear factor, interleukin 3, regulated
+1369971_a_at	AB046616	0.435	RNA binding protein p45AUF1
+1370442_at	U25684	0.435	thymosin beta-like protein
+1381208_at	BE104595	0.434	Similar to Histone H2A.1 (LOC303177), mRNA
+1388352_at	BI296716	0.434	Similar to N-acetyltransferase 5 (LOC362228), mRNA
+1398246_s_at	NM_053843	0.434	Fc receptor, IgG, low affinity III
+1373167_at	BI295165	0.433	Transcribed sequences
+1374785_at	BG380471	0.433	UI-R-CT0-btx-f-08-0-UI.s1 UI-R-CT0 Rattus norvegicus cDNA clone UI-R-CT0-btx-f-08-0-UI 3', mRNA sequence.
+1392906_at	AW528860	0.433	Similar to Ubiquitin-like protein GDX (Ubiquitin-like protein 4) (LOC293864), mRNA
+1373961_at	AI170410	0.432	Similar to 4930453N24Rik protein (LOC304176), mRNA
+1374868_at	AW535434	0.432	Transcribed sequences
+1384772_at	BF400907	0.432	Similar to cAMP-dependent protein kinase, beta-2-catalytic subunit (PKA C-beta-2) (LOC310986), mRNA
+1389777_at	BF403405	0.432	Similar to RIKEN cDNA 2610028I09 (LOC317431), mRNA
+1391194_at	BG377337	0.432	Transcribed sequences
+1368131_at	NM_031808	0.431	calpain 6
+1389858_at	BM389006	0.431	UI-R-DZ0-ckn-n-10-0-UI.s1 UI-R-DZ0 Rattus norvegicus cDNA clone UI-R-DZ0-ckn-n-10-0-UI 3', mRNA sequence.
+1394419_at	BE109109	0.431	Similar to RIKEN cDNA 6530401L14 gene (LOC296060), mRNA
+1398308_at	BM383451	0.431	Similar to replication protein A3 (LOC296883), mRNA
+1390124_at	AA801136	0.43	Similar to hypothetical protein FLJ38426 (LOC311316), mRNA
+1379261_at	BE111490	0.429	Similar to RIKEN cDNA 1110001A07 (LOC287598), mRNA
+1393982_at	AI070935	0.429	Similar to DNA POLYMERASE EPSILON SUBUNIT B (DNA POLYMERASE II SUBUNIT B) (LOC299112), mRNA
+1394029_at	BF283049	0.429	Transcribed sequence with weak  similarity to protein ref:NP_497897.1 (C.elegans)  RNA binding protein [Caenorhabditis elegans]
+1368006_at	NM_053538	0.428	lysosomal-associated protein transmembrane 5
+1380531_at	AI102178	0.428	Similar to hypothetical protein FLJ35613 (LOC300908), mRNA
+1368511_at	NM_133303	0.427	basic helix-loop-helix domain containing, class B3
+1377832_at	BE109322	0.427	Similar to serine/threonine kinase 18, isoform sak-a (LOC310344), mRNA
+1378198_at	BG372528	0.427	Transcribed sequence with moderate similarity to protein ref:NP_002538.1 (H.sapiens)  oligophrenin 1, Rho-GTPase acivating protein [Homo sapiens]
+1378640_at	BE098732	0.427	Transcribed sequences
+1380619_at	AI177390	0.427	Similar to RIKEN cDNA 3110001I22 (LOC361116), mRNA
+1375028_at	AI409635	0.425	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1376795_at	AW916092	0.425	Similar to B cell phosphoinositide 3-kinase adaptor (LOC294048), mRNA
+1383519_at	BI294137	0.425	hexokinase 2
+1389123_at	BE095824	0.425	Similar to Small inducible cytokine A6 precursor (CCL6) (C10 protein) (LOC287910), mRNA
+1391284_at	BE099274	0.425	Similar to KIAA0456 protein (LOC360840), mRNA
+1379526_at	BG374506	0.424	Transcribed sequences
+1384068_at	BI295150	0.423	Similar to cytoskeleton associated protein 2; tumor-associated microtubule-associated protein (LOC306575), mRNA
+1384294_at	BF414285	0.423	Transcribed sequences
+1398693_at	BF289500	0.423	Transcribed sequences
+1370973_at	BF285019	0.422	sodium channel, voltage-gated, type 6, alpha polypeptide
+1373785_at	AA848738	0.422	Transcribed sequence with weak  similarity to protein ref:NP_036400.1 (H.sapiens)  similar to vaccinia virus HindIII K4L ORF [Homo sapiens]
+1377169_at	BI273710	0.422	UI-R-CW0-bvy-b-09-0-UI.s1 UI-R-CW0 Rattus norvegicus cDNA clone UI-R-CW0-bvy-b-09-0-UI 3', mRNA sequence.
+1387499_a_at	NM_022247	0.422	phosducin-like protein
+1377967_at	AI112987	0.421	Similar to CDT1 protein (LOC292071), mRNA
+1378467_at	AA851361	0.421	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1387165_at	NM_019318	0.421	v-maf musculoaponeurotic fibrosarcoma (avian) oncogene homolog (c-maf)
+1388740_at	AI177645	0.421	Similar to cDNA sequence BC032204 (LOC309186), mRNA
+1390587_x_at	AW525862	0.421	Transcribed sequence with weak  similarity to protein sp:P16415 (H.sapiens) ZF36_HUMAN Zinc finger protein ZFP-36
+1390226_at	AI408343	0.42	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1367605_at	NM_022511	0.419	profilin
+1379463_at	AW525176	0.419	filamin-interacting protein L-Filip
+1376483_at	AW251852	0.417	Transcribed sequence with strong similarity to protein sp:Q9Y4Y9 (H.sapiens) LSM5_HUMAN U6 snRNA-associated Sm-like protein LSm5
+1369979_at	NM_130413	0.416	src family associated phosphoprotein 2
+1370882_at	AI171966	0.416	major histocompatibility complex, class II, DM beta
+1379488_at	BI274525	0.414	Similar to mNori-2p (LOC362272), mRNA
+1398290_at	AF287301	0.414	potassium channel, subfamily K, member 13
+1383223_at	BG672206	0.413	Similar to ubiquitin-like 3 (LOC363869), mRNA
+1393050_at	BG664069	0.413	Strain Wistar Rap2a mRNA, 5' UTR
+1379450_at	BM383195	0.412	Similar to cDNA sequence BC003236 (LOC310760), mRNA
+1383962_at	BI275530	0.412	Similar to Apoptosis regulatory protein Siva (CD27-binding protein) (CD27BP) (LOC362791), mRNA
+1390472_at	AI412627	0.412	Similar to 2210023K21Rik protein (LOC305237), mRNA
+1368078_at	NM_022604	0.411	endothelial cell-specific molecule 1
+1373177_x_at	AI409900	0.411	Transcribed sequence
+1372280_at	BI295982	0.41	Similar to Ankyrin repeat and SOCS box-containing protein 2 (LOC299266), mRNA
+1377869_at	BI284261	0.41	Similar to carbon catabolite repression 4 protein homolog (LOC310395), mRNA
+1372097_at	BF284262	0.409	Similar to interferon consensus sequence-binding protein - mouse (LOC292060), mRNA
+1373458_at	BI289546	0.409	Transcribed sequence with weak  similarity to protein pir:C35826 (H.sapiens) C35826 hypothetical 13K protein A - human
+1379542_at	BF522334	0.409	Similar to Small nuclear ribonucleoprotein F (snRNP-F) (Sm protein F) (Sm-F) (SmF) (LOC366871), mRNA
+1380425_at	AI012859	0.409	ribonuclease L (2, 5-oligoisoadenylate synthetase-dependent)
+1368295_at	AF169410	0.408	solute carrier family 21 (organic anion transporter), member 9
+1374386_at	AI412423	0.408	Transcribed sequences
+1390569_at	AI231438	0.408	Transcribed sequences
+1368101_at	NM_012518	0.407	calmodulin 3
+1383372_at	BF407234	0.407	UI-R-BJ2-bqc-c-04-0-UI.s1 UI-R-BJ2 Rattus norvegicus cDNA clone UI-R-BJ2-bqc-c-04-0-UI 3', mRNA sequence.
+1384430_at	BF390040	0.407	Transcribed sequences
+1372622_at	AW520770	0.406	Hypothetical LOC316001 (LOC316001), mRNA
+1373410_at	BE104219	0.406	Transcribed sequences
+1374590_at	BF420110	0.406	Similar to Plcl2 protein (LOC301173), mRNA
+1390259_at	AI231279	0.405	Transcribed sequences
+1392407_at	AI012031	0.405	Transcribed sequences
+1393331_at	AI575856	0.404	UI-R-Y0-uy-g-05-0-UI.s1 UI-R-Y0 Rattus norvegicus cDNA clone UI-R-Y0-uy-g-05-0-UI 3', mRNA sequence.
+1393158_at	BI298434	0.403	Transcribed sequence with weak  similarity to protein ref:NP_060602.1 (H.sapiens)  hypothetical protein FLJ10545 [Homo sapiens]
+1382745_at	BE108581	0.402	Transcribed sequences
+1389342_at	AI112988	0.402	Transcribed sequences
+1383034_at	AA998572	0.401	Similar to death effector domain-associated factor (LOC312603), mRNA
+1383116_at	BI298383	0.401	Similar to RIKEN cDNA 4833435D08 (LOC300284), mRNA
+1395574_at	BE118358	0.4	UI-R-BS1-azk-g-02-0-UI.s1 UI-R-BS1 Rattus norvegicus cDNA clone UI-R-BS1-azk-g-02-0-UI 3', mRNA sequence.
+1368259_at	NM_017043	0.399	prostaglandin-endoperoxide synthase 1
+1374465_at	AI237098	0.399	Similar to ubiquitously-expressed transcript isoform 1 (LOC299313), mRNA
+1377239_at	BM386169	0.399	UI-R-CN1-cjf-k-17-0-UI.s1 UI-R-CN1 Rattus norvegicus cDNA clone UI-R-CN1-cjf-k-17-0-UI 3', mRNA sequence.
+1393682_at	BF410504	0.399	Transcribed sequence with moderate similarity to protein sp:Q9UPC5 (H.sapiens) GP34_HUMAN Probable G protein-coupled receptor GPR34
+1368226_at	NM_133525	0.398	putative c-Myc-responsive
+1389477_at	BI278855	0.398	Transcribed sequences
+1393347_at	BI289767	0.398	Transcribed sequences
+1395944_at	AI548667	0.398	Transcribed sequences
+1383424_at	BI276216	0.397	Similar to thymidylate kinase family LPS-inducible member; thymidylate kinase homologue (LOC314004), mRNA
+1383477_at	BG668115	0.397	Similar to Ubiquitin carboxyl-terminal hydrolase isozyme L5 (UCH-L5) (Ubiquitin thiolesterase L5) (Ubiquitin C-terminal hydrolase UCH37) (LOC360853), mRNA
+1383968_at	BI282560	0.397	UI-R-DD0-bzy-d-07-0-UI.s1 UI-R-DD0 Rattus norvegicus cDNA clone UI-R-DD0-bzy-d-07-0-UI 3', mRNA sequence.
+1395427_at	AW918981	0.397	Transcribed sequences
+1368679_a_at	NM_030857	0.396	lyn protein non-receptor kinase
+1380261_at	BE328914	0.396	Transcribed sequences
+1392590_at	BG377201	0.396	Similar to RIKEN cDNA 0610025G21 (LOC305156), mRNA
+1371848_at	AA799526	0.394	EST189023 Normalized rat heart, Bento Soares Rattus sp. cDNA clone RHEAC15 3' end, mRNA sequence.
+1377992_at	AI111775	0.394	UI-R-Y0-me-g-06-0-UI.s1 UI-R-Y0 Rattus norvegicus cDNA clone UI-R-Y0-me-g-06-0-UI 3', mRNA sequence.
+1376585_at	BF395602	0.392	Similar to Mrpl50 protein (LOC362517), mRNA
+1390909_at	AI171480	0.392	Transcribed sequence with moderate similarity to protein pdb:1JZ5 (E. coli) B Chain B, E. Coli
+1394031_at	AA800742	0.392	Similar to Protein C20orf129 homolog (LOC311598), mRNA
+1379482_at	BI283829	0.391	hepatoma-derived growth factor, related protein 3
+1384259_at	BF559151	0.391	UI-R-C1-ky-h-08-0-UI.r1 UI-R-C1 Rattus norvegicus cDNA clone UI-R-C1-ky-h-08-0-UI 5', mRNA sequence.
+1397409_s_at	BE113999	0.391	Transcribed sequences
+1376259_at	AI171093	0.39	Transcribed sequences
+1388911_at	AI177134	0.389	DNA primase, p58 subunit
+1368260_at	NM_053749	0.388	serine/threonine kinase 12
+1381311_at	BE100625	0.388	Similar to cell surface glycoprotein (LOC316137), mRNA
+1379422_at	AI145871	0.387	Transcribed sequences
+1385738_at	BE112479	0.387	Transcribed sequences
+1373823_at	AA944180	0.386	Transcribed sequence with strong similarity to protein pir:B36670 (H.sapiens) B36670 cell division control protein CKS2 - human
+1380621_at	BI289400	0.386	Similar to tyrosine kinase Fps/Fes (LOC293041), mRNA
+1385865_at	BM390351	0.385	Similar to RIKEN cDNA E330026B02 (LOC315980), mRNA
+1391527_at	BE109296	0.385	Similar to signal transducer and activator of transcription 6 (LOC362896), mRNA
+1392905_at	BF552733	0.385	UI-R-C0-iy-c-09-0-UI.r1 UI-R-C0 Rattus norvegicus cDNA clone UI-R-C0-iy-c-09-0-UI 5', mRNA sequence.
+1368330_at	NM_053720	0.384	apoptosis antagonizing transcription factor
+1370904_at	BI301490	0.384	major histocompatibility complex, class II, DM alpha
+1381556_at	BI303853	0.384	Transcribed sequences
+1381814_at	AI044216	0.384	Similar to KIAA0456 protein (LOC304778), mRNA
+1389474_at	AA818380	0.384	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1391741_a_at	AA901290	0.384	Transcribed sequences
+1376356_a_at	AI070908	0.383	Similar to Breast cancer associated protein BRAP1 (LOC366988), mRNA
+1379274_at	AW535515	0.383	Transcribed sequences
+1371115_at	D78610	0.382	Protein tyrosine phosphatase, receptor type, epsilon polypeptide
+1373625_at	AI412012	0.382	Similar to serine hydroxymethyl transferase 1 (soluble) (LOC287379), mRNA
+1386571_at	BF567145	0.382	Transcribed sequence with moderate similarity to protein ref:NP_005477.1 (H.sapiens)  target of myb1-like 1
+1369115_at	AY057895	0.381	adrenergic receptor, beta 2
+1374924_at	BE098025	0.381	Transcribed sequences
+1383394_at	BG372099	0.381	UI-R-CV0-brm-d-01-0-UI.s1 UI-R-CV0 Rattus norvegicus cDNA clone UI-R-CV0-brm-d-01-0-UI 3', mRNA sequence.
+1384191_at	BF387765	0.38	UI-R-CA1-bbv-a-01-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bbv-a-01-0-UI 3', mRNA sequence.
+1393201_at	BI283679	0.38	Similar to axonemal p83.9 (LOC297720), mRNA
+1394953_at	BF388068	0.379	UI-R-CA1-bbx-h-07-0-UI.s1 UI-R-CA1 Rattus norvegicus cDNA clone UI-R-CA1-bbx-h-07-0-UI 3', mRNA sequence.
+1372722_at	AI175031	0.378	Similar to DnaJ homolog subfamily B member 4 (LOC295549), mRNA
+1378140_at	BI296317	0.378	Similar to RIKEN cDNA C730007L20 gene (LOC364396), mRNA
+1384924_at	BF551984	0.378	Transcribed sequences
+1385933_at	AA875227	0.378	Transcribed sequences
+1391518_at	AI579823	0.378	Transcribed sequences
+1369964_at	NM_130411	0.377	coronin, actin binding protein 1A
+1370486_a_at	AY032665	0.377	IIIG9 protein
+1376871_at	AA891475	0.377	Transcribed sequences
+1387984_at	AF253065	0.377	chemokine-like factor 1
+1394673_at	AI454014	0.377	Transcribed sequence with weak  similarity to protein sp:P20138 (H.sapiens) CD33_HUMAN Myeloid cell surface antigen CD33 precursor
+1378056_at	BM391984	0.376	Similar to geminin (LOC291137), mRNA
+1391127_at	BF400818	0.376	cell division cycle 42 homolog (S. cerevisiae)
+1367602_at	AI013390	0.375	Cbp/p300-interacting transactivator, with Glu/Asp-rich carboxy-terminal domain, 2
+1368558_s_at	NM_017196	0.375	allograft inflammatory factor 1
+1374911_at	AW251534	0.374	UI-R-BJ0-ado-c-06-0-UI.s1 UI-R-BJ0 Rattus norvegicus cDNA clone UI-R-BJ0-ado-c-06-0-UI 3', mRNA sequence.
+1390524_at	BM392295	0.374	Similar to ring finger protein 12 (LOC317241), mRNA
+1379778_at	AI713278	0.373	Similar to HSPC043 protein (LOC298032), mRNA
+1382346_at	BF281960	0.373	Transcribed sequences
+1370449_at	U76206	0.371	G protein-coupled receptor 105
+1381039_at	BF416970	0.371	Similar to KIAA1410 protein (LOC306258), mRNA
+1392301_at	AI237897	0.371	Similar to 4631428G15 protein (LOC305441), mRNA
+1370130_at	NM_057132	0.369	plysia ras-related homolog A2
+1370386_at	AB002406	0.368	RuvB-like protein 1
+1383556_at	AI575798	0.368	Transcribed sequences
+1384279_at	BI275378	0.368	Similar to hypothetical protein FLJ38771 (LOC363236), mRNA
+1392856_at	AI549470	0.368	UI-R-C3-tu-c-02-0-UI.s1 UI-R-C3 Rattus norvegicus cDNA clone UI-R-C3-tu-c-02-0-UI 3', mRNA sequence.
+1395560_at	BF522151	0.368	Transcribed sequences
+1397548_at	BF417363	0.368	Similar to PTPL1-associated RhoGAP 1 (LOC314618), mRNA
+1370174_at	BI284349	0.367	myeloid differentiation primary response gene 116
+1376971_at	AI411341	0.366	Transcribed sequence with strong similarity to protein ref:NP_113670.1 (H.sapiens)  hypothetical protein DKFZp586I0418 [Homo sapiens]
+1384278_x_at	BG377047	0.365	Similar to NY-REN-41 antigen (LOC362187), mRNA
+1391555_at	BI276668	0.364	nuclear receptor coactivator 3
+1369665_a_at	AJ222813	0.363	interleukin 18
+1373448_at	AI413052	0.363	Similar to Acylphosphatase, organ-common type isozyme (Acylphosphate phosphohydrolase) (LOC299203), mRNA
+1387270_at	NM_024385	0.363	hematopoietically expressed homeobox
+1368555_at	NM_017124	0.362	CD37 antigen
+1380930_at	BM389240	0.362	Similar to KIAA1607 protein (LOC290569), mRNA
+1387566_at	NM_133551	0.362	phospholipase A2, group IVA (cytosolic, calcium-dependent)
+1393511_at	AW533576	0.362	Transcribed sequence with weak  similarity to protein ref:NP_071417.1 (H.sapiens)  glycoprotein beta-Gal 3'-sulfotransferase [Homo sapiens]
+1368240_a_at	X04440	0.36	protein kinase C, beta 1
+1385622_at	BE119164	0.36	UI-R-CA0-azz-c-04-0-UI.s1 UI-R-CA0 Rattus norvegicus cDNA clone UI-R-CA0-azz-c-04-0-UI 3', mRNA sequence.
+1369672_at	NM_017260	0.359	arachidonate 5-lipoxygenase activating protein
+1377340_at	AI179507	0.359	tissue factor pathway inhibitor 2
+1369186_at	D85899	0.357	caspase 1
+1371079_at	X73371	0.356	Fc receptor, IgG, low affinity IIb
+1398756_at	J04943	0.356	nucleophosmin 1
+1383536_at	AI712541	0.355	dihydrofolate reductase
+1393414_at	AW142650	0.355	Transcribed sequences
+1395508_at	BG665309	0.355	chaperonin containing TCP1, subunit 5 (epsilon)
+1385213_at	AW524454	0.354	Similar to Epithelial stromal interaction 1, isoform a (LOC364433), mRNA
+1391808_at	AI535140	0.354	Transcribed sequences
+1393460_at	BM388665	0.35	Similar to GARP protein precursor (Garpin) (Glycoprotein A repetitions predominant) (LOC303875), mRNA
+1387198_at	NM_019311	0.349	inositol polyphosphate-5-phosphatase D
+1369173_at	NM_032060	0.348	complement component 3a receptor 1
+1377671_at	BI279816	0.347	Transcribed sequences
+1398303_s_at	BI295970	0.345	tropomyosin isoform 6
+1389413_at	BI279325	0.344	Transcribed sequence with weak  similarity to protein pir:A35329 (H.sapiens) A35329 EVI2 protein precursor - human
+1393684_at	BF389489	0.344	Similar to proliferation associated SNF2-like protein (LOC294071), mRNA
+1380616_at	BI294748	0.343	sialyltransferase 8 (alpha-2, 8-polysialytransferase) D
+1382746_s_at	BE108581	0.342	Transcribed sequences
+1394290_at	BG669921	0.342	Transcribed sequences
+1390350_at	BE097445	0.338	Similar to hypothetical protein AL133206 (LOC298500), mRNA
+1395924_at	AI575421	0.338	UI-R-Y0-vg-b-07-0-UI.s1 UI-R-Y0 Rattus norvegicus cDNA clone UI-R-Y0-vg-b-07-0-UI 3', mRNA sequence.
+1379284_at	AI411760	0.337	Similar to RIKEN cDNA 2810457I06 (LOC315579), mRNA
+1393280_at	AA874924	0.337	Similar to MD-1 (LOC291359), mRNA
+1379425_at	AI549208	0.336	Similar to RIKEN cDNA 3110037I16 (LOC313563), mRNA
+1389512_at	BF410571	0.336	Transcribed sequence with weak  similarity to protein pir:A43932 (H.sapiens) A43932 mucin 2 precursor, intestinal - human
+1394743_at	AI234230	0.336	Similar to bA552M11.4.1 (novel protein (isoform 1)) (LOC362010), mRNA
+1390240_at	BM389611	0.334	Transcribed sequences
+1391979_at	AA851345	0.334	Transcribed sequences
+1399158_a_at	J04943	0.333	nucleophosmin 1
+1378633_at	BE106297	0.332	Similar to 4933402K05Rik protein (LOC293783), mRNA
+1389071_at	BI287221	0.332	Similar to tangerin (LOC309169), mRNA
+1392637_at	AA923988	0.332	Transcribed sequences
+1392791_at	AA964492	0.33	Transcribed sequences
+1368563_at	NM_024399	0.329	aspartoacylase
+1368518_at	NM_012523	0.328	CD53 antigen
+1373198_at	BF283018	0.328	Similar to RIKEN cDNA 2810451A06 (LOC362998), mRNA
+1389696_at	BF409820	0.328	Transcribed sequences
+1387438_at	NM_053639	0.327	leukotriene C4 synthase
+1382436_at	BM386497	0.326	Similar to RIKEN cDNA 2610002M06 (LOC363487), mRNA
+1382531_at	AI408425	0.326	Similar to toll-like receptor 7 (LOC317468), mRNA
+1393641_at	AA925583	0.326	Similar to B cell linker protein BLNK (LOC361756), mRNA
+1375961_at	AI072892	0.324	Similar to frezzled (LOC295691), mRNA
+1376858_at	BI281836	0.323	Similar to Exocyst complex component Sec6 (rSec6) (LOC308412), mRNA
+1373436_at	AI171288	0.322	Transcribed sequences
+1378180_at	BI284767	0.322	Transcribed sequences
+1387982_at	AF057025	0.322	toll-like receptor 4
+1389553_at	BF393825	0.322	Similar to RIKEN cDNA 3110037K17 (LOC362431), mRNA
+1392280_at	AW526982	0.321	toll-like receptor 2 variant 1
+1392512_at	AW533007	0.321	Similar to histone 3, H2ba (LOC303175), mRNA
+1369204_at	NM_013185	0.318	hemopoietic cell kinase
+1386987_at	NM_017020	0.318	interleukin 6 receptor
+1379766_at	AI500952	0.317	src-like adaptor
+1383295_at	AA901194	0.317	UI-R-E0-dc-h-09-0-UI.s1 UI-R-E0 Rattus norvegicus cDNA clone UI-R-E0-dc-h-09-0-UI 3', mRNA sequence.
+1388587_at	AI176519	0.317	EST220105 Normalized rat ovary, Bento Soares Rattus sp. cDNA clone ROVBS94 3' end, mRNA sequence.
+1384968_at	BM384145	0.316	Similar to SH3-domain binding protein 2 (LOC305450), mRNA
+1370609_a_at	X97445	0.315	solute carrier family 16, member 7
+1384350_at	BM388989	0.315	Transcribed sequences
+1397655_at	BF415097	0.315	Transcribed sequences
+1385591_at	BI300437	0.314	Transcribed sequences
+1398635_at	BF565662	0.314	Transcribed sequences
+1370516_at	AB026665	0.312	peptide/histidine transporter PHT2
+1383969_at	BI294901	0.312	Transcribed sequence with weak  similarity to protein sp:Q9Y473 (H.sapiens) Z175_HUMAN Zinc finger protein 175
+1379698_at	AI178631	0.311	Transcribed sequence with strong similarity to protein sp:P00722 (E. coli) BGAL_ECOLI Beta-galactosidase
+1385269_s_at	BI289167	0.31	Similar to 4633402D15Rik protein (LOC304743), mRNA
+1392134_x_at	BE099652	0.308	Similar to KIAA0456 protein (LOC360840), mRNA
+1389351_at	BM387864	0.307	Similar to FLI-LRR associated protein-1 (LOC367314), mRNA
+1389438_at	BE118454	0.307	Similar to testes development-related NYD-SP22 isoform 1 (LOC297999), mRNA
+1390798_at	BF288130	0.307	protein tyrosine phosphatase, receptor type, C
+1387306_a_at	D83508	0.306	early growth response 2
+1370462_at	AI171185	0.304	hyaluronan mediated motility receptor
+1378131_at	AI045015	0.304	Similar to hypothetical protein FLJ35613 (LOC363115), mRNA
+1388046_at	AF268593	0.304	integrin alpha M
+1392722_at	AA819134	0.304	Transcribed sequences
+1379760_at	AI454285	0.303	Similar to RIKEN cDNA 1810019A08 (LOC310663), mRNA
+1387134_at	NM_053687	0.303	schlafen 4
+1380230_at	AI639457	0.301	Transcribed sequences
+1390797_at	BF282471	0.301	Transcribed sequences
+1385832_s_at	AA924459	0.299	Similar to RIKEN cDNA 1200013B08 (LOC317578), mRNA
+1386660_at	BF565021	0.299	UI-R-BU0-amr-d-06-0-UI.r1 UI-R-BU0 Rattus norvegicus cDNA clone UI-R-BU0-amr-d-06-0-UI 5', mRNA sequence.
+1383917_at	BE110730	0.298	Transcribed sequence with strong similarity to protein ref:NP_057512.1 (H.sapiens)  NESH protein [Homo sapiens]
+1371447_at	BG378630	0.297	Similar to onzin (LOC360914), mRNA
+1378154_at	BG668499	0.297	Transcribed sequences
+1373992_at	AI408440	0.296	Similar to interferon-inducible GTPase (LOC307414), mRNA
+1381126_at	BE099652	0.296	Similar to KIAA0456 protein (LOC360840), mRNA
+1382311_at	BM384466	0.296	Similar to Ab2-389 (LOC310877), mRNA
+1380537_at	BI293796	0.295	Similar to RIKEN cDNA 4930568P13 (LOC315348), mRNA
+1383407_at	BM390872	0.295	Similar to RIKEN cDNA 1200013B08 (LOC317578), mRNA
+1385696_at	BI274471	0.295	UI-R-CW0-bwj-c-05-0-UI.s1 UI-R-CW0 Rattus norvegicus cDNA clone UI-R-CW0-bwj-c-05-0-UI 3', mRNA sequence.
+1390849_at	AW520584	0.295	Transcribed sequences
+1383436_at	BG376768	0.293	UI-R-CU0-buv-g-01-0-UI.s1 UI-R-CU0 Rattus norvegicus cDNA clone UI-R-CU0-buv-g-01-0-UI 3', mRNA sequence.
+1374948_at	BI275815	0.292	Similar to hypothetical protein MGC37887 (LOC287722), mRNA
+1388940_at	AW252115	0.292	Transcribed sequences
+1394678_at	AI411563	0.292	Similar to Fgd1 family, member 2; faciogenital dysplasia homolog 2 (human) (LOC309653), mRNA
+1378418_at	BI285027	0.291	Similar to MGC37193 protein (LOC364674), mRNA
+1394082_at	BG662631	0.291	Similar to 26S proteasome-associated pad1 homolog (LOC295644), mRNA
+1397214_at	BF288533	0.29	Transcribed sequence with moderate similarity to protein pdb:1LBG (E. coli) B Chain B, Lactose Operon Repressor Bound To 21-Base Pair Symmetric Operator Dna, Alpha Carbons Only
+1380063_at	AI169398	0.289	Similar to cholesterol 25-hydroxylase (LOC309527), mRNA
+1383527_at	BF418522	0.289	UI-R-BJ2-bqg-g-12-0-UI.s1 UI-R-BJ2 Rattus norvegicus cDNA clone UI-R-BJ2-bqg-g-12-0-UI 3', mRNA sequence.
+1385605_at	BF401793	0.288	Similar to G protein-coupled receptor 84 (LOC367000), mRNA
+1387459_at	NM_012627	0.288	protein kinase (cAMP dependent, catalytic) inhibitor beta
+1390687_at	AI556803	0.288	Similar to pleckstrin (LOC364206), mRNA
+1376943_at	BM386570	0.287	Transcribed sequence with weak  similarity to protein pir:A38445 (H.sapiens) A38445 EV12B protein precursor - human
+1382442_at	BF288000	0.287	Similar to transcription factor NRF; ITBA4 gene (LOC298316), mRNA
+1368754_at	NM_057124	0.286	pyrimidinergic receptor P2Y, G-protein coupled, 6
+1382873_at	BF414250	0.286	Similar to cDNA sequence BC003236 (LOC310760), mRNA
+1393411_at	BI277565	0.286	Similar to properdin (AA 5 - 441) (LOC299314), mRNA
+1370090_at	NM_130421	0.285	lymphocyte cytosolic protein 2 (SH2 domain-containing leukocyte protein of 76kD)
+1369272_at	NM_012896	0.284	adenosine A3 receptor
+1368420_at	NM_012532	0.283	ceruloplasmin
+1377012_at	AI012630	0.283	Transcribed sequences
+1381570_at	BI293518	0.283	Transcribed sequences
+1390287_at	BM386830	0.283	Similar to Breast cancer associated protein BRAP1 (LOC366988), mRNA
+1398365_at	AI171466	0.283	Similar to RIKEN cDNA 2700055K07 (LOC291966), mRNA
+1393302_at	BE098538	0.282	Transcribed sequences
+1376056_at	BF291214	0.281	Similar to Plec1 protein (LOC300043), mRNA
+1369105_a_at	AF413572	0.28	protein kinase (cAMP dependent, catalytic) inhibitor beta
+1369157_at	NM_017229	0.28	phosphodiesterase 3B
+1377351_at	AI407337	0.279	Similar to Sushi domain (SCR repeat) containing (LOC306810), mRNA
+1384148_at	BI293985	0.278	UI-R-DK0-cdx-h-11-0-UI.s1 UI-R-DK0 Rattus norvegicus cDNA clone UI-R-DK0-cdx-h-11-0-UI 3', mRNA sequence.
+1369527_at	NM_133534	0.274	Rbs11 protein
+1382566_at	AI071569	0.273	Transcribed sequences
+1398256_at	NM_031512	0.272	interleukin 1 beta
+1370139_a_at	AB051214	0.269	Rattus norvegicus trp6C gene for transient receptor potential Ca2+ channel 6C, complete cds.
+1393038_at	BM391631	0.269	Similar to high affinity immunoglobulin gamma Fc receptor I (LOC295279), mRNA
+1369393_at	NM_053847	0.268	mitogen-activated protein kinase kinase kinase 8
+1394122_at	AI012081	0.264	Similar to Rho-related GTP-binding protein RhoH (GTP-binding protein TTF) (LOC305341), mRNA
+1385572_at	AI144884	0.262	Transcribed sequences
+1369399_at	NM_012845	0.259	membrane-spanning 4-domains, subfamily A, member 2
+1391878_at	AI234125	0.259	Transcribed sequence with moderate similarity to protein sp:P10242 (H.sapiens) MYB_HUMAN Myb proto-oncogene protein
+1378150_at	AA945727	0.258	Similar to caspase recruitment domain family member 11 (LOC304314), mRNA
+1378033_at	AI029178	0.257	Transcribed sequence with weak  similarity to protein sp:P02812 (H.sapiens) PRP2_HUMAN Salivary proline-rich protein precursor
+1370423_at	AB015308	0.256	guanine nucleotide binding protein, alpha 15
+1378001_at	AI548615	0.255	Transcribed sequence with strong similarity to protein ref:NP_570832.1 (R.norvegicus)  retinol dehydrogenase homolog [Rattus norvegicus]
+1395003_at	BI278559	0.254	Similar to C-type (calcium dependent, carbohydrate-recognition domain) lectin, superfamily member 6; dendritic cell immunoreceptor; C-type lectin (LOC362430), mRNA
+1380377_at	AI113328	0.252	Similar to Bruton agammaglobulinemia tyrosine kinase (LOC367901), mRNA
+1392737_at	AI044644	0.251	Transcribed sequences
+1368728_at	NM_022800	0.25	P2Y12 platelet ADP receptor
+1382950_at	AA901350	0.25	Transcribed sequences
+1381771_at	AI178422	0.249	Transcribed sequences
+1381279_at	BF412519	0.248	Similar to receptor-interacting protein 2 (LOC362491), mRNA
+1370491_a_at	M38759	0.246	histidine decarboxylase
+1392630_at	AI060221	0.246	Transcribed sequences
+1371239_s_at	AF053361	0.243	tropomyosin isoform 6
+1392794_at	AA893579	0.24	Transcribed sequences
+1391803_at	BF557813	0.238	Transcribed sequences
+1379387_at	AI639103	0.235	Transcribed sequences
+1370377_at	M25143	0.234	cytochrome P450; Rat cytochrome P450CMF1b mRNA, complete cds.
+1368914_at	NM_017325	0.221	runt related transcription factor 1
+1368270_at	NM_012907	0.22	apolipoprotein B editing complex 1
+1369470_at	NM_021703	0.22	Testis-specific A-kinase-anchoring-protein
+1382153_at	AI171821	0.216	Similar to dendritic cell immunoreceptor (LOC297584), mRNA
+1368490_at	NM_021744	0.214	CD14 antigen
+1376390_at	BF395317	0.208	Similar to MS4A6D protein (LOC361735), mRNA
+1368592_at	NM_017019	0.207	interleukin 1 alpha
+1383290_at	BI280343	0.203	Similar to serine protease inhibitor, Kunitz type 1 (LOC311331), mRNA
+1391324_at	BI293812	0.203	Transcribed sequences
+1385440_at	BF419129	0.194	Transcribed sequence with weak  similarity to protein pir:T08788 (H.sapiens) T08788 hypothetical protein DKFZp586C1522.1 - human
+1392785_at	AA800908	0.193	Transcribed sequences
+1394387_at	BM383527	0.187	Transcribed sequences
+1391637_at	AI178168	0.184	Similar to RIKEN cDNA 5830480G12 (LOC295635), mRNA
+1368059_at	NM_053955	0.177	crystallin, mu
+1369290_at	NM_053960	0.174	chemokine (C-C) receptor 5
+1386052_at	BF290410	0.164	Transcribed sequences
+1387713_a_at	M17153	0.142	Fc receptor, IgE, high affinity I, alpha polypeptide
+1370405_at	U67915	0.112	mast cell protease 1
+1387173_at	NM_013092	0.092	chymase 1
+1371151_at	U67914	0.0854	carboxypeptidase A3
+
