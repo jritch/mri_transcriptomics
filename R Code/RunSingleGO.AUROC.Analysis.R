@@ -37,12 +37,15 @@ library(GO.db)
 library(tmod)
 library(metap)
 library(reshape2)
-library(xlsx)
 library(dplyr)
+library(readxl)
 
 geneStatistics <- read_csv(filename, guess_max = 25000) 
 cor(geneStatistics[,3:7])
 range(geneStatistics[,3:7])
+geneStatistics %>% group_by(ID) %>% summarize(ids = length(unique(entrez_id)))
+length(unique(geneStatistics$entrez_id))
+nrow(geneStatistics %>% filter(is.na(entrez_id)))
 
 #update gene symbols
 symbol_to_entrez <- geneStatistics %>% dplyr::select(ID, entrez_id) %>% filter(!is.nan(entrez_id)) %>% filter(!is.na(entrez_id)) %>% distinct()
@@ -335,11 +338,10 @@ plots <- createPlots(sortedGenes, as.character(mistryResult$oldTitle), geneSets,
 
 zengPath <- "./other gene lists/ZengEtAl/1-s2.0-S0092867412003480-mmc2.xlsx"
 
-zengTable <- read.xlsx(zengPath, sheetName = "Final1000New", startRow = 2, stringsAsFactors = F)
+zengTable <- read_xlsx(path = zengPath, sheet = "Final1000New", skip=1)
 
-(zengTable <- tbl_df(zengTable))
+zengTable %<>% select(`Gene symbol`, `Cortical marker (human)`) %>% rename(Gene.symbol = `Gene symbol`, Cortical.marker..human.=`Cortical marker (human)`)
 
-zengTable %<>% select(Gene.symbol, Cortical.marker..human.)
 backGroundGenes <- zengTable$Gene.symbol
 
 expandedZengTable <- zengTable %>% 
@@ -397,18 +399,16 @@ barplot <- barplot + geom_text(data = filter(zeng_result, adj.P.Val < 0.005), ae
 barplot
 ggsave(plot= barplot,paste0(baseFilename,".ZengEtAl.pdf" ), height=5, width=5)
     
+
 ################################################
 #### He Z et al. cortical layer markers (not currently used in manuscript)
 #    https://www.ncbi.nlm.nih.gov/pubmed/28414332
 #    http://www.picb.ac.cn/Comparative/data_methods/data_layer_2017.html
 ################################################
 HeZPath <- "./other gene lists/HeEtAl/table_s2.xlsx"
-if (exists("HeZTable") ) { #assume it's already loaded, very slow - maybe switch excel libraries
-} else {
-  HeZTable <- read.xlsx(HeZPath, sheetName = "Sheet1", stringsAsFactors = F)
-  (HeZTable <- tbl_df(HeZTable))
-  HeZTable %<>% dplyr::select(Gene.symbol, Layer.marker.in.human)
-}
+
+HeZTable <- read_xlsx(path = HeZPath, sheet = "Sheet1")
+HeZTable %<>% rename(Gene.symbol = `Gene symbol`, Layer.marker.in.human=`Layer marker in human`) %>% dplyr::select(Gene.symbol, Layer.marker.in.human)
 
 backGroundGenes <- unique(HeZTable$Gene.symbol)
 
