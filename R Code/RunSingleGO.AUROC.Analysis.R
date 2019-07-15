@@ -25,6 +25,7 @@ otherGeneListsFolder <- "./other gene lists/"
 
 library(ggsignif)
 library(cowplot)
+library(metap)
 library(readr)
 library(ggplot2)
 library(tidyr)
@@ -57,9 +58,12 @@ correlationLongForm <- gather(dplyr::select(geneStatistics, ID, contains("Correl
 pvaluesLongForm <- gather(dplyr::select(geneStatistics, ID,  contains("PValue.")), brain, pvalue, -ID)
 (pvaluesLongForm %<>% mutate(brain = gsub("PValue.", "", brain)))
 longFormGeneStats <- inner_join(pvaluesLongForm, correlationLongForm)
-#note - these values are not cut in half, so it's kept as two sided - a more conservative approach then halving then doubling
-longFormGeneStats %<>% mutate(pvalue.pos = if_else(sign(correlation) > 0, pvalue, 1 - pvalue )) 
-longFormGeneStats %<>% mutate(pvalue.neg = if_else(sign(correlation) < 0, pvalue, 1 - pvalue ))
+
+#this handling of p-values changed to reduce noise - thresholds changed below
+longFormGeneStats$pvalue.neg <- two2one(longFormGeneStats$pvalue, invert =  1 == sign(longFormGeneStats$correlation)) 
+longFormGeneStats$pvalue.pos <- two2one(longFormGeneStats$pvalue, invert = 1 == sign(-1*longFormGeneStats$correlation)) 
+
+
 (geneStatistics <- longFormGeneStats %>% group_by(ID) %>% 
     summarise(medianCorrelation = median(correlation), 
               directionSum = (sum(sign(correlation))/2 +3)/6, 
@@ -80,11 +84,11 @@ geneStatistics %<>% mutate(metaP.neg.adj = p.adjust(metaP.neg, method="holm"))
 
 range(geneStatistics$medianCorrelation)
 
-sum(geneStatistics$metaP.pos.adj < 0.05)
-sum(geneStatistics$metaP.neg.adj < 0.05)
-sum(geneStatistics$metaP.neg.adj < 0.05 | geneStatistics$metaP.pos.adj < 0.05)
+sum(geneStatistics$metaP.pos.adj < 0.025)
+sum(geneStatistics$metaP.neg.adj < 0.025)
+sum(geneStatistics$metaP.neg.adj < 0.025 | geneStatistics$metaP.pos.adj < 0.025)
 
-geneStatistics %<>% dplyr::mutate(isSig = metaP.neg.adj < 0.05 | metaP.pos.adj < 0.05)
+geneStatistics %<>% dplyr::mutate(isSig = metaP.neg.adj < 0.025 | metaP.pos.adj < 0.025)
 
 geneStatistics %<>% mutate(pValueWithDirection = if_else(metaP.pos < metaP.neg, nrow(geneStatistics) - rank(metaP.pos), -1* nrow(geneStatistics) + rank(metaP.neg)))
 
@@ -186,6 +190,7 @@ result %<>% dplyr::select(MainTitle, geneCount = N1, AUC, P.Value, adj.P.Value, 
 sum(result$adj.P.Value < 0.05)
 
 head(filter(result, AUC > 0.5),n=15)
+head(filter(result, AUC < 0.5),n=15) %>% select(MainTitle)
 
 result$adj.P.Value <- signif(result$adj.P.Value, digits=3)
 result$AUC <- signif(result$AUC, digits=3)
